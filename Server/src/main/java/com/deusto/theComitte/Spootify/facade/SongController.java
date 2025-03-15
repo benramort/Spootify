@@ -20,6 +20,7 @@ public class SongController {
         Song song = new Song(1, "Song", artist, 100, "https://www.youtube.com");
         List<SongDTO> songs = new ArrayList<>();
         songs.add(song.toDTO());
+        songs.add(song.toDTO());
         return ResponseEntity.ok(songs);
     }
     
