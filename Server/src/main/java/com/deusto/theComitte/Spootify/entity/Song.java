@@ -1,5 +1,7 @@
 package com.deusto.theComitte.Spootify.entity;
 
+import com.deusto.theComitte.Spootify.DTO.SongDTO;
+
 public class Song {
     
     private long id;
@@ -59,5 +61,9 @@ public class Song {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public SongDTO toDTO() {
+        return new SongDTO(this.id, this.name, this.artist.toDTO(), this.duration, this.youtubeUrl);
     }
 }
