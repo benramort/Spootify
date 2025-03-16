@@ -1,14 +1,24 @@
 package com.deusto.theComitte.Spootify.entity;
 
 import com.deusto.theComitte.Spootify.DTO.SongDTO;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "Songs")
 public class Song {
     
+    @Id
+    @Column(nullable = false, unique = true)
     private long id;
+    @Column(nullable = false)
     private String name;
+    @Column(nullable = false)
     private Artist artist;
+    //@Column
     // private Album album;
+    @Column(nullable = false)
     private int duration;
+    @Column(nullable = false, unique = true)
     private String youtubeUrl;
 
     public Song(long id, String name, Artist artist, int duration, String youtubeUrl) {

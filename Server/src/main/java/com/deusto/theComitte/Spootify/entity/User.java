@@ -1,0 +1,41 @@
+package com.deusto.theComitte.Spootify.entity;
+
+import com.deusto.theComitte.Spootify.DTO.UserDTO;
+
+import java.util.ArrayList;
+import java.util.List;
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "Users")
+public class User extends GenericUser {
+    
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "FriendUsers",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "user2_id")
+    )
+    private List<User> friendsList;
+
+    public User(long id, String name, String username, String email, String password) {
+        super(id, name, username, email, password);
+    }
+
+    public User() {
+        super();
+    }
+
+    public UserDTO toDTO() {
+        return new UserDTO(this.id, this.name);
+    }
+
+    public UserDTO toDTOWithFriends() {
+        List<UserDTO> friendsDTO = new ArrayList<>();
+        for(User user : this.friendsList) {
+            UserDTO userDTO = user.toDTO();
+            friendsDTO.add(userDTO);
+        }
+        return new UserDTO(this.id, this.name, friendsDTO);
+    }
+}

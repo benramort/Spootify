@@ -2,7 +2,7 @@ package com.deusto.theComitte.Spootify.DTO;
 
 public class ArtistDTO {
     
-    private Long id;
+    private long id;
     private String name;
 
     public ArtistDTO() {
