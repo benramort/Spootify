@@ -8,16 +8,16 @@ public class ArtistDTO {
     public ArtistDTO() {
     }
 
-    public ArtistDTO(Long id, String name) {
+    public ArtistDTO(long id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
