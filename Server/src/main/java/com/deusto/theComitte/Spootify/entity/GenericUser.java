@@ -10,15 +10,13 @@ public abstract class GenericUser {
     @Column(nullable = false)
     protected String name;
     @Column(nullable = false, unique = true)
-    protected String username;
-    @Column(nullable = false, unique = true)
     protected String email;
     @Column(nullable = false, unique = true)
     protected String password;
 
 
 
-    public GenericUser(long id, String name, String username, String email, String password) {
+    public GenericUser(long id, String name, String email, String password) {
         this.id = id;
         this.name = name;
         this.email = email;

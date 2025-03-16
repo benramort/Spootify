@@ -8,8 +8,8 @@ import jakarta.persistence.*;
 @Table(name = "Artists")
 public class Artist extends GenericUser {
 
-    public Artist(long id, String name, String username, String email, String password) {
-        super(id, name, username, email, password);
+    public Artist(long id, String name, String email, String password) {
+        super(id, name, email, password);
     }
 
     public Artist() {

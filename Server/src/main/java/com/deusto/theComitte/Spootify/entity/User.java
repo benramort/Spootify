@@ -18,8 +18,8 @@ public class User extends GenericUser {
     )
     private List<User> friendsList;
 
-    public User(long id, String name, String username, String email, String password) {
-        super(id, name, username, email, password);
+    public User(long id, String name, String email, String password) {
+        super(id, name, email, password);
     }
 
     public User() {
