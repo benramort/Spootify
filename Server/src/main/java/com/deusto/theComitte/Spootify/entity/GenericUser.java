@@ -1,10 +1,14 @@
 package com.deusto.theComitte.Spootify.entity;
 
+import java.io.Serializable;
+
 import jakarta.persistence.*;
 
-public abstract class GenericUser {
+@MappedSuperclass
+public abstract class GenericUser implements Serializable {
     
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, unique = true)
     protected long id;
     @Column(nullable = false)

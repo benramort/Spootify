@@ -1,4 +1,4 @@
-package DAO;
+package com.deusto.theComitte.Spootify.DAO;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
