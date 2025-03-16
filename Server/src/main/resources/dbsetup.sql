@@ -1,3 +1,5 @@
+/* mysql -u root -p*/
+
 DROP USER IF EXISTS 'user'@'%';
 CREATE USER IF NOT EXISTS 'user'@'%' IDENTIFIED BY 'user';
 
