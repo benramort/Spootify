@@ -22,6 +22,11 @@ public class User extends GenericUser {
         super(id, name, email, password);
     }
 
+    public User(String name, String email, String password) {
+        super(name, email, password);
+        this.friendsList = new ArrayList<>();
+    }
+
     public User() {
         super();
     }
