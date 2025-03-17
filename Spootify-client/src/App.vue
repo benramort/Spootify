@@ -10,9 +10,11 @@
 
 <template>
   <header>
-    <router-link to="/login">Home</router-link>
+    <router-link to="/login">Login</router-link>
   </header>
-  <router-view />
+  <main>
+    <router-view />
+  </main>
 </template>
 
 <style scoped>
