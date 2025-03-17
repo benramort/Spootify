@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.deusto.theComitte.Spootify.DAO.ArtistRepository;
+import com.deusto.theComitte.Spootify.DAO.SongRepository;
 import com.deusto.theComitte.Spootify.entity.Artist;
 import com.deusto.theComitte.Spootify.entity.Song;
 
@@ -15,6 +16,8 @@ public class ArtistService {
  
     @Autowired
     ArtistRepository artistRepository;
+    @Autowired
+    SongRepository songRepository;
 
     Map<Long, Artist> activeArtists = new HashMap<Long, Artist>();
 
@@ -56,8 +59,10 @@ public class ArtistService {
             throw new RuntimeException("Artist not logged in");
         }
         Song song = new Song(songId, songTitle, artist.getId(), songDuration, youtubeURL);
+        songRepository.save(song);
         artist.getSongs().add(song);
         artistRepository.save(artist);
+
     }
 
 }
