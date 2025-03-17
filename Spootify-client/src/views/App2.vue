@@ -10,9 +10,13 @@
 
 <template>
   <header>
-    <router-link to="/login">Home</router-link>
+    
   </header>
-  <router-view />
+
+  <main>
+    <h1>Hola2</h1>
+    <!-- <Prueba/> -->
+  </main>
 </template>
 
 <style scoped>
