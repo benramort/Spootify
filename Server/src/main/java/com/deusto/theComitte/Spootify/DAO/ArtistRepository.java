@@ -8,4 +8,5 @@ import com.deusto.theComitte.Spootify.entity.Artist;
 @Repository
 public interface ArtistRepository extends JpaRepository<Artist, Long> {
     Artist findById(long id);
+    Artist findByEmail(String email);
 }

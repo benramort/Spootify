@@ -17,13 +17,13 @@ public class UserService {
 
     private Map<Long, User> activeUsers = new HashMap<>();
 
-    public void createUser(String username, String email, String password) {
+    public void createUser(String name, String email, String password) {
         User existingUser = userRepository.findByEmail(email);
         if (existingUser != null) {
             throw new RuntimeException("User already exists");
         }
         
-        User user = new User(username, email, password);
+        User user = new User(name, email, password);
         userRepository.save(user);
     }
 

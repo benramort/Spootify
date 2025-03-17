@@ -12,7 +12,8 @@ public class Song {
     private long id;
     @Column(nullable = false)
     private String name;
-    @Column(nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "artist_id")
     private Artist artist;
     //@Column
     // private Album album;
@@ -24,6 +25,14 @@ public class Song {
     public Song(long id, String name, Artist artist, int duration, String youtubeUrl) {
         this.id = id;
         this.artist = artist;
+        this.name = name;
+        this.duration = duration;
+        this.youtubeUrl = youtubeUrl;
+    }
+
+    public Song(long id, String name, long artistId, int duration, String youtubeUrl) {
+        this.id = id;
+        artistId = this.artist.getId();
         this.name = name;
         this.duration = duration;
         this.youtubeUrl = youtubeUrl;
