@@ -15,7 +15,7 @@ public abstract class GenericUser implements Serializable {
     protected String name;
     @Column(nullable = false, unique = true)
     protected String email;
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     protected String password;
 
 

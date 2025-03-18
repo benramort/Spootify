@@ -1,5 +1,6 @@
 import { ref } from 'vue'
 
 export const globalState = {
-    token: ref()
+    token: ref(),
+    isArtist: ref()
 }

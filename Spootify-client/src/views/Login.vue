@@ -16,22 +16,29 @@ const loginPassword = ref('')
 
 
 function login() {
-    axios.post("http://localhost:8081/login", {
+	let url = "http://localhost:8081/login";
+	if (isArtist) {
+		url = "http://localhost:8081/artists/login";
+	}
+
+    axios.post(url, {
         email: loginEmail.value,
         password: loginPassword.value
     }).then(response => {
         console.log(response)
         globalState.token.value = response.data
-        console.log(globalState.token.value)
+		globalState.isArtist.value = isArtist
+        // console.log(globalState.token.value)
+		// console.log(globalState.isArtist.value)
     }).catch(error => {
         console.log(error) // gestionar errores
     })
 }
 
 function createAccount() {
-	let url = "http://localhost:8081/signup"
+	let url = "http://localhost:8081/users"
 	if (isArtist) {
-		url = "http://localhost:8081/"
+		url = "http://localhost:8081/artists"
 	}
 	axios.post(url, {
 		name: signupName.value,
@@ -70,6 +77,10 @@ function createAccount() {
 					<label for="chk" aria-hidden="true">Login</label>
 					<input type="email" name="email" placeholder="Email" required v-model="loginEmail">
 					<input type="password" name="pswd" placeholder="Password" required v-model="loginPassword">
+					<div class="line">
+						<input type="checkbox" id="artist" v-model="isArtist">
+						<label for="artist" class="checkLabel">Soy un artista</label>
+					</div>
 					<button>Login</button>
 				</form>
 			</div>
@@ -99,7 +110,7 @@ function createAccount() {
 	height: 500px;
 	background: red;
 	overflow: hidden;
-	background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
+	background: linear-gradient(to bottom, #0c291a, rgb(28, 165, 76), #263e24);
 	border-radius: 10px;
 	box-shadow: 5px 20px 50px #000;
 }
@@ -166,7 +177,7 @@ button{
 	justify-content: center;
 	display: block;
 	color: #fff;
-	background: #573b8a;
+	background: rgb(30, 215, 96);
 	font-size: 1em;
 	font-weight: bold;
 	margin-top: 20px;
@@ -177,7 +188,7 @@ button{
 	cursor: pointer;
 }
 button:hover{
-	background: #6d44b8;
+	background: rgb(22, 164, 72);
 }
 .login{
 	height: 460px;
@@ -187,7 +198,7 @@ button:hover{
 	transition: .8s ease-in-out;
 }
 .login label{
-	color: #573b8a;
+	color: rgb(30, 215, 96);
 	transform: scale(.6);
 }
 
