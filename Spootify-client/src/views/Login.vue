@@ -7,8 +7,13 @@ const globalState = inject('globalState')
 const signupName = ref('')
 const signupEmail = ref('')
 const signupPassword = ref('')
+
+let isArtist;
+
 const loginEmail = ref('')
 const loginPassword = ref('')
+
+
 
 function login() {
     axios.post("http://localhost:8081/login", {
@@ -22,6 +27,22 @@ function login() {
         console.log(error) // gestionar errores
     })
 }
+
+function createAccount() {
+	let url = "http://localhost:8081/signup"
+	if (isArtist) {
+		url = "http://localhost:8081/"
+	}
+	axios.post(url, {
+		name: signupName.value,
+		email: signupEmail.value,
+		password: signupPassword.value
+	}).then(response => {
+		console.log(response)
+	}).catch(error => {
+		console.log(error) // gestionar errores
+	})
+}
 </script>
 
 <template>
@@ -31,11 +52,15 @@ function login() {
 		<input type="checkbox" id="chk" aria-hidden="true" checked>
 
 			<div class="signup">
-				<form>
-					<label for="chk" aria-hidden="true">Sign up</label>
-					<input type="text" name="txt" placeholder="Name" required>
-					<input type="email" name="email" placeholder="Email" required>
-					<input type="password" name="pswd" placeholder="Password" required>
+				<form @submit.prevent="createAccount">
+					<label for="chk" id="signup" aria-hidden="true">Sign up</label>
+					<input type="text" name="txt" placeholder="Name" v-model="signupName" required>
+					<input type="email" name="email" placeholder="Email" v-model="signupEmail" required>
+					<input type="password" name="pswd" placeholder="Password" v-model="signupPassword" required>
+					<div class="line">
+						<input type="checkbox" id="artist" v-model="isArtist">
+						<label for="artist" class="checkLabel">Soy un artista</label>
+					</div>
 					<button>Sign up</button>
 				</form>
 			</div>
@@ -54,6 +79,10 @@ function login() {
 </template>
 
 <style>
+
+#signup {
+	margin-bottom: 1em;
+}
 
 .loginBox{
 	margin: 0;
@@ -92,6 +121,31 @@ label{
 	cursor: pointer;
 	transition: .5s ease-in-out;
 }
+
+.checkLabel {
+	font-size: 1em;
+	margin-top: 0;
+	margin-left: 0em;
+	display: inline;
+}
+
+#artist {
+    display: inline-block; /* Ensure the checkbox is inline */
+    vertical-align: middle; /* Align the checkbox vertically with the label */
+	margin: 0;
+	margin-right: 1em;
+	padding: 0;
+	width: auto;
+}
+
+
+.line {
+	display: flex;
+	justify-content: center;
+	height: 1em;
+}
+
+
 input{
 	width: 60%;
 	height: 20px;
@@ -104,6 +158,7 @@ input{
 	outline: none;
 	border-radius: 5px;
 }
+
 button{
 	width: 60%;
 	height: 40px;
