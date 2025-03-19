@@ -58,7 +58,7 @@ public class ArtistService {
         if(artist == null) {
             throw new RuntimeException("Artist not logged in");
         }
-        Song song = new Song(songId, songTitle, artist.getId(), songDuration, youtubeURL);
+        Song song = new Song(songId, songTitle, artist, songDuration, youtubeURL);
         songRepository.save(song);
         artist.getSongs().add(song);
         artistRepository.save(artist);

@@ -61,9 +61,8 @@ public class ArtistController {
         }
     }
 
-    @PostMapping("/artists/postSong/")
+    @PostMapping("/postSong")
     public ResponseEntity<Void> postSong(@RequestBody SongDTO songDTO, @RequestParam long token) {
-
         try {
             artistService.postSong(songDTO.getId(), songDTO.getTitle(), songDTO.getDuration(), songDTO.getYoutubeUrl(), token);
             return new ResponseEntity<>(HttpStatus.OK);
