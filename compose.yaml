@@ -1,0 +1,19 @@
+services:
+  client:
+    build: ./Spootify-client
+    ports:
+      - "8080:5173"
+    volumes:
+      - type: bind
+        source: ./Spootify-client
+        target: /app
+  server:
+    image: maven:latest
+    ports:
+      - "8081:8081"
+    volumes:
+      - ./Server:/app
+    working_dir: /app
+    command: mvn spring-boot:run
+
+
