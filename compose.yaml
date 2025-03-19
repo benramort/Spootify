@@ -1,0 +1,34 @@
+services:
+  client:
+    build: ./Spootify-client
+    ports:
+      - "8080:5173"
+    # volumes:
+    #   - type: bind
+    #     source: ./Spootify-client
+    #     target: /app
+  server:
+    image: maven:latest
+    ports:
+      - "8081:8081"
+    volumes:
+      - ./Server:/app
+    working_dir: /app
+    command: mvn spring-boot:run -X
+  database:
+    image: mysql:latest
+    ports:
+      - "3300:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=spootifydb
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=user
+    volumes:
+      - spootifydb:/var/lib/mysql
+
+volumes:
+  spootifydb:
+  
+
+
