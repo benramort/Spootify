@@ -3,10 +3,10 @@ services:
     build: ./Spootify-client
     ports:
       - "8080:5173"
-    volumes:
-      - type: bind
-        source: ./Spootify-client
-        target: /app
+    # volumes:
+    #   - type: bind
+    #     source: ./Spootify-client
+    #     target: /app
   server:
     image: maven:latest
     ports:
