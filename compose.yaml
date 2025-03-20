@@ -14,6 +14,21 @@ services:
     volumes:
       - ./Server:/app
     working_dir: /app
-    command: mvn spring-boot:run
+    command: mvn spring-boot:run -X
+  database:
+    image: mysql:latest
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=spootifydb
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=user
+    volumes:
+      - spootifydb:/var/lib/mysql
+
+volumes:
+  spootifydb:
+  
 
 
