@@ -65,8 +65,8 @@ public class Song {
         this.name = name;
     }
 
-    public void setArtist(Artist artist) {
-        this.artist = artist;
+    public void setAlbum(Album album) {
+        this.album = album;
     }
 
     public void setDuration(int duration) {
