@@ -1,27 +1,33 @@
 package com.deusto.theComitte.Spootify.facade;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.deusto.theComitte.Spootify.DTO.CreateArtistDTO;
+import com.deusto.theComitte.Spootify.DTO.ArtistDTO;
+import com.deusto.theComitte.Spootify.DTO.CreateUserDTO;
 import com.deusto.theComitte.Spootify.DTO.LoginDTO;
-import com.deusto.theComitte.Spootify.DTO.SongDTO;
+import com.deusto.theComitte.Spootify.entity.Artist;
 import com.deusto.theComitte.Spootify.service.ArtistService;
 
 @RestController
+@RequestMapping("/artists")
 public class ArtistController {
 
     @Autowired
     private ArtistService artistService;
     
-    @PostMapping("/artists")
-    public ResponseEntity<Void> createArtist(@RequestBody CreateArtistDTO artistDTO) {
+    @PostMapping("")
+    public ResponseEntity<Void> createArtist(@RequestBody CreateUserDTO artistDTO) {
         try {
             artistService.createArtist(artistDTO.name(), artistDTO.email(), artistDTO.password());
             return new ResponseEntity<>(HttpStatus.OK);
@@ -33,7 +39,7 @@ public class ArtistController {
         }
     }
 
-    @PostMapping("/artistLogin")
+    @PostMapping("/login")
     public ResponseEntity<Long> login(@RequestBody LoginDTO loginDTO) {
         try {
            long token = artistService.login(loginDTO.email(), loginDTO.password());
@@ -48,7 +54,7 @@ public class ArtistController {
         }
     }
 
-    @PostMapping("/artistLogout")
+    @PostMapping("/logout")
     public ResponseEntity<Void> logout(@RequestParam long token) {
         try {
             artistService.logout(token);
@@ -61,16 +67,16 @@ public class ArtistController {
         }
     }
 
-    @PostMapping("/postSong")
-    public ResponseEntity<Void> postSong(@RequestBody SongDTO songDTO, @RequestParam long token) {
+    @GetMapping("")
+    public ResponseEntity<List<ArtistDTO>> getArtists() {
         try {
-            artistService.postSong(songDTO.getId(), songDTO.getTitle(), songDTO.getDuration(), songDTO.getYoutubeUrl(), token);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (RuntimeException e) {
-            if(e.getMessage().equals("Artist not logged in")) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            List<Artist> artists = artistService.getArtists();
+            List<ArtistDTO> artistDTOs = new ArrayList<>();
+            for(Artist artist : artists) {
+                artistDTOs.add(artist.toDTO());
             }
-
+            return ResponseEntity.ok(artistDTOs);
+        } catch (RuntimeException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
