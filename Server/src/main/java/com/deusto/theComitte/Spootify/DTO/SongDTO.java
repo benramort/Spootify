@@ -3,29 +3,20 @@ package com.deusto.theComitte.Spootify.DTO;
 public class SongDTO {
     private long id;
     private String title;
-    private ArtistDTO artist;
+    private AlbumDTO album;
     private int duration; // duration in seconds
     private String youtubeUrl;
 
     public SongDTO() {
     }
 
-    public SongDTO(long id, String title, ArtistDTO artist, int duration, String youtubeUrl) {
+    public SongDTO(long id, String title, AlbumDTO album, int duration, String youtubeUrl) {
         this.id = id;
         this.title = title;
-        this.artist = artist;
+        this.album = album;
         this.duration = duration;
         this.youtubeUrl = youtubeUrl;
-    }
-
-    public SongDTO(long id, String title, int duration, String youtubeUrl) {
-        this.id = id;
-        this.title = title;
-        this.duration = duration;
-        this.youtubeUrl = youtubeUrl;
-    }
-
-    
+    }  
 
     public long getId() {
         return id;
@@ -43,12 +34,12 @@ public class SongDTO {
         this.title = title;
     }
 
-    public ArtistDTO getArtist() {
-        return artist;
+    public AlbumDTO getAlbum() {
+        return album;
     }
 
-    public void setArtist(ArtistDTO artist) {
-        this.artist = artist;
+    public void setAlbum(AlbumDTO album) {
+        this.album = album;
     }
 
     public int getDuration() {

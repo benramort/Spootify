@@ -10,8 +10,8 @@ import jakarta.persistence.*;
 @Table(name = "Artists")
 public class Artist extends GenericUser {
 
-    @OneToMany(mappedBy = "artist", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Song> songs;
+    @ManyToMany
+    private List<Album> albums;
 
     public Artist(long id, String name, String email, String password) {
         super(id, name, email, password);
@@ -25,8 +25,8 @@ public class Artist extends GenericUser {
         super();
     }
 
-    public List<Song> getSongs() {
-        return this.songs;
+    public List<Album> getAlbums() {
+        return this.albums;
     }
 
     public ArtistDTO toDTO() {

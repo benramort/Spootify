@@ -8,31 +8,30 @@ import jakarta.persistence.*;
 public class Song {
     
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, unique = true)
     private long id;
     @Column(nullable = false)
     private String name;
     @ManyToOne
-    @JoinColumn(name = "artist_id")
-    private Artist artist;
-    //@Column
-    // private Album album;
+    @JoinColumn(name = "album_id")
+    private Album album;
     @Column(nullable = false)
     private int duration;
     @Column(nullable = false, unique = true)
     private String youtubeUrl;
 
-    public Song(long id, String name, Artist artist, int duration, String youtubeUrl) {
+    public Song(long id, String name, Album album, int duration, String youtubeUrl) {
         this.id = id;
-        this.artist = artist;
+        this.album = album;
         this.name = name;
         this.duration = duration;
         this.youtubeUrl = youtubeUrl;
     }
 
-    public Song(long id, String name, long artistId, int duration, String youtubeUrl) {
+    public Song(long id, String name, long albumId, int duration, String youtubeUrl) {
         this.id = id;
-        artistId = this.artist.getId();
+        albumId = this.album.getId();
         this.name = name;
         this.duration = duration;
         this.youtubeUrl = youtubeUrl;
@@ -46,8 +45,8 @@ public class Song {
         return id;
     }
 
-    public Artist getArtist() {
-        return artist;
+    public Album getAlbum() {
+        return album;
     }
 
     public String getName() {
@@ -83,6 +82,6 @@ public class Song {
     }
 
     public SongDTO toDTO() {
-        return new SongDTO(this.id, this.name, this.artist.toDTO(), this.duration, this.youtubeUrl);
+        return new SongDTO(this.id, this.name, this.album.toDto(), this.duration, this.youtubeUrl);
     }
 }
