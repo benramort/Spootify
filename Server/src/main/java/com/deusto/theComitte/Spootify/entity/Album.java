@@ -38,6 +38,11 @@ public class Album {
         this.songs = new ArrayList<>();
     }
 
+    public Album(String name) {
+        this.name = name;
+        this.artists = new ArrayList<>();
+        this.songs = new ArrayList<>();
+    }
 
     public Album(long id, String name, List<Artist> artists, List<Song> songs) {
         this.id = id;
