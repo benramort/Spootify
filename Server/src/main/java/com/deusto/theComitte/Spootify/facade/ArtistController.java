@@ -64,7 +64,6 @@ public class ArtistController {
 
     @PostMapping("/songs") //TODO Esto igual cambiar a otro sitio. Cambiar a song controller
     public ResponseEntity<Void> postSong(@RequestBody SongDTO songDTO, @RequestParam long token) {
-
         try {
             artistService.postSong(songDTO.getId(), songDTO.getTitle(), songDTO.getDuration(), songDTO.getYoutubeUrl(), token);
             return new ResponseEntity<>(HttpStatus.OK);
