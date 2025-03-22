@@ -51,6 +51,8 @@ public class SongController {
         } catch (RuntimeException e) {
             if(e.getMessage().equals("Artist not logged in")) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            } else if (e.getMessage().equals("Album does not exist")) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             System.out.println(e.getMessage());
             System.out.println("YT:" + songDTO.getYoutubeUrl());

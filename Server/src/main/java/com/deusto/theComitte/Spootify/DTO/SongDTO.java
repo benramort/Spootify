@@ -18,6 +18,15 @@ public class SongDTO {
         this.youtubeUrl = youtubeUrl;
     }  
 
+    public SongDTO(long id, String title, int duration, String youtubeUrl) {
+        this.id = id;
+        this.title = title;
+        this.duration = duration;
+        this.youtubeUrl = youtubeUrl;
+    }
+
+    
+
     public long getId() {
         return id;
     }
