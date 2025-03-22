@@ -1,11 +1,13 @@
 package com.deusto.theComitte.Spootify.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.deusto.theComitte.Spootify.DAO.AlbumRepository;
+import com.deusto.theComitte.Spootify.DAO.ArtistRepository;
 import com.deusto.theComitte.Spootify.DAO.SongRepository;
 import com.deusto.theComitte.Spootify.entity.Album;
 import com.deusto.theComitte.Spootify.entity.Artist;
@@ -18,6 +20,8 @@ public class SongService {
     SongRepository songRepository;
     @Autowired
     AlbumRepository albumRepository;
+    @Autowired
+    ArtistRepository artistRepository;
     @Autowired
     ArtistService artistService;
 
@@ -45,8 +49,11 @@ public class SongService {
     }
 
     public List<Song> getSongs(long artistId, long albumId) {
+        if (artistId != 0 && albumId != 0) {
+            return songRepository.findByArtistIdAndAlbumId(artistId, albumId);
+        }
         if (artistId != 0) {
-            //TODO
+            return songRepository.findByArtistId(artistId);
         }
         if (albumId != 0) {
             return songRepository.findByAlbumId(albumId);

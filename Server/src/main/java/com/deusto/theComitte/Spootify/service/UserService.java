@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.deusto.theComitte.Spootify.DAO.UserRepository;
-import com.deusto.theComitte.Spootify.entity.Artist;
 import com.deusto.theComitte.Spootify.entity.User;
 
 @Service
