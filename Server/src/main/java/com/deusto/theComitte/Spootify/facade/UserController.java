@@ -1,8 +1,12 @@
 package com.deusto.theComitte.Spootify.facade;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -10,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.deusto.theComitte.Spootify.DTO.CreateUserDTO;
 import com.deusto.theComitte.Spootify.DTO.LoginDTO;
+import com.deusto.theComitte.Spootify.DTO.UserDTO;
+import com.deusto.theComitte.Spootify.entity.User;
 import com.deusto.theComitte.Spootify.service.UserService;
 
 @RestController
@@ -60,5 +66,18 @@ public class UserController {
         
     }
 
+    @GetMapping("")
+    public ResponseEntity<List<UserDTO>> getUsers() {
+        try {
+            List<User> users = userService.getUsers();
+            List<UserDTO> userDTOs = new ArrayList<>();
+            for(User user : users) {
+                userDTOs.add(user.toDTO());
+            }
+            return ResponseEntity.ok(userDTOs);
+        } catch (RuntimeException ex) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 
 }

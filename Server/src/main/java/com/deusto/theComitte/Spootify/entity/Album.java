@@ -19,7 +19,7 @@ public class Album {
     private long id;
     @Column(nullable = false)
     private String name;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable
     (
         name = "AlbumArtists",
@@ -30,6 +30,7 @@ public class Album {
     @OneToMany(mappedBy = "album", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Song> songs;
 
+    public Album() {}
 
     public Album(long id, String name) {
         this.id = id;
@@ -38,6 +39,11 @@ public class Album {
         this.songs = new ArrayList<>();
     }
 
+    public Album(String name) {
+        this.name = name;
+        this.artists = new ArrayList<>();
+        this.songs = new ArrayList<>();
+    }
 
     public Album(long id, String name, List<Artist> artists, List<Song> songs) {
         this.id = id;
@@ -106,5 +112,17 @@ public class Album {
             songsDTO.add(song.toDTO());
         }
         return new AlbumDTO(this.id, this.name, artistsDTO, songsDTO);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Album album = (Album) obj;
+        return this.id == album.id;
     }
 }

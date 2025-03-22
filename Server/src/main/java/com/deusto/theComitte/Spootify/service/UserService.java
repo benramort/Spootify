@@ -1,12 +1,14 @@
 package com.deusto.theComitte.Spootify.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.deusto.theComitte.Spootify.DAO.UserRepository;
+import com.deusto.theComitte.Spootify.entity.Artist;
 import com.deusto.theComitte.Spootify.entity.User;
 
 @Service
@@ -45,6 +47,10 @@ public class UserService {
         if (user == null) {
             throw new RuntimeException("User not logged in");
         }
+    }
+
+    public List<User> getUsers() {
+        return userRepository.findAll();
     }
     
 }

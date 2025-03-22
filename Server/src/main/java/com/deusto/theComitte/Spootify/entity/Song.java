@@ -13,7 +13,7 @@ public class Song {
     private long id;
     @Column(nullable = false)
     private String name;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "album_id")
     private Album album;
     @Column(nullable = false)
@@ -21,17 +21,8 @@ public class Song {
     @Column(nullable = false, unique = true)
     private String youtubeUrl;
 
-    public Song(long id, String name, Album album, int duration, String youtubeUrl) {
-        this.id = id;
+    public Song(String name, Album album, int duration, String youtubeUrl) {
         this.album = album;
-        this.name = name;
-        this.duration = duration;
-        this.youtubeUrl = youtubeUrl;
-    }
-
-    public Song(long id, String name, long albumId, int duration, String youtubeUrl) {
-        this.id = id;
-        albumId = this.album.getId();
         this.name = name;
         this.duration = duration;
         this.youtubeUrl = youtubeUrl;
@@ -65,8 +56,8 @@ public class Song {
         this.name = name;
     }
 
-    public void setArtist(Artist artist) {
-        this.artist = artist;
+    public void setAlbum(Album album) {
+        this.album = album;
     }
 
     public void setDuration(int duration) {
