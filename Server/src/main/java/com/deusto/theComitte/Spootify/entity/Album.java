@@ -96,11 +96,16 @@ public class Album {
         this.songs.remove(song);
     }
 
-    public AlbumDTO toDto() {
-        return new AlbumDTO(this.id, this.name);
+    public AlbumDTO toDTOWithoutSongs() {
+        ArrayList<ArtistDTO> artistsDTO = new ArrayList<>();
+        for(Artist artist : this.artists)
+        {
+            artistsDTO.add(artist.toDTO());
+        }
+        return new AlbumDTO(this.id, this.name, artistsDTO, null);
     }
 
-    public AlbumDTO toDtoWithLists() {
+    public AlbumDTO toDTO() {
         ArrayList<ArtistDTO> artistsDTO = new ArrayList<>();
         ArrayList<SongDTO> songsDTO = new ArrayList<>();
         for(Artist artist : this.artists)

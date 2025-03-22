@@ -1,7 +1,9 @@
 <script setup>
     import axios from "axios";
-    import {onMounted} from "vue";
+    import {onMounted, inject} from "vue";
     import {ref} from "vue";
+
+    const globalState = inject('globalState')
 
     const props = defineProps({
         path: {
@@ -12,11 +14,13 @@
 
     let songs = ref([]) //ref añade reactividad
     onMounted(() => {
+        console.log(globalState.token.value);
         let path = "http://localhost:8081/" + props.path
+        path = path+"?token="+globalState.token.value
         console.log(path)
         axios.get(path).then((response) => {
             songs.value = response.data;
-            // console.log(songs.value);
+            console.log(songs.value);
             songs.value.forEach((song) => {
                 song.duration = printDuration(song.duration);
             });
@@ -26,6 +30,9 @@
     function printDuration(seconds) {
         let minutes = Math.floor(seconds / 60);
         let remainingSeconds = seconds % 60;
+        if (remainingSeconds < 10) {
+            remainingSeconds = "0" + remainingSeconds;
+        }
         return `${minutes}:${remainingSeconds}`;
     }
 
@@ -43,7 +50,7 @@
         <div class="horizontal-aling">
             <div>
                 <p><b>{{ song.title }}</b></p>
-                <p>{{ song.artist.name }}</p>
+                <p><span class="name">{{ song.album.artists[0].name}}</span> - <span class="album"><i>{{ song.album.name }}</i></span></p>
             </div>
             <p>{{  song.duration }}</p>
         </div>
@@ -75,7 +82,17 @@
         width: 100%;
     }
 
+    .album {
+        margin-left: 0.3em;
+        font-size: 0.8em;
+    }
+
+    .name {
+        margin-right: 0.3em;
+    }
+
     p {
+        font-size: 1.2em;
         margin: 0.3em;
     }
 </style>

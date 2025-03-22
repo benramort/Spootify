@@ -1,6 +1,5 @@
 package com.deusto.theComitte.Spootify.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,5 +58,15 @@ public class SongService {
             return songRepository.findByAlbumId(albumId);
         }
         return songRepository.findAll();
+    }
+
+    public List<Song> getArtistSongs(long token) {
+        Artist artist = artistService.getActiveArtists().get(token);
+        if (artist == null) {
+            throw new RuntimeException("Artist not logged in");
+        }
+        return artist.getAlbums()
+            .stream()
+            .flatMap(s -> s.getSongs().stream()).toList();
     }
 }

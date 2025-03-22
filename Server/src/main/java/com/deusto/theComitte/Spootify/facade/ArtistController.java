@@ -16,8 +16,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.deusto.theComitte.Spootify.DTO.ArtistDTO;
 import com.deusto.theComitte.Spootify.DTO.CreateUserDTO;
 import com.deusto.theComitte.Spootify.DTO.LoginDTO;
+import com.deusto.theComitte.Spootify.DTO.SongDTO;
 import com.deusto.theComitte.Spootify.entity.Artist;
+import com.deusto.theComitte.Spootify.entity.Song;
 import com.deusto.theComitte.Spootify.service.ArtistService;
+import com.deusto.theComitte.Spootify.service.SongService;
 
 @RestController
 @RequestMapping("/artists")
@@ -25,6 +28,9 @@ public class ArtistController {
 
     @Autowired
     private ArtistService artistService;
+
+    @Autowired
+    private SongService songService;
     
     @PostMapping("")
     public ResponseEntity<Void> createArtist(@RequestBody CreateUserDTO artistDTO) {
@@ -60,6 +66,24 @@ public class ArtistController {
             artistService.logout(token);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (RuntimeException e) {
+            if(e.getMessage().equals("Artist not logged in")) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/mySongs")
+    public ResponseEntity<List<SongDTO>> getMySongs(@RequestParam long token) {
+        try {
+            List<Song> songs = songService.getArtistSongs(token);
+            List<SongDTO> songDTOs = new ArrayList<>();
+            for(Song song : songs) {
+                songDTOs.add(song.toDTO());
+            }
+            return ResponseEntity.ok(songDTOs);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
             if(e.getMessage().equals("Artist not logged in")) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }

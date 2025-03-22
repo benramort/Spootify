@@ -73,6 +73,6 @@ public class Song {
     }
 
     public SongDTO toDTO() {
-        return new SongDTO(this.id, this.name, this.album.toDto(), this.duration, this.youtubeUrl);
+        return new SongDTO(this.id, this.name, this.album.toDTOWithoutSongs(), this.duration, this.youtubeUrl);
     }
 }

@@ -48,7 +48,7 @@ public class AlbumController {
             List<Album> albums = albumService.getAlbums();
             List<AlbumDTO> albumDTOs = new ArrayList<>();
             for(Album album : albums) {
-                albumDTOs.add(album.toDtoWithLists());
+                albumDTOs.add(album.toDTO());
             }
             return ResponseEntity.ok(albumDTOs);
         } catch(RuntimeException e) {

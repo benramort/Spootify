@@ -28,7 +28,7 @@ function login() {
         console.log(response)
         globalState.token.value = response.data
 		globalState.isArtist.value = isArtist
-        // console.log(globalState.token.value)
+        console.log(globalState.token.value)
 		// console.log(globalState.isArtist.value)
     }).catch(error => {
         console.log(error) // gestionar errores
