@@ -4,7 +4,7 @@
 
 <template>
   <div class="header">
-    <img src="../assets/logo.svg" alt="Spotify logo"/>
+    <img src="../assets/Spootify_logo.png" alt="Spotify logo"/>
     <div class="side">
     <div class="header-box"> <router-link to="/login">Home</router-link></div>
     <div class="header-box"><router-link to="/login">Home</router-link></div>
@@ -19,6 +19,7 @@
 img {
     width: 4em;
     height: 4em;
+    margin: 0.5em;
 }
 
 a {

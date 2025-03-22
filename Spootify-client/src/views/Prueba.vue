@@ -5,7 +5,7 @@
 <script setup> //Para no poner export default
 import HelloWorld from '../components/HelloWorld.vue'
 import TheWelcome from '../components/TheWelcome.vue'
-import Prueba from '../components/Prueba.vue'
+import Prueba from '../components/Songs.vue'
 </script>
 
 <template>
