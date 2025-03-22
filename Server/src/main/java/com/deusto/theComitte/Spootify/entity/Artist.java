@@ -10,7 +10,7 @@ import jakarta.persistence.*;
 @Table(name = "Artists")
 public class Artist extends GenericUser {
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "artists", fetch = FetchType.EAGER)
     private List<Album> albums;
 
     public Artist(long id, String name, String email, String password) {
@@ -31,6 +31,18 @@ public class Artist extends GenericUser {
 
     public ArtistDTO toDTO() {
         return new ArtistDTO(this.id, this.name);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Artist artist = (Artist) obj;
+        return this.id == artist.id;
     }
     
 }

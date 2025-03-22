@@ -21,17 +21,8 @@ public class Song {
     @Column(nullable = false, unique = true)
     private String youtubeUrl;
 
-    public Song(long id, String name, Album album, int duration, String youtubeUrl) {
-        this.id = id;
+    public Song(String name, Album album, int duration, String youtubeUrl) {
         this.album = album;
-        this.name = name;
-        this.duration = duration;
-        this.youtubeUrl = youtubeUrl;
-    }
-
-    public Song(long id, String name, long albumId, int duration, String youtubeUrl) {
-        this.id = id;
-        albumId = this.album.getId();
         this.name = name;
         this.duration = duration;
         this.youtubeUrl = youtubeUrl;

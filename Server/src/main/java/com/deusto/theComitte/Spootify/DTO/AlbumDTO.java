@@ -3,9 +3,6 @@ package com.deusto.theComitte.Spootify.DTO;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.deusto.theComitte.Spootify.entity.Artist;
-import com.deusto.theComitte.Spootify.entity.Song;
-
 
 
 public class AlbumDTO {
@@ -28,6 +25,10 @@ public class AlbumDTO {
         this.name = name;
         this.artists = artists;
         this.songs = songs;
+    }
+
+    public AlbumDTO() {
+        
     }
 
     public void setId(long id) {
