@@ -18,6 +18,14 @@ public class User extends GenericUser {
     )
     private List<User> friendsList;
 
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "SongList",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "song_id")
+    )
+    private List<User> songList;
+
     public User(long id, String name, String email, String password) {
         super(id, name, email, password);
     }
@@ -25,6 +33,7 @@ public class User extends GenericUser {
     public User(String name, String email, String password) {
         super(name, email, password);
         this.friendsList = new ArrayList<>();
+        this.songList = new ArrayList<>();
     }
 
     public User() {
@@ -42,5 +51,14 @@ public class User extends GenericUser {
             friendsDTO.add(userDTO);
         }
         return new UserDTO(this.id, this.name, friendsDTO);
+    }
+
+    public UserDTO toDTOWithSongs() {
+        List<UserDTO> songsDTO = new ArrayList<>();
+        for(User user : this.songList) {
+            UserDTO userDTO = user.toDTO();
+            songsDTO.add(userDTO);
+        }
+        return new UserDTO(this.id, this.name, songsDTO);
     }
 }
