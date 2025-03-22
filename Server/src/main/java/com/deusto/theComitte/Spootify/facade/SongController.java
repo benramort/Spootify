@@ -1,8 +1,10 @@
 package com.deusto.theComitte.Spootify.facade;
 
 import com.deusto.theComitte.Spootify.DTO.SongDTO;
+import com.deusto.theComitte.Spootify.entity.Song;
 import com.deusto.theComitte.Spootify.service.SongService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,11 +30,16 @@ public class SongController {
         @RequestParam(required = false, defaultValue = "0") long albumId
     ) {
         try {
-            songService.getSongs(artistId, albumId);
+            List<Song> songs = songService.getSongs(artistId, albumId);
+            List<SongDTO> songDTOs = new ArrayList<>();
+            for (Song song : songs) {
+                songDTOs.add(song.toDTO());
+            }
+            return ResponseEntity.ok(songDTOs);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return ResponseEntity.ok(null);
+        
     }
 
     @PostMapping()

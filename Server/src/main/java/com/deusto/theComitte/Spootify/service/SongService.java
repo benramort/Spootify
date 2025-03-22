@@ -35,9 +35,11 @@ public class SongService {
             throw new RuntimeException("Album does not exist");
         }
         if (!album.getArtists().contains(artist)) {
+            album.getArtists().forEach(a -> System.out.println(a.getId()));
             throw new RuntimeException("Artist does not have access to this album");
         }
         Song song = new Song(title, album, duration, youtubeUrl);
+        album.getSongs().add(song);
         songRepository.save(song);
 
     }

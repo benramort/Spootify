@@ -13,7 +13,7 @@ public class Song {
     private long id;
     @Column(nullable = false)
     private String name;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "album_id")
     private Album album;
     @Column(nullable = false)
