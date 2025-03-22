@@ -3,9 +3,18 @@
     import {onMounted} from "vue";
     import {ref} from "vue";
 
+    const props = defineProps({
+        path: {
+            type: String,
+            default: "songs"
+        }
+    })
+
     let songs = ref([]) //ref añade reactividad
     onMounted(() => {
-        axios.get("http://localhost:8081/songs").then((response) => {
+        let path = "http://localhost:8081/" + props.path
+        console.log(path)
+        axios.get(path).then((response) => {
             songs.value = response.data;
             // console.log(songs.value);
             songs.value.forEach((song) => {
