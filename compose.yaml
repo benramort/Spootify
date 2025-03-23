@@ -6,10 +6,10 @@ services:
       - "8080:5173"
     volumes:
       - ./Spootify-client:/app
-      - /app/node_modules  # Anonymous volume to preserve node_modules
+      -  /app/node_modules
     environment:
-      - NODE_ENV=development
-    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"    
+      - NODE_EMV=development
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
   server:
     image: maven:latest
     ports:

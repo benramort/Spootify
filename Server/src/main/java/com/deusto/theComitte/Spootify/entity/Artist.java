@@ -12,6 +12,8 @@ public class Artist extends GenericUser {
 
     @ManyToMany(mappedBy = "artists", fetch = FetchType.EAGER)
     private List<Album> albums;
+    @Column(nullable = false)
+    protected long followers;
 
     public Artist(long id, String name, String email, String password) {
         super(id, name, email, password);
@@ -45,4 +47,11 @@ public class Artist extends GenericUser {
         return this.id == artist.id;
     }
     
+    public long getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(long followers) {
+        this.followers = followers;
+    }
 }

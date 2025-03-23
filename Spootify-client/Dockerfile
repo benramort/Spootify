@@ -19,7 +19,7 @@ RUN npm install
 # RUN npm install -g vite
 
 # copy project files and folders to the current working directory (i.e. 'app' folder)
-# COPY . .
+#COPY . .
 
 EXPOSE 5173
 CMD ["npm", "run", "dev"]
