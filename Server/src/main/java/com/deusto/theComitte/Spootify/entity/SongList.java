@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.deusto.theComitte.Spootify.DTO.SongListDTO;
+
 @Entity
 @Table(name = "SONG_LISTS")
 public class SongList {
@@ -64,5 +66,13 @@ public class SongList {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public SongListDTO toDTO() {
+        SongListDTO songListDTO = new SongListDTO();
+        songListDTO.setId(this.id);
+        songListDTO.setName(this.name);
+        songListDTO.setUser(this.user.toDTO());
+        return songListDTO;
     }
 }

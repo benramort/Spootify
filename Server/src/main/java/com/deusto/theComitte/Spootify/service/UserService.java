@@ -7,8 +7,11 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.deusto.theComitte.Spootify.DAO.*;
-import com.deusto.theComitte.Spootify.entity.*;
+import com.deusto.theComitte.Spootify.DAO.UserRepository;
+import com.deusto.theComitte.Spootify.DAO.SongRepository;
+import com.deusto.theComitte.Spootify.entity.User;
+import com.deusto.theComitte.Spootify.entity.Song;
+import com.deusto.theComitte.Spootify.entity.SongList;
 
 @Service
 public class UserService {
@@ -56,7 +59,7 @@ public class UserService {
     }
     
 
-    public void addSongToUser(long userId, List<Long> songIds, String songListName) {
+    public void addSongsToUser(long userId, List<Long> songIds, long songListId) {
         User user = userRepository.findById(userId);
         if (user == null) {
             throw new RuntimeException("User does not exist");
@@ -68,12 +71,28 @@ public class UserService {
             }
 
             for (SongList songList : user.getSongLists()) {
-                if (songList.getName().equals(songListName)) {
+                if (songList.getId().equals(songListId)) {
                     songList.getSongs().add(song);
                     songList.setUser(user);
                     return;
                 }
             }
         }
+    }
+
+    public void createPlayList(long userId, String name) {
+        User user = userRepository.findById(userId);
+        if (user == null) {
+            throw new RuntimeException("User does not exist");
+        }
+        user.createSongList(name);
+    }
+
+    public List<SongList> getPlayLists(long userId) {
+        User user = userRepository.findById(userId);
+        if (user == null) {
+            throw new RuntimeException("User does not exist");
+        }
+        return user.getSongLists();
     }
 }
