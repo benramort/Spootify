@@ -9,7 +9,10 @@ import org.springframework.stereotype.Service;
 
 import com.deusto.theComitte.Spootify.DAO.UserRepository;
 import com.deusto.theComitte.Spootify.DAO.ArtistRepository;
+import com.deusto.theComitte.Spootify.DAO.SongRepository;
 import com.deusto.theComitte.Spootify.entity.Artist;
+import com.deusto.theComitte.Spootify.entity.Song;
+import com.deusto.theComitte.Spootify.entity.SongList;
 import com.deusto.theComitte.Spootify.entity.User;
 
 @Service
@@ -20,6 +23,7 @@ public class UserService {
 
     @Autowired
     ArtistRepository artistRepository;
+    SongRepository songRepository;
 
     private Map<Long, User> activeUsers = new HashMap<>();
 
@@ -72,4 +76,25 @@ public class UserService {
         artistRepository.save(artist);
     }	
      
+
+    public void addSongToUser(long userId, List<Long> songIds, String songListName) {
+        User user = userRepository.findById(userId);
+        if (user == null) {
+            throw new RuntimeException("User does not exist");
+        }
+        for (long songId : songIds) {
+            Song song = songRepository.findById(songId);
+            if (song == null) {
+                throw new RuntimeException("Song does not exist");
+            }
+
+            for (SongList songList : user.getSongLists()) {
+                if (songList.getName().equals(songListName)) {
+                    songList.getSongs().add(song);
+                    songList.setUser(user);
+                    return;
+                }
+            }
+        }
+    }
 }
