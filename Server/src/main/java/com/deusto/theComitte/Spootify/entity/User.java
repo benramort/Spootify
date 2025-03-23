@@ -26,7 +26,7 @@ public class User extends GenericUser {
     )
     private List<Artist> followList;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<SongList> songsList = new ArrayList<>();
 
     public User(long id, String name, String email, String password) {

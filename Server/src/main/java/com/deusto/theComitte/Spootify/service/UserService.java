@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.deusto.theComitte.Spootify.DAO.UserRepository;
 import com.deusto.theComitte.Spootify.DAO.ArtistRepository;
+import com.deusto.theComitte.Spootify.DAO.PlayListRepository;
 import com.deusto.theComitte.Spootify.DAO.SongRepository;
 import com.deusto.theComitte.Spootify.entity.Artist;
 import com.deusto.theComitte.Spootify.entity.Song;
@@ -23,7 +24,12 @@ public class UserService {
 
     @Autowired
     ArtistRepository artistRepository;
+
+    @Autowired
     SongRepository songRepository;
+
+    @Autowired
+    PlayListRepository songListRepository;
 
     private Map<Long, User> activeUsers = new HashMap<>();
 
@@ -78,7 +84,7 @@ public class UserService {
      
 
     public void addSongsToUser(long userId, List<Long> songIds, long songListId) {
-        User user = userRepository.findById(userId);
+        User user = activeUsers.get(userId);
         if (user == null) {
             throw new RuntimeException("User does not exist");
         }
@@ -98,16 +104,33 @@ public class UserService {
         }
     }
 
+    public void addSongToUser(long userId, long songId, long songListId) {
+        User user = activeUsers.get(userId);
+        if (user == null) {
+            throw new RuntimeException("User does not exist");
+        }
+        Song song = songRepository.findById(songId);
+        if (song == null) {
+            throw new RuntimeException("Song does not exist");
+        }
+
+        SongList songList = songListRepository.findById(songListId);
+        songList.getSongs().add(song);
+        songListRepository.save(songList);
+        
+    }
+
     public void createPlayList(long userId, String name) {
-        User user = userRepository.findById(userId);
+        User user = activeUsers.get(userId);
         if (user == null) {
             throw new RuntimeException("User does not exist");
         }
         user.createSongList(name);
+        userRepository.save(user);
     }
 
     public List<SongList> getPlayLists(long userId) {
-        User user = userRepository.findById(userId);
+        User user = activeUsers.get(userId);
         if (user == null) {
             throw new RuntimeException("User does not exist");
         }

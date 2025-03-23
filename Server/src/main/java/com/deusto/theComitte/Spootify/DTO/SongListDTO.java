@@ -5,17 +5,10 @@ import java.util.List;
 
 import com.deusto.theComitte.Spootify.entity.Song;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-
 public class SongListDTO {
     private Long id;
     private String name;
-    private List<Song> songs = new ArrayList<>();
+    private List<Song> songs;
     private UserDTO userDTO;
 
     public SongListDTO() {}
@@ -23,6 +16,7 @@ public class SongListDTO {
     public SongListDTO(String name, UserDTO userDTO) {
         this.name = name;
         this.userDTO = userDTO;
+        this.songs = new ArrayList<>();
     }
 
     public Long getId() {

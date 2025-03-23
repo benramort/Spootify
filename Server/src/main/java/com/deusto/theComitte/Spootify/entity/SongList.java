@@ -17,7 +17,7 @@ public class SongList {
     @Column(nullable = false)
     private String name;
 
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
     @JoinTable(
         name = "SONG_LIST_SONGS",
         joinColumns = @JoinColumn(name = "song_list_id"),
