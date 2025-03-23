@@ -1,7 +1,9 @@
 <script setup>
 import { ref, inject } from 'vue'
 import axios from 'axios'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const globalState = inject('globalState')
 
 const signupName = ref('')
@@ -28,8 +30,13 @@ function login() {
         console.log(response)
         globalState.token.value = response.data
 		globalState.isArtist.value = isArtist
-        console.log(globalState.token.value)
-		// console.log(globalState.isArtist.value)
+		localStorage.setItem("token", response.data)
+		localStorage.setItem("isArtist", isArtist)
+		if (isArtist) {
+			router.push("/artist/dashboard")
+		} else {
+			router.push("/")
+		}
     }).catch(error => {
         console.log(error) // gestionar errores
     })
@@ -89,7 +96,7 @@ function createAccount() {
 
 </template>
 
-<style>
+<style scoped>
 
 #signup {
 	margin-bottom: 1em;

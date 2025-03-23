@@ -36,6 +36,7 @@ html, body {
 #app {
   width: 100%;
   min-height: 100vh;
+
 }
 </style>
 
@@ -54,6 +55,7 @@ main {
   margin-top: 0;  
   padding: 20px;
   box-sizing: border-box;
+  border: 1px solid magenta;
 }
 
 footer {

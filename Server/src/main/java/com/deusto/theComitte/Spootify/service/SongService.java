@@ -26,13 +26,10 @@ public class SongService {
 
 
     public void createSong(String title, int duration, String youtubeUrl, long albumId, long token) {
-        Artist artist = artistService.getActiveArtists().get(token);
+        Artist artist = artistService.getActiveArtist(token);
         List<Album> albums = artist.getAlbums();
         System.out.println("Albums: " + albums);
         Album album = albumRepository.findById(albumId);
-        if(artist == null) {
-            throw new RuntimeException("Artist not logged in");
-        }
         if(!albums.contains(album))
         {
             throw new RuntimeException("Album does not exist");
@@ -61,10 +58,7 @@ public class SongService {
     }
 
     public List<Song> getArtistSongs(long token) {
-        Artist artist = artistService.getActiveArtists().get(token);
-        if (artist == null) {
-            throw new RuntimeException("Artist not logged in");
-        }
+        Artist artist = artistService.getActiveArtist(token);
         return artist.getAlbums()
             .stream()
             .flatMap(s -> s.getSongs().stream()).toList();

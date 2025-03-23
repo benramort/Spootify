@@ -91,6 +91,19 @@ public class ArtistController {
         }
     }
 
+    @GetMapping("/myProfile")
+    public ResponseEntity<ArtistDTO> getMyProfile(@RequestParam long token) {
+        try {
+            Artist artist = artistService.getActiveArtist(token);
+            return ResponseEntity.ok(artist.toDTO());
+        } catch (RuntimeException e) {
+            if(e.getMessage().equals("Artist not logged in")) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @GetMapping("")
     public ResponseEntity<List<ArtistDTO>> getArtists() {
         try {
@@ -104,5 +117,20 @@ public class ArtistController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ArtistDTO> getArtist(@RequestParam long id) {
+        try {
+            Artist artist = artistService.getArtist(id);
+            return ResponseEntity.ok(artist.toDTO());
+        } catch (RuntimeException e) {
+            if(e.getMessage().equals("Artist does not exist")) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
 
 }
