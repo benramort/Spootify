@@ -6,6 +6,7 @@ public class UserDTO {
     private long id;
     private String name;
     private List<UserDTO> userFriends;
+    private List<SongDTO> userSongs;
 
     public UserDTO() {
     }
@@ -19,6 +20,13 @@ public class UserDTO {
         this.id = id;
         this.name = name;
         this.userFriends = userFriends;
+    }
+
+    public UserDTO(long id, String name, List<UserDTO> userFriends, List<SongDTO> userSongs) {
+        this.id = id;
+        this.name = name;
+        this.userFriends = userFriends;
+        this.userSongs = userSongs;
     }
 
     public Long getId() {
@@ -43,5 +51,13 @@ public class UserDTO {
 
     public List<UserDTO> getUserFriends() {
         return this.userFriends;
+    }
+
+    public List<SongDTO> getUserSongs() {
+        return userSongs;
+    }
+
+    public void setUserSongs(List<SongDTO> userSongs) {
+        this.userSongs = userSongs;
     }
 }

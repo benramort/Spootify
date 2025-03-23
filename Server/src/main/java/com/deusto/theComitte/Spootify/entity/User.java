@@ -18,6 +18,9 @@ public class User extends GenericUser {
     )
     private List<User> friendsList;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<SongList> songsList = new ArrayList<>();
+
     public User(long id, String name, String email, String password) {
         super(id, name, email, password);
     }
@@ -42,5 +45,28 @@ public class User extends GenericUser {
             friendsDTO.add(userDTO);
         }
         return new UserDTO(this.id, this.name, friendsDTO);
+    }
+
+    public List<SongList> getSongLists() {
+        return songsList;
+    }
+
+    public void setSongLists(List<SongList> songLists) {
+        this.songsList = songLists;
+    }
+
+    public void addSongList(SongList songList) {
+        songsList.add(songList);
+        songList.setUser(this);
+    }
+
+    public void removeSongList(SongList songList) {
+        songsList.remove(songList);
+        songList.setUser(null);
+    }
+
+    public void createSongList(String name) {
+        SongList songList = new SongList(name, this);
+        songsList.add(songList);
     }
 }

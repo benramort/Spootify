@@ -7,14 +7,17 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.deusto.theComitte.Spootify.DAO.UserRepository;
-import com.deusto.theComitte.Spootify.entity.User;
+import com.deusto.theComitte.Spootify.DAO.*;
+import com.deusto.theComitte.Spootify.entity.*;
 
 @Service
 public class UserService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    SongRepository songRepository;
 
     private Map<Long, User> activeUsers = new HashMap<>();
 
@@ -52,4 +55,25 @@ public class UserService {
         return userRepository.findAll();
     }
     
+
+    public void addSongToUser(long userId, List<Long> songIds, String songListName) {
+        User user = userRepository.findById(userId);
+        if (user == null) {
+            throw new RuntimeException("User does not exist");
+        }
+        for (long songId : songIds) {
+            Song song = songRepository.findById(songId);
+            if (song == null) {
+                throw new RuntimeException("Song does not exist");
+            }
+
+            for (SongList songList : user.getSongLists()) {
+                if (songList.getName().equals(songListName)) {
+                    songList.getSongs().add(song);
+                    songList.setUser(user);
+                    return;
+                }
+            }
+        }
+    }
 }
