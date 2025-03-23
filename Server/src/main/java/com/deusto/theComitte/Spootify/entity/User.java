@@ -18,6 +18,15 @@ public class User extends GenericUser {
     )
     private List<User> friendsList;
 
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "ArtistUsers",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "user2_id")
+    )
+    private List<Artist> followList;
+
+
     public User(long id, String name, String email, String password) {
         super(id, name, email, password);
     }
@@ -42,5 +51,9 @@ public class User extends GenericUser {
             friendsDTO.add(userDTO);
         }
         return new UserDTO(this.id, this.name, friendsDTO);
+    }
+
+    public List<Artist> getFollowList() {
+        return this.followList;
     }
 }

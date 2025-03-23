@@ -16,7 +16,7 @@ ENV NODE_ENV=development
 RUN npm install
 
 # copy project files and folders to the current working directory (i.e. 'app' folder)
-# COPY . .
+#COPY . .
 
 EXPOSE 5173
 CMD ["npm", "run", "dev"]

@@ -1,12 +1,15 @@
 services:
   client:
-    build: ./Spootify-client
+    image: node:lts-alpine
+    working_dir: /app
     ports:
       - "8080:5173"
     volumes:
-      - type: bind
-        source: ./Spootify-client
-        target: /app
+      - ./Spootify-client:/app
+      -  /app/node_modules
+    environment:
+      - NODE_EMV=development
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
   server:
     image: maven:latest
     ports:
