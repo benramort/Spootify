@@ -18,6 +18,14 @@ public class User extends GenericUser {
     )
     private List<User> friendsList;
 
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "ArtistUsers",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "user2_id")
+    )
+    private List<Artist> followList;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<SongList> songsList = new ArrayList<>();
 
@@ -47,6 +55,9 @@ public class User extends GenericUser {
         return new UserDTO(this.id, this.name, friendsDTO);
     }
 
+    public List<Artist> getFollowList() {
+        return this.followList;
+    }
     public List<SongList> getSongLists() {
         return songsList;
     }
