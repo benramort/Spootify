@@ -3,6 +3,7 @@
     import axios from "axios";
     import {onMounted, inject} from "vue";
     import {ref} from "vue";
+import { useRoute } from "vue-router";
 
     const globalState = inject('globalState')
 
@@ -16,8 +17,12 @@
     const albums = ref([]);
 
     onMounted(() => {
-        let path = "http://localhost:8081/" + props.path;
-        path = path + "?token=" + globalState.token.value;
+        let path = "http://localhost:8081/" + props.path + "?";
+        if (useRoute().path == "/artist/dashboard") {
+            path = "http://localhost:8081/albums?artist=" + globalState.userId.value + "&";
+        }
+        path = path + "token=" + globalState.token.value;
+        console.log(path);
         axios.get(path).then((response) => {
             albums.value = response.data;
             console.log(albums.value);

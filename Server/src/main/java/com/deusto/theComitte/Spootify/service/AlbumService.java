@@ -38,4 +38,12 @@ public class AlbumService {
         }
         return albumRepository.findAll();
     }
+
+    public Album getAlbum(long id) {
+        Album album = albumRepository.findById(id);
+        if (album == null) {
+            throw new RuntimeException("Album not found");
+        }
+        return album;
+    }
 }

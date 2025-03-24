@@ -110,8 +110,8 @@ function createAccount() {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	min-height: 100vh;
 	font-family: 'Jost', sans-serif;
+	border: 1px solid green;
 }
 
 .main{

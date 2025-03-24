@@ -22,7 +22,7 @@
       localStorage.removeItem("token");
       localStorage.removeItem("isArtist");
       localStorage.removeItem("id");
-    console.log("Logged out");
+      console.log("Logged out");
       router.push("/");
     }).catch((error) => {
       console.log(error);
@@ -44,7 +44,7 @@
     <div class="header-box"><router-link to="/crearAlbum">Home</router-link></div>
     <div class="header-box"><router-link to="/login">Home</router-link></div>
     <div class="header-box" v-if="globalState.token.value == 0"><router-link to="/login">Log in</router-link></div>
-    <div class="header-box" v-if="globalState.token.value != 0"><p @click="logout()">Log out</p></div>
+    <div class="header-box" v-else><a @click="logout">Log out</a></div>
     </div>
   </div>
 </template>

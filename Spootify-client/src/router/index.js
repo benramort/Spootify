@@ -12,7 +12,7 @@ const routes = [
   { path: '/login', component: Login },
   { path: '/artist/dashboard', component: ArtistDashboard },
   { path : '/crearAlbum', component: CreateAlbum },
-  { path : '/album/:id', component: Album }
+  { path : '/albums/:id', component: Album }
 ];
 
 const router = createRouter({

@@ -5,13 +5,6 @@ import java.util.List;
 
 import com.deusto.theComitte.Spootify.entity.Song;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-
 public class SongListDTO {
     private Long id;
     private String name;

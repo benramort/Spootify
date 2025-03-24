@@ -2,7 +2,8 @@
     import axios from "axios";
     import {onMounted, inject} from "vue";
     import {ref} from "vue";
-import { useRoute } from "vue-router";
+    import { useRoute } from "vue-router";
+    import { printDuration } from "../main.js";
 
     const globalState = inject('globalState')
 
@@ -33,15 +34,6 @@ import { useRoute } from "vue-router";
             });
         });
     });
-
-    function printDuration(seconds) {
-        let minutes = Math.floor(seconds / 60);
-        let remainingSeconds = seconds % 60;
-        if (remainingSeconds < 10) {
-            remainingSeconds = "0" + remainingSeconds;
-        }
-        return `${minutes}:${remainingSeconds}`;
-    }
 
     function openLink(link) {
         // console.log(link);

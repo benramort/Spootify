@@ -38,6 +38,10 @@ html, body {
   min-height: 100vh;
 
 }
+
+body {
+  overflow: hidden;
+}
 </style>
 
 <style scoped>
@@ -55,7 +59,7 @@ main {
   margin-top: 0;  
   padding: 20px;
   box-sizing: border-box;
-  border: 1px solid magenta;
+  /* border: 1px solid magenta; */
 }
 
 footer {
