@@ -40,7 +40,7 @@
                 </div>
             </div>
             <div class="column">
-                <Prueba getMySongs="true"/>
+                <Prueba />
             </div>
         </div>
     </div>

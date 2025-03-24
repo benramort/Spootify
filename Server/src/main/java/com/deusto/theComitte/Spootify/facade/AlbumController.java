@@ -43,9 +43,9 @@ public class AlbumController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<AlbumDTO>> getAlbums() {
+    public ResponseEntity<List<AlbumDTO>> getAlbums(@RequestParam(required = false, defaultValue = "0") long artist){
         try {
-            List<Album> albums = albumService.getAlbums();
+            List<Album> albums = albumService.getAlbums(artist);
             List<AlbumDTO> albumDTOs = new ArrayList<>();
             for(Album album : albums) {
                 albumDTOs.add(album.toDTO());

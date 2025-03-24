@@ -31,7 +31,11 @@ public class AlbumService {
         // System.out.println(albumRepository.findById(al));
     }
 
-    public List<Album> getAlbums() {
+    public List<Album> getAlbums(long artistId) {
+        if(artistId != 0) {
+            Artist artist = artistRepository.findById(artistId);
+            return artist.getAlbums();
+        }
         return albumRepository.findAll();
     }
 }

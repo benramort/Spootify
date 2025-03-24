@@ -8,6 +8,7 @@
   const router = useRouter();
 
   function logout() {
+    console.log("Logging out");
     let path = "http://localhost:8081/logout";
     if (globalState.isArtist.value) {
       path = "http://localhost:8081/artists/logout";
@@ -15,17 +16,18 @@
     path += "?token=" + globalState.token.value;
     axios.post(path).then((response) => {
       console.log(response);
+      globalState.token.value = 0;
+      globalState.userId.value = 0;
+      globalState.isArtist.value = false;
+      localStorage.removeItem("token");
+      localStorage.removeItem("isArtist");
+      localStorage.removeItem("id");
+    console.log("Logged out");
+      router.push("/");
     }).catch((error) => {
       console.log(error);
     });
-    globalState.token.value = 0;
-    globalState.userId.value = 0;
-    globalState.isArtist.value = false;
-    localStorage.removeItem("token");
-    localStorage.removeItem("isArtist");
-    localStorage.removeItem("id");
-    router.push("/");
-    console.log("Logged out");
+    
   }
 
 </script>
