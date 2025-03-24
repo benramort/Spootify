@@ -1,11 +1,12 @@
 <script setup>
     import { onMounted, ref, inject } from 'vue';
     import Prueba from '../components/Songs.vue';
+    import Albums from "../components/Albums.vue";
     import axios from 'axios';
 
-    let name = ref("");
-
     let globalState = inject('globalState');
+
+    const name = ref("");
 
     onMounted(() => {
         let path = "http://localhost:8081/artists/myProfile";
@@ -25,7 +26,7 @@
         <h1>Hola, {{ name }}:</h1>
         <div class="columns">
             <div class="column">
-                <h1>sadfa</h1>
+                <Albums />
                 <div class="botonera">
                     <button>
                         <i class="fa-solid fa-plus inside-button"></i>
@@ -61,7 +62,7 @@
     .column {
         border: 2px solid red;
         width: 50%;
-        height: 70vh;
+        height: 68vh;
     }
 
     button {
@@ -91,7 +92,7 @@
         display: flex;
         justify-content: space-around;
         align-items: center;
-        height: 40%;
+        height: 50%;
         border: 1px solid aquamarine;
     }
 

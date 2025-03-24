@@ -28,7 +28,8 @@ function login() {
         password: loginPassword.value
     }).then(response => {
         console.log(response)
-        globalState.token.value = response.data
+        globalState.token.value = response.data.token
+		globalState.userId.value = response.data.id
 		globalState.isArtist.value = isArtist
 		localStorage.setItem("token", response.data)
 		localStorage.setItem("isArtist", isArtist)

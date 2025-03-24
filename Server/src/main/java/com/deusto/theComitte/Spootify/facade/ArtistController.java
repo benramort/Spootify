@@ -17,10 +17,13 @@ import com.deusto.theComitte.Spootify.DTO.ArtistDTO;
 import com.deusto.theComitte.Spootify.DTO.CreateUserDTO;
 import com.deusto.theComitte.Spootify.DTO.LoginDTO;
 import com.deusto.theComitte.Spootify.DTO.SongDTO;
+import com.deusto.theComitte.Spootify.DTO.TokenDTO;
 import com.deusto.theComitte.Spootify.entity.Artist;
 import com.deusto.theComitte.Spootify.entity.Song;
 import com.deusto.theComitte.Spootify.service.ArtistService;
 import com.deusto.theComitte.Spootify.service.SongService;
+
+import ch.qos.logback.core.subst.Token;
 
 @RestController
 @RequestMapping("/artists")
@@ -46,10 +49,12 @@ public class ArtistController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Long> login(@RequestBody LoginDTO loginDTO) {
+    public ResponseEntity<TokenDTO> login(@RequestBody LoginDTO loginDTO) {
         try {
-           long token = artistService.login(loginDTO.email(), loginDTO.password());
-           return ResponseEntity.ok(token);
+            long token = artistService.login(loginDTO.email(), loginDTO.password()); //No sé yo si esto me convence
+            Artist artist = artistService.getActiveArtist(token);
+            TokenDTO tokenDTO = new TokenDTO(artist.getId(), token);
+            return ResponseEntity.ok(tokenDTO);
         } catch (RuntimeException e) {
             if(e.getMessage().equals("Artist does not exist")) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
