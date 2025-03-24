@@ -4,7 +4,10 @@
 
 <template>
   <div class="header">
-    <img src="../assets/Spootify_logo.png" alt="Spotify logo"/>
+    <div id="contenedorLogo">
+      <img src="../assets/Spootify_logo.png" alt="Spotify logo"/>
+      <p id="titulo">Spootify</p>
+    </div>
     <div class="side">
     <div class="header-box"><router-link to="/login">Home</router-link></div>
     <div class="header-box"><router-link to="/artist/dashboard">Home</router-link></div>
@@ -16,6 +19,19 @@
 </template>
 
 <style scoped>
+#titulo {
+  color: white;
+  align-self: center;
+  font-size: x-large;
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+#contenedorLogo {
+  align-items: left;
+  display: flex;
+}
+
 img {
     width: 4em;
     height: 4em;

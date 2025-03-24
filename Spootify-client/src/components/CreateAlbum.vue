@@ -1,43 +1,95 @@
 <template>
     <div id="contFormulario">
         <div id="titulo">
-            <p>CREAR ÁLBUM</p>
+            <p id="crearAlbum">CREAR ÁLBUM</p>
         </div>
-        <div id="campoNombre">
-            <p id="labelNombre">Nombre:</p>
-            <input id="inputNombre" type="text">
+        <div id="campos">
+            <div id="campoNombre">
+                <input id="inputNombre" type="text" placeholder="Name">
+            </div>
+            <div id="button">
+                <button id="okButton">✔</button>
+            </div>
         </div>
     </div>
 </template>
 
 <style scoped>
 #contFormulario {
-    max-width: 100px;
-    border: 3px solid green;
+    width: 300px;
+    height: 120px;
+    border: 2px solid rgb(34, 34, 34);
+    margin: 0 auto;
+    background-color: rgb(34, 34, 34);
+    box-shadow: 5px 10px 20px black;
     border-radius: 10px;
 }
 
 #titulo {
     margin: 0 auto;
     text-align: center;
-    border: 2px solid black;
     width: 300px;
+    height: 50px;
+    color: white;
+    font-weight: bold;
+    margin-bottom: 0px;
+    margin-top: 8px;
+    padding-bottom: 0px;
 }
 
 #campoNombre {
-    border: 2px solid blue;
     display: flex;
     align-items: center;
+    margin: 0 auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: inline-block;
 }
 
 #labelNombre {
-    border: 2px solid red;
-    margin-left: 185px;
+    margin-left: 50px;
 }
 
 #inputNombre {
-    border: 2px solid pink;
-    max-width: 10px;
+    background-color: white;
+    width: 150px;
+    height: 23px;
+    margin-left: 20px;
+    border-radius: 5px;
+    border-color: white;
+    margin: 0 auto;
+    border: 0px;
+    margin-left: 20px;
+}
+
+#crearAlbum {
+    margin-top: 0px;
+    padding-top: 15px;
+    margin: 0 auto;
+}
+
+#button {
+    display: inline-block;
+    margin-right: 40px;
+}
+
+#okButton {
+    background-color: rgb(30, 215, 96);
+    color: black;
+    border-radius: 5px;
+    border-color: rgb(30, 215, 96);
+    margin-right: 10px;
+    width: 30px;
+    height: 25px;
+    border: 0px;
+}
+
+#campos {
+    display: flex;
+    margin-top: 0px;
+    text-align: center;
+    margin: 0 auto;
+    align-items: center;
 }
 
 </style>
