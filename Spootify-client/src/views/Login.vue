@@ -31,8 +31,9 @@ function login() {
         globalState.token.value = response.data.token
 		globalState.userId.value = response.data.id
 		globalState.isArtist.value = isArtist
-		localStorage.setItem("token", response.data)
+		localStorage.setItem("token", response.data.token)
 		localStorage.setItem("isArtist", isArtist)
+		localStorage.setItem("id", response.data.id)
 		if (isArtist) {
 			router.push("/artist/dashboard")
 		} else {

@@ -40,7 +40,7 @@
                 </div>
             </div>
             <div class="column">
-                <Prueba path="artists/mySongs"/>
+                <Prueba getMySongs="true"/>
             </div>
         </div>
     </div>

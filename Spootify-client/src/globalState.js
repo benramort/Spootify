@@ -7,8 +7,8 @@ export const globalState = { //Guardar en el localStorage
     isArtist: ref(localStorage.getItem('isArtist'))
 }
 
-// if (import.meta.env.DEV) {
-//     watch(() => globalState.token.value, (newVal, oldVal) => {
-//       console.log(`Token changed from ${oldVal} to ${newVal}`);
-//     });
-// }
+if (import.meta.env.DEV) {
+    watch(() => globalState.token.value, (newVal, oldVal) => {
+      console.log(`Token changed from ${oldVal} to ${newVal}`);
+    });
+}
