@@ -3,23 +3,26 @@
         <div id="titulo">
             <p id="crearAlbum">CREAR ÁLBUM</p>
         </div>
-        <div id="campoNombre">
-            <label for="nombre" id="labelNombre">Nombre:</label>
-            <input id="inputNombre" type="text" placeholder="Name">
-        </div>
-        <div id="buttons">
-            <button id="createButton">Create</button>
-            <button id="cancelButton">Cancel</button>
+        <div id="campos">
+            <div id="campoNombre">
+                <input id="inputNombre" type="text" placeholder="Name">
+            </div>
+            <div id="button">
+                <button id="okButton">✔</button>
+            </div>
         </div>
     </div>
 </template>
 
 <style scoped>
 #contFormulario {
-    max-width: 300px;
-    border: 3px solid rgb(28, 165, 76);
-    border-radius: 10px;
+    width: 300px;
+    height: 120px;
+    border: 2px solid rgb(34, 34, 34);
     margin: 0 auto;
+    background-color: rgb(34, 34, 34);
+    box-shadow: 5px 10px 20px black;
+    border-radius: 10px;
 }
 
 #titulo {
@@ -27,11 +30,11 @@
     text-align: center;
     width: 300px;
     height: 50px;
-    border-bottom: 2px solid rgb(28, 165, 76);
-    background: linear-gradient(to bottom, #0c291a, rgb(28, 165, 76));
-    border-radius: 6px 6px 0 0;
     color: white;
     font-weight: bold;
+    margin-bottom: 0px;
+    margin-top: 8px;
+    padding-bottom: 0px;
 }
 
 #campoNombre {
@@ -40,6 +43,7 @@
     margin: 0 auto;
     margin-top: 20px;
     margin-bottom: 20px;
+    display: inline-block;
 }
 
 #labelNombre {
@@ -47,10 +51,15 @@
 }
 
 #inputNombre {
-    background-color: lightgray;
-    max-width: 100px;
+    background-color: white;
+    width: 150px;
+    height: 23px;
     margin-left: 20px;
     border-radius: 5px;
+    border-color: white;
+    margin: 0 auto;
+    border: 0px;
+    margin-left: 20px;
 }
 
 #crearAlbum {
@@ -59,31 +68,28 @@
     margin: 0 auto;
 }
 
-#buttons {
-    display: flex;
-    justify-content: right;
-    margin-bottom: 10px;
-    margin-right: 10px;
-    margin-top: 30px;
+#button {
+    display: inline-block;
+    margin-right: 40px;
 }
 
-#createButton {
+#okButton {
     background-color: rgb(30, 215, 96);
     color: black;
     border-radius: 5px;
     border-color: rgb(30, 215, 96);
     margin-right: 10px;
-    width: 70px;
+    width: 30px;
     height: 25px;
+    border: 0px;
 }
 
-#cancelButton {
-    background-color: lightgray;
-    color: black;
-    border-radius: 5px;
-    width: 70px;
-    height: 25px;
+#campos {
+    display: flex;
+    margin-top: 0px;
+    text-align: center;
+    margin: 0 auto;
+    align-items: center;
 }
-
 
 </style>
