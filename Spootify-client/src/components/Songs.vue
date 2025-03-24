@@ -19,7 +19,7 @@ import { useRoute } from "vue-router";
     onMounted(() => {
         console.log(globalState);
         let actualPath = useRoute().path;
-        let path = "http://localhost:8081/songs";
+        let path = "http://localhost:8081/songs?";
         if (actualPath == "/artist/dashboard") {
             path = "http://localhost:8081/songs?artist=" + globalState.userId.value + "&";
         }
