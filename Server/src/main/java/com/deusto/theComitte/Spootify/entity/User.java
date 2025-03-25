@@ -1,5 +1,6 @@
 package com.deusto.theComitte.Spootify.entity;
 
+import com.deusto.theComitte.Spootify.DTO.ArtistDTO;
 import com.deusto.theComitte.Spootify.DTO.UserDTO;
 
 import java.util.ArrayList;
@@ -43,18 +44,17 @@ public class User extends GenericUser {
     }
 
     public UserDTO toDTO() {
-        return new UserDTO(this.id, this.name);
-    }
 
-    public UserDTO toDTOWithFriends() {
-        List<UserDTO> friendsDTO = new ArrayList<>();
-        for(User user : this.friendsList) {
-            UserDTO userDTO = user.toDTO();
-            friendsDTO.add(userDTO);
+        List<ArtistDTO> followListDTO = new ArrayList<>();
+        for(Artist artist : this.followList) {
+            ArtistDTO artistDTO = artist.toDTO();
+            followListDTO.add(artistDTO);
         }
-        return new UserDTO(this.id, this.name, friendsDTO);
+
+        return new UserDTO(this.id, this.name, followListDTO);
     }
 
+ 
     public List<Artist> getFollowList() {
         return this.followList;
     }
