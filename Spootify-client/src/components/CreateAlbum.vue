@@ -1,17 +1,20 @@
 <template>
-    <div id="contFormulario">
-        <div id="titulo">
-            <p id="crearAlbum">CREAR ÁLBUM</p>
-        </div>
-        <div id="campos">
-            <div id="campoNombre">
-                <input id="inputNombre" type="text" placeholder="Name">
+    <button @click="showModal = true">Crear album</button>
+    <Modal :isOpen="showModal" @close="showModal = false">
+        <div id="contFormulario">
+            <div id="titulo">
+                <p id="crearAlbum">CREAR ÁLBUM</p>
             </div>
-            <div id="button">
-                <button id="okButton">✔</button>
+            <div id="campos">
+                <div id="campoNombre">
+                    <input id="inputNombre" type="text" placeholder="Name">
+                </div>
+                <div id="button">
+                    <button @click="showModal = false" id="okButton">✔</button>
+                </div>
             </div>
         </div>
-    </div>
+    </Modal>
 </template>
 
 <style scoped>
@@ -82,6 +85,12 @@
     width: 30px;
     height: 25px;
     border: 0px;
+    transition: 0.2s ease-in;
+    cursor: pointer;
+}
+
+#okButton:hover {
+    background: rgb(22, 164, 72);
 }
 
 #campos {
@@ -91,5 +100,19 @@
     margin: 0 auto;
     align-items: center;
 }
-
 </style>
+
+<script>
+import Modal from "../components/CreateAlbumModal.vue";
+
+export default {
+  components: {
+    Modal
+  },
+  data() {
+    return {
+      showModal: false
+    };
+  }
+};
+</script>
