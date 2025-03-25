@@ -26,6 +26,13 @@ public class SongListDTO {
         this.songs = new ArrayList<>();
     }
 
+    public SongListDTO(Long id, String name, UserDTO userDTO, List<Song> songs) {
+        this.id = id;
+        this.name = name;
+        this.userDTO = userDTO;
+        this.songs = songs;
+    }
+
     public Long getId() {
         return id;
     }

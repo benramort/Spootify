@@ -79,5 +79,6 @@ public class User extends GenericUser {
     public void createSongList(String name) {
         SongList songList = new SongList(name, this);
         songsList.add(songList);
+        songList.setUser(this);
     }
 }

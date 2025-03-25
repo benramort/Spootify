@@ -34,6 +34,21 @@ public class SongList {
     public SongList(String name, User user) {
         this.name = name;
         this.user = user;
+        this.songs = new ArrayList<>();
+    }
+
+    public SongList(Long id, String name, User user) {
+        this.id = id;
+        this.name = name;
+        this.user = user;
+        this.songs = new ArrayList<>();
+    }
+
+    public SongList(Long id, String name, User user, List<Song> songs) {
+        this.id = id;
+        this.name = name;
+        this.user = user;
+        this.songs = songs;
     }
 
     public Long getId() {
