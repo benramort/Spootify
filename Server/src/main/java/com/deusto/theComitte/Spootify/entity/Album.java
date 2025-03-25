@@ -114,7 +114,7 @@ public class Album {
         }
         for(Song song : this.songs)
         {
-            songsDTO.add(song.toDTO());
+            songsDTO.add(song.toDTOWithoutAlbum());
         }
         return new AlbumDTO(this.id, this.name, artistsDTO, songsDTO);
     }

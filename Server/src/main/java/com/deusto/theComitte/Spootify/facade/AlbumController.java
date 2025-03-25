@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,15 +44,29 @@ public class AlbumController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<AlbumDTO>> getAlbums() {
+    public ResponseEntity<List<AlbumDTO>> getAlbums(@RequestParam(required = false, defaultValue = "0") long artist){
         try {
-            List<Album> albums = albumService.getAlbums();
+            List<Album> albums = albumService.getAlbums(artist);
             List<AlbumDTO> albumDTOs = new ArrayList<>();
             for(Album album : albums) {
                 albumDTOs.add(album.toDTO());
             }
             return ResponseEntity.ok(albumDTOs);
         } catch(RuntimeException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<AlbumDTO> getAlbum(@PathVariable long id){
+        try {
+            Album album = albumService.getAlbum(id);
+            return ResponseEntity.ok(album.toDTO());
+        } catch(RuntimeException e) {
+            e.printStackTrace();
+            if (e.getMessage().equals("Album not found")) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }

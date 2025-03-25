@@ -53,9 +53,21 @@ public class ArtistService {
     public List<Artist> getArtists() {
         return artistRepository.findAll();
     }
+    
+    public Artist getArtist(long id) {
+        Artist artist = artistRepository.findById(id);
+        if(artist == null) {
+            throw new RuntimeException("Artist does not exist");
+        }
+        return artist;
+    }
 
-    public Map<Long, Artist> getActiveArtists() {
-        return this.activeArtists;
-    }    
+    public Artist getActiveArtist(long token) {
+        Artist artist = activeArtists.get(token);
+        if(artist == null) {
+            throw new RuntimeException("Artist not logged in");
+        }
+        return artist;
+    }
 
 }

@@ -21,23 +21,29 @@ public class AlbumService {
     AlbumRepository albumRepository;
 
     public void createAlbum(String name, long token) {
-        Artist artist = artistService.getActiveArtists().get(token);
-        if(artist == null) {
-            throw new RuntimeException("Artist not logged in");
-        }
-        System.out.println("Creating album");
+        Artist artist = artistService.getActiveArtist(token);
         Album album = new Album(name);
         artist.getAlbums().add(album);
         album.getArtists().add(artist);
-        System.out.println("Saving album");
         System.out.println(album.getArtists());
         albumRepository.save(album);
         artistRepository.save(artist);
         // System.out.println(albumRepository.findById(al));
-        System.out.println("Created album");
     }
 
-    public List<Album> getAlbums() {
+    public List<Album> getAlbums(long artistId) {
+        if(artistId != 0) {
+            Artist artist = artistRepository.findById(artistId);
+            return artist.getAlbums();
+        }
         return albumRepository.findAll();
+    }
+
+    public Album getAlbum(long id) {
+        Album album = albumRepository.findById(id);
+        if (album == null) {
+            throw new RuntimeException("Album not found");
+        }
+        return album;
     }
 }

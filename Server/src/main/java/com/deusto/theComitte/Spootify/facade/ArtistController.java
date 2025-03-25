@@ -18,11 +18,14 @@ import com.deusto.theComitte.Spootify.DTO.ArtistDTO;
 import com.deusto.theComitte.Spootify.DTO.CreateUserDTO;
 import com.deusto.theComitte.Spootify.DTO.LoginDTO;
 import com.deusto.theComitte.Spootify.DTO.SongDTO;
+import com.deusto.theComitte.Spootify.DTO.TokenDTO;
 import com.deusto.theComitte.Spootify.entity.Artist;
 import com.deusto.theComitte.Spootify.entity.Song;
 import com.deusto.theComitte.Spootify.service.ArtistService;
 import com.deusto.theComitte.Spootify.service.SongService;
 import com.deusto.theComitte.Spootify.service.UserService;
+
+import ch.qos.logback.core.subst.Token;
 
 @RestController
 @RequestMapping("/artists")
@@ -51,10 +54,12 @@ public class ArtistController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Long> login(@RequestBody LoginDTO loginDTO) {
+    public ResponseEntity<TokenDTO> login(@RequestBody LoginDTO loginDTO) {
         try {
-           long token = artistService.login(loginDTO.email(), loginDTO.password());
-           return ResponseEntity.ok(token);
+            long token = artistService.login(loginDTO.email(), loginDTO.password()); //No sé yo si esto me convence
+            Artist artist = artistService.getActiveArtist(token);
+            TokenDTO tokenDTO = new TokenDTO(artist.getId(), token);
+            return ResponseEntity.ok(tokenDTO);
         } catch (RuntimeException e) {
             if(e.getMessage().equals("Artist does not exist")) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -96,6 +101,19 @@ public class ArtistController {
         }
     }
 
+    @GetMapping("/myProfile")
+    public ResponseEntity<ArtistDTO> getMyProfile(@RequestParam long token) {
+        try {
+            Artist artist = artistService.getActiveArtist(token);
+            return ResponseEntity.ok(artist.toDTO());
+        } catch (RuntimeException e) {
+            if(e.getMessage().equals("Artist not logged in")) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @GetMapping("")
     public ResponseEntity<List<ArtistDTO>> getArtists() {
         try {
@@ -119,11 +137,28 @@ public class ArtistController {
             ex.printStackTrace();
             if (ex.getMessage().equals("User not logged in")) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            } else if (ex.getMessage().equals("Artist does not exist")) {
+            } else if (ex.getMessage().equals("Artist does not exist")){
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST); 
+        }
+    }
+    
+    
+    @GetMapping("/{id}")
+    public ResponseEntity<ArtistDTO> getArtist(@RequestParam long id) {
+        try {
+            Artist artist = artistService.getArtist(id);
+            return ResponseEntity.ok(artist.toDTO());
+        } catch (RuntimeException e) {
+            if(e.getMessage().equals("Artist does not exist")) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+        
     }
+
+
 
 }
