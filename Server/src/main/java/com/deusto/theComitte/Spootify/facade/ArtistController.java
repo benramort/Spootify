@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,7 @@ import com.deusto.theComitte.Spootify.entity.Artist;
 import com.deusto.theComitte.Spootify.entity.Song;
 import com.deusto.theComitte.Spootify.service.ArtistService;
 import com.deusto.theComitte.Spootify.service.SongService;
+import com.deusto.theComitte.Spootify.service.UserService;
 
 import ch.qos.logback.core.subst.Token;
 
@@ -31,6 +33,9 @@ public class ArtistController {
 
     @Autowired
     private ArtistService artistService;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private SongService songService;
@@ -123,6 +128,23 @@ public class ArtistController {
         }
     }
 
+    @PostMapping("/{artistID}/followers")
+    public ResponseEntity<Void> followArtist(@RequestParam long token, @PathVariable long artistID) {
+        try {
+            userService.followArtist(token, artistID);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (RuntimeException ex) {
+            ex.printStackTrace();
+            if (ex.getMessage().equals("User not logged in")) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            } else if (ex.getMessage().equals("Artist does not exist")){
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST); 
+        }
+    }
+    
+    
     @GetMapping("/{id}")
     public ResponseEntity<ArtistDTO> getArtist(@RequestParam long id) {
         try {
@@ -134,6 +156,7 @@ public class ArtistController {
             }
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+        
     }
 
 

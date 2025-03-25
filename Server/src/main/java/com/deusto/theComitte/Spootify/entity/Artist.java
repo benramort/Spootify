@@ -32,7 +32,7 @@ public class Artist extends GenericUser {
     }
 
     public ArtistDTO toDTO() {
-        return new ArtistDTO(this.id, this.name);
+        return new ArtistDTO(this.id, this.name, this.followers);
     }
 
     @Override
