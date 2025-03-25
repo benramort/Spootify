@@ -50,8 +50,6 @@
 
 <style scoped>
 
-
-
     .columns {
         display: flex;
         justify-content: space-between;
@@ -89,10 +87,11 @@
     }
 
     .botonera {
+        margin-top: 2em;
         display: flex;
         justify-content: space-around;
         align-items: center;
-        height: 50%;
+        height: 40%;
         border: 1px solid aquamarine;
     }
 
