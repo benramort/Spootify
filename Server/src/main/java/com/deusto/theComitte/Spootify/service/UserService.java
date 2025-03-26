@@ -115,6 +115,9 @@ public class UserService {
         }
 
         SongList songList = songListRepository.findById(songListId);
+        if (songList == null) {
+            throw new RuntimeException("SongList does not exist");
+        }
         songList.getSongs().add(song);
         songListRepository.save(songList);
         

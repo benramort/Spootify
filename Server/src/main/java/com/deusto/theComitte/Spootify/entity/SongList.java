@@ -84,6 +84,6 @@ public class SongList {
     }
 
     public SongListDTO toDTO() {
-        return new SongListDTO(this.id, this.name, this.user.toDTO());
+        return new SongListDTO(this.id, this.name, this.user.toDTO(), this.songs);
     }
 }

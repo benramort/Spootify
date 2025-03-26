@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.deusto.theComitte.Spootify.DTO.SongListDTO;
 import com.deusto.theComitte.Spootify.entity.SongList;
+import com.deusto.theComitte.Spootify.entity.SongRequest;
 import com.deusto.theComitte.Spootify.service.UserService;
 
 @RestController
@@ -56,9 +57,23 @@ public class PlayListController {
     }
 
     @PostMapping("/{id}/songs")
-    public ResponseEntity<Void> addSongToPlayList(@RequestParam long token, @PathVariable long songListId, @RequestParam List<Long> songIds) {
+    public ResponseEntity<Void> addSongToPlayList(@RequestParam long token, @PathVariable long songListId, @RequestBody List<Long> songIds) {
         try {
             userService.addSongsToUser(token, songIds, songListId);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (RuntimeException e) {
+            if (e.getMessage().equals("User not logged in")) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/{songListId}/song")
+    public ResponseEntity<Void> addSongToPlayList(@RequestParam long token, @PathVariable long songListId, @RequestBody SongRequest songId) {
+        try {
+            userService.addSongToUser(token, songId.getSongId(), songListId);
+            System.out.println("id: " + songId.getSongId());
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (RuntimeException e) {
             if (e.getMessage().equals("User not logged in")) {
