@@ -104,7 +104,7 @@ public class UserService {
         }
     }
 
-    public void addSongToUser(long userId, long songId, long songListId) {
+    public void addSongToPlayList(long userId, long songId, long songListId) {
         User user = activeUsers.get(userId);
         if (user == null) {
             throw new RuntimeException("User does not exist");
