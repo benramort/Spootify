@@ -11,29 +11,43 @@
 
     const name = ref("");
 
-    // onMounted(() => {
-    //     let path = "http://localhost:8081/artists/" + route.params.id;
-    //     axios.get(path).then((response) => {
-    //         console.log(response.data);
-    //         name.value = response.data.name;
-    //         console.log(name.value);
-    //     }).catch((error) => {
-    //         console.log(error);
-    //     });
-    // });
+    onMounted(() => {
+         let path = "http://localhost:8081/artists/" + route.params.id;
+         axios.get(path).then((response) => {
+             console.log(response.data);
+             name.value = response.data.name;
+             console.log(name.value);
+         }).catch((error) => {
+             console.log(error);
+         });
+    });
 </script>
 
 <template>
-    <p>ssssss</p>
     <div class="template">
-        <p>Detalle</p>
-        <h1>{{ name }}:</h1>
         <div class="columns">
             <div class="column">
-                <Albums />
+                <div id="divNombreArtista">
+                    <h2>{{ name }}Nombre artista</h2>
+                </div>
+                <div id="followButtonDiv">
+                    <button id="followButton">
+                        Follow
+                    </button>
+                    <button id="followCountButton">
+                        40 Followes
+                    </button>
+                </div>
+                <div id="divAlbums">
+
+                </div>
+
             </div>
             <div class="column">
-                <Prueba />
+                <div id="top5SongsDiv">
+                    <h3>Top 5 songs</h3>
+                </div>
+
             </div>
         </div>
     </div>
@@ -76,9 +90,18 @@
         transition: .2s ease-in;
         cursor: pointer;
     }
+    button:disabled{
+        background: rgb(113, 115, 114);
+        cursor: unset;  
+    }
 
     button:hover{
 	    background: rgb(22, 164, 72);
+    }
+
+    button:disabled:hover{
+        background: rgb(113, 115, 114);
+        cursor: unset;  
     }
 
     .botonera {
@@ -95,6 +118,22 @@
 
     i {
         font-size: 4em;
+    }
+
+    #followButtonDiv {
+    display: flex;
+    justify-content: space-between; /* Adds space between the buttons */
+    align-items: center; /* Aligns buttons vertically in the center */
+    gap: 10px; /* Adds spacing between buttons */
+    }
+
+    #followCountButton{
+        cursor: unset;  
+    }
+    #followCountButton:hover{
+        background: rgb(30, 215, 96);
+
+        
     }
 
 </style>
