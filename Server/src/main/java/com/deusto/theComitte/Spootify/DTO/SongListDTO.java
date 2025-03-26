@@ -8,7 +8,7 @@ import com.deusto.theComitte.Spootify.entity.Song;
 public class SongListDTO {
     private Long id;
     private String name;
-    private List<Song> songs;
+    private List<SongDTO> songs;
     private UserDTO userDTO;
 
     public SongListDTO() {}
@@ -26,7 +26,7 @@ public class SongListDTO {
         this.songs = new ArrayList<>();
     }
 
-    public SongListDTO(Long id, String name, UserDTO userDTO, List<Song> songs) {
+    public SongListDTO(Long id, String name, UserDTO userDTO, List<SongDTO> songs) {
         this.id = id;
         this.name = name;
         this.userDTO = userDTO;
@@ -49,11 +49,11 @@ public class SongListDTO {
         this.name = name;
     }
 
-    public List<Song> getSongs() {
+    public List<SongDTO> getSongs() {
         return songs;
     }
 
-    public void setSongs(List<Song> songs) {
+    public void setSongs(List<SongDTO> songs) {
         this.songs = songs;
     }
 

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.deusto.theComitte.Spootify.DTO.SongDTO;
 import com.deusto.theComitte.Spootify.DTO.SongListDTO;
 
 @Entity
@@ -84,6 +85,10 @@ public class SongList {
     }
 
     public SongListDTO toDTO() {
-        return new SongListDTO(this.id, this.name, this.user.toDTO(), this.songs);
+        List<SongDTO> songs = new ArrayList<>();
+        for (Song song : this.songs) {
+            songs.add(new SongDTO(song.getId(), song.getName(), song.getAlbum().toDTOWithoutSongs(), song.getDuration(), song.getYoutubeUrl()));
+        }
+        return new SongListDTO(this.id, this.name, this.user.toDTO(), songs);
     }
 }
