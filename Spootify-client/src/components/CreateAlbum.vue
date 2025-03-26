@@ -117,6 +117,7 @@ function createAlbum() {
     axios.post(path, {"name": albumName.value}).then((response) => {
         console.log(response);
         console.log("Album created");
+        location.reload();
     }).catch((error) => {
         console.log(error);
     });

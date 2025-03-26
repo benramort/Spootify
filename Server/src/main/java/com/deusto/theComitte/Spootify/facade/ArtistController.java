@@ -24,7 +24,7 @@ import com.deusto.theComitte.Spootify.entity.Song;
 import com.deusto.theComitte.Spootify.service.ArtistService;
 import com.deusto.theComitte.Spootify.service.SongService;
 import com.deusto.theComitte.Spootify.service.UserService;
-n;
+
 
 @RestController
 @RequestMapping("/artists")
