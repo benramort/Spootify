@@ -2,11 +2,13 @@
     import { onMounted, ref, inject } from 'vue';
     import Prueba from '../components/Songs.vue';
     import Albums from "../components/Albums.vue";
+    import CreateAlbum from "../components/CreateAlbum.vue";
     import axios from 'axios';
 
     let globalState = inject('globalState');
 
     const name = ref("");
+    const showModal = ref(false);
 
     onMounted(() => {
         let path = "http://localhost:8081/artists/myProfile";
@@ -19,16 +21,18 @@
             console.log(error);
         });
     });
+
 </script>
 
 <template>
     <div class="template">
+        <CreateAlbum :isOpen="showModal" @close="showModal = false" />
         <h1>Hola, {{ name }}:</h1>
         <div class="columns">
             <div class="column">
                 <Albums />
                 <div class="botonera">
-                    <button>
+                    <button @click="showModal = true">
                         <i class="fa-solid fa-plus inside-button"></i>
                         <p class="inside-button">Nuevo álbum</p>
                     </button>
@@ -49,9 +53,6 @@
 
 
 <style scoped>
-
-
-
     .columns {
         display: flex;
         justify-content: space-between;

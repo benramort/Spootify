@@ -1,5 +1,5 @@
 <template>
-    <button @click="showModal = true">Crear album</button>
+    <!-- <button @click="showModal = true">Crear album</button> -->
     <Modal :isOpen="showModal" @close="showModal = false">
         <div id="contFormulario">
             <div id="titulo">
@@ -7,10 +7,10 @@
             </div>
             <div id="campos">
                 <div id="campoNombre">
-                    <input id="inputNombre" type="text" placeholder="Name">
+                    <input id="inputNombre" type="text" placeholder="Name" v-model="albumName" />
                 </div>
                 <div id="button">
-                    <button @click="showModal = false" id="okButton">✔</button>
+                    <button @click="$emit('close'); console.log(albumName); createAlbum();" id="okButton">✔</button>
                 </div>
             </div>
         </div>
@@ -102,17 +102,23 @@
 }
 </style>
 
-<script>
+<script setup>
+import { inject, ref } from 'vue';
 import Modal from "../components/CreateAlbumModal.vue";
+import axios from 'axios';
 
-export default {
-  components: {
-    Modal
-  },
-  data() {
-    return {
-      showModal: false
-    };
-  }
-};
+const globalState = inject("globalState");
+const showModal = ref(false);
+const albumName = ref("");
+
+function createAlbum() {
+    let path = "http://localhost:8081/albums";
+    path += "?token=" + globalState.token.value;
+    axios.post(path, {"name": albumName.value}).then((response) => {
+        console.log(response);
+        console.log("Album created");
+    }).catch((error) => {
+        console.log(error);
+    });
+}
 </script>
