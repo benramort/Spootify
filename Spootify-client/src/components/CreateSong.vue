@@ -7,17 +7,19 @@
             <div id="campos">
                 <div class="campo" id="campoNombre">
                     <label for="nombre"></label>
-                    <input id="inputNombre" type="text" placeholder="Name" v-model="albumName" />
+                    <input id="inputNombre" type="text" placeholder="Name" v-model="songName" />
                 </div>
                 <div class="campo" id="campoAlbum">
                     <label for="album"></label>
-                    <input id="inputAlbum" type="text" placeholder="Album name">
+                    <select id="inputAlbum" v-model="album">
+                        <option v-for="album in albums" :key="album.id" :value="album.name">{{ album.name }}</option>
+                    </select>
                 </div>
                 <div class="campo" id="campoDuracion">
-                    <input id="inputDuracion" type="number" placeholder="Duration">
+                    <input id="inputDuracion" type="number" placeholder="Duration" v-model="duration">
                 </div>
                 <div class="campo" id="campoUrl">
-                    <input id="inputUrl" type="text" placeholder="YouTube URL">
+                    <input id="inputUrl" type="text" placeholder="YouTube URL" v-model="youtubeUrl">
                 </div>
                 <div id="button">
                     <button @click="$emit('close'); console.log(albumName); createAlbum();" id="okButton">✔</button>
@@ -110,13 +112,14 @@ input {
 </style>
 
 <script setup>
-import { inject, ref } from 'vue';
+import { inject, ref, onMounted } from 'vue';
 import Modal from "../components/CreateAlbumModal.vue";
 import axios from 'axios';
 
 const globalState = inject("globalState");
 const showModalSong = ref(false);
 const albumName = ref("");
+const albums = ref([]);
 
 function createAlbum() {
     let path = "http://localhost:8081/albums";
@@ -129,4 +132,19 @@ function createAlbum() {
         console.log(error);
     });
 }
+
+function getAlbums() {
+    let path = "http://localhost:8081/albums"
+    path += "?token=" + globalState.token.value;
+    axios.get(path).then((response) => {
+        album.value = response.data;
+        return albums;
+    }).catch((error) => {
+        console.log(error);
+    });
+}
+
+onMounted(() => {
+    getAlbums();
+})
 </script>

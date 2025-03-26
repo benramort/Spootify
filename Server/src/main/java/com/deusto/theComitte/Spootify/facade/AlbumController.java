@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
 
 import com.deusto.theComitte.Spootify.DTO.AlbumDTO;
 import com.deusto.theComitte.Spootify.entity.Album;
@@ -67,6 +68,25 @@ public class AlbumController {
             if (e.getMessage().equals("Album not found")) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("")
+    public ResponseEntity<List<AlbumDTO>> getArtistAlbums(@RequestParam long token) {
+        try {
+           List<Album> albums = albumService.getArtistAlbums(token);
+           List<AlbumDTO> albumDTOs = new ArrayList<>();
+           for(Album album : albums)
+           {
+            albumDTOs.add(album.toDTO());
+           }
+           return ResponseEntity.ok(albumDTOs);
+        } catch (RuntimeException e){
+            if(e.getMessage().equals("Artist not logged in")) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
