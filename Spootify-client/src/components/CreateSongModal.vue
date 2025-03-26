@@ -9,20 +9,19 @@
     </transition>
   </template>
   
-  <script setup>
-  import { defineProps, defineEmits } from 'vue';
-
-  const props = defineProps({
-    isOpen: Boolean
-  });
-
-  const emit = defineEmits(['close']);
-
-  function close() {
-    emit('close');
-  }
+  <script>
+  export default {
+    props: {
+      isOpen: Boolean
+    },
+    emits: ["close"],
+    methods: {
+      close() {
+        this.$emit("close");
+      }
+    }
+  };
   </script>
-
   
   <style scoped>
   .modal-overlay {
