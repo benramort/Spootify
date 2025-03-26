@@ -104,7 +104,7 @@ public class ArtistController {
     public ResponseEntity<ArtistDTO> getMyProfile(@RequestParam long token) {
         try {
             Artist artist = artistService.getActiveArtist(token);
-            return ResponseEntity.ok(artist.toDTO());
+            return ResponseEntity.ok(artist.toDTOWithoutAlbums());
         } catch (RuntimeException e) {
             if(e.getMessage().equals("Artist not logged in")) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
