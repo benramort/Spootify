@@ -12,7 +12,7 @@
                 <div class="campo" id="campoAlbum">
                     <label for="album"></label>
                     <select id="inputAlbum" v-model="album">
-                        <option v-for="album in albums" :key="album.id" :value="album.name">{{ album.name }}</option>
+                        <option v-for="album in albums" :key="album.id" :value="album">{{ album.name }}</option>
                     </select>
                 </div>
                 <div class="campo" id="campoDuracion">
@@ -22,7 +22,7 @@
                     <input id="inputUrl" type="text" placeholder="YouTube URL" v-model="youtubeUrl">
                 </div>
                 <div id="button">
-                    <button @click="$emit('close'); console.log(albumName); createAlbum();" id="okButton">✔</button>
+                    <button @click="$emit('close'); console.log(albumName); createSong();" id="okButton">✔</button>
                 </div>
             </div>
         </div>
@@ -109,6 +109,16 @@ input {
     margin: 0 auto;
     align-items: center;
 }
+
+#inputAlbum {
+    background-color: white;
+    width: 154px;
+    height: 25px;
+    margin-left: 10px;
+    border-radius: 5px;
+    border-color: white;
+    border: 0px;
+}
 </style>
 
 <script setup>
@@ -120,11 +130,25 @@ const globalState = inject("globalState");
 const showModalSong = ref(false);
 const albumName = ref("");
 const albums = ref([]);
+const songName = ref("");
+const album = ref({});
+const duration = ref(0);
+const youtubeUrl = ref("");
 
-function createAlbum() {
-    let path = "http://localhost:8081/albums";
+function createSong() {
+    let path = "http://localhost:8081/songs";
     path += "?token=" + globalState.token.value;
-    axios.post(path, {"name": albumName.value}).then((response) => {
+    console.log("songName: " + songName.value);
+    console.log("ID: " + album.value.id);
+    console.log("Name: " + album.value.name);
+    console.log("Duration: " + duration.value);
+    console.log("Youtube URL: " + youtubeUrl.value);
+    axios.post(path, {
+        "title": songName.value,
+        "album":{"id": album.value.id, "name": album.value.name},
+        "duration": duration.value,
+        "youtubeUrl": youtubeUrl.value
+    }).then((response) => {
         console.log(response);
         console.log("Album created");
         location.reload();
@@ -134,14 +158,14 @@ function createAlbum() {
 }
 
 function getAlbums() {
-    let path = "http://localhost:8081/albums"
-    path += "?token=" + globalState.token.value;
-    axios.get(path).then((response) => {
-        albums.value = response.data.value;
-        console.log("Albums: " + albums);
-        return albums;
+    let path = "http://localhost:8081/albums";
+    path += "?artistId=" + globalState.userId.value;
+    return axios.get(path).then((response) => {
+        albums.value = response.data;
+        console.log("Albums: ", albums.value);
     }).catch((error) => {
         console.log(error);
+        return [];
     });
 }
 

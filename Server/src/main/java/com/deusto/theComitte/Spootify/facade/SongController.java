@@ -26,7 +26,7 @@ public class SongController {
     @Autowired
     SongService songService;
 
-    @GetMapping()
+    @GetMapping("")
     public ResponseEntity<List<SongDTO>> getSongs(
         @RequestParam(required = false, defaultValue = "0") long artistId,
         @RequestParam(required = false, defaultValue = "0") long albumId
@@ -44,11 +44,10 @@ public class SongController {
         
     }
 
-    @PostMapping()
+    @PostMapping("")
     public ResponseEntity<Void> createSong(@RequestBody SongDTO songDTO, @RequestParam long token) {
         try {
             songService.createSong(songDTO.getTitle(), songDTO.getDuration(), songDTO.getYoutubeUrl(), songDTO.getAlbum().getId(), token);
-            System.out.println("YT:" + songDTO.getYoutubeUrl());
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (RuntimeException e) {
             if(e.getMessage().equals("Artist not logged in")) {
@@ -57,8 +56,9 @@ public class SongController {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             System.out.println(e.getMessage());
-            System.out.println("YT:" + songDTO.getYoutubeUrl());
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
         }
     }
     
