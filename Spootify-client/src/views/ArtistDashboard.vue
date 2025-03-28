@@ -1,6 +1,6 @@
 <script setup>
     import { onMounted, ref, inject } from 'vue';
-    import Prueba from '../components/Songs.vue';
+    import Songs from '../components/Songs.vue';
     import Albums from "../components/Albums.vue";
     import CreateAlbum from "../components/CreateAlbum.vue";
     import CreateSong from "../components/CreateSong.vue";
@@ -47,7 +47,7 @@
                 </div>
             </div>
             <div class="column">
-                <Prueba />
+                <Songs />
             </div>
         </div>
     </div>

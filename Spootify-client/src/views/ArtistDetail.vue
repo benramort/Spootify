@@ -1,6 +1,6 @@
 <script setup>
     import { onMounted, ref, inject } from 'vue';
-    import Prueba from '../components/Songs.vue';
+    import Songs from '../components/Songs.vue';
     import Albums from "../components/Albums.vue";
     import { useRoute } from 'vue-router';
     import axios from 'axios';
@@ -49,7 +49,8 @@
             </div>
             <div class="column">
                 <div id="top5SongsDiv">
-                    <h3>Top 5 songs</h3>
+                    <h3>{{name}} songs</h3>
+                    <Songs />
                 </div>
 
             </div>
