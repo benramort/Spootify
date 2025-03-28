@@ -13,6 +13,6 @@ import com.deusto.theComitte.Spootify.entity.Album;
 public interface AlbumRepository extends JpaRepository<Album, Long>{
     Album findById(long id);
 
-    @Query("SELECT a FROM Albums WHERE artistId = :artistId")
+    @Query("SELECT a FROM Album a WHERE a.artistId = :artistId")
     List<Album> findByArtistId(@Param("artistId") long artistId);
 }
