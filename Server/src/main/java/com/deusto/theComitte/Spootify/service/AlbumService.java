@@ -47,11 +47,11 @@ public class AlbumService {
         return album;
     }
 
-    public List<Album> getArtistAlbums(long token) {
-        Artist artist = artistService.getActiveArtist(token);
-        if(artist == null) {
-            throw new RuntimeException("Artist not logged in");
-        }
-        return albumRepository.findByArtistId(artist.getId());
-    }
+    // public List<Album> getArtistAlbums(long token) {
+    //     Artist artist = artistService.getActiveArtist(token);
+    //     if(artist == null) {
+    //         throw new RuntimeException("Artist not logged in");
+    //     }
+    //     return albumRepository.findByArtistId(artist.getId());
+    // }
 }

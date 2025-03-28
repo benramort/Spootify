@@ -74,22 +74,22 @@ public class AlbumController {
         }
     }
 
-    @GetMapping("/artist")
-    public ResponseEntity<List<AlbumDTO>> getArtistAlbums(@RequestParam long token) {
-        try {
-           List<Album> albums = albumService.getArtistAlbums(token);
-           List<AlbumDTO> albumDTOs = new ArrayList<>();
-           for(Album album : albums)
-           {
-            albumDTOs.add(album.toDTO());
-           }
-           return ResponseEntity.ok(albumDTOs);
-        } catch (RuntimeException e){
-            if(e.getMessage().equals("Artist not logged in")) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
+    // @GetMapping("/artist")
+    // public ResponseEntity<List<AlbumDTO>> getArtistAlbums(@RequestParam long token) {
+    //     try {
+    //        List<Album> albums = albumService.getArtistAlbums(token);
+    //        List<AlbumDTO> albumDTOs = new ArrayList<>();
+    //        for(Album album : albums)
+    //        {
+    //         albumDTOs.add(album.toDTO());
+    //        }
+    //        return ResponseEntity.ok(albumDTOs);
+    //     } catch (RuntimeException e){
+    //         if(e.getMessage().equals("Artist not logged in")) {
+    //             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    //         }
 
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
+    //         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    //     }
+    // }
 }

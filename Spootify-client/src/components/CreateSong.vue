@@ -134,7 +134,7 @@ function createAlbum() {
 }
 
 function getAlbums() {
-    let path = "http://localhost:8081/albums/artist"
+    let path = "http://localhost:8081/albums"
     path += "?token=" + globalState.token.value;
     axios.get(path).then((response) => {
         albums.value = response.data.value;

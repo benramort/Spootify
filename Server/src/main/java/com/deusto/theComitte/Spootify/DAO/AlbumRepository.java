@@ -1,10 +1,6 @@
 package com.deusto.theComitte.Spootify.DAO;
 
-import java.util.List;
-
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.deusto.theComitte.Spootify.entity.Album;
@@ -13,6 +9,6 @@ import com.deusto.theComitte.Spootify.entity.Album;
 public interface AlbumRepository extends JpaRepository<Album, Long>{
     Album findById(long id);
 
-    @Query("SELECT a FROM Album a WHERE a.artistId = :artistId")
-    List<Album> findByArtistId(@Param("artistId") long artistId);
+    // @Query("SELECT a FROM albums a WHERE a.artistId = :artistId")
+    // List<Album> findByArtistId(@Param("artistId") long artistId);
 }
