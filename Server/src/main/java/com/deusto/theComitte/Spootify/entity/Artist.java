@@ -2,6 +2,7 @@ package com.deusto.theComitte.Spootify.entity;
 
 import java.util.List;
 
+import com.deusto.theComitte.Spootify.DTO.AlbumDTO;
 import com.deusto.theComitte.Spootify.DTO.ArtistDTO;
 import jakarta.persistence.*;
 
@@ -31,8 +32,13 @@ public class Artist extends GenericUser {
         return this.albums;
     }
 
+    public ArtistDTO toDTOWithoutAlbums() {
+        return new ArtistDTO(this.id, this.name, this.followers, null);
+    }
+
     public ArtistDTO toDTO() {
-        return new ArtistDTO(this.id, this.name, this.followers);
+        List<AlbumDTO> albumDTOs = this.albums.stream().map(m -> m.toDTOWithoutArtists()).toList();
+        return new ArtistDTO(this.id, this.name, this.followers, albumDTOs);
     }
 
     @Override

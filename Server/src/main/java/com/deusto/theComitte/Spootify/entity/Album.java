@@ -100,9 +100,18 @@ public class Album {
         ArrayList<ArtistDTO> artistsDTO = new ArrayList<>();
         for(Artist artist : this.artists)
         {
-            artistsDTO.add(artist.toDTO());
+            artistsDTO.add(artist.toDTOWithoutAlbums());
         }
         return new AlbumDTO(this.id, this.name, artistsDTO, null);
+    }
+
+    public AlbumDTO toDTOWithoutArtists() {
+        ArrayList<SongDTO> songsDTO = new ArrayList<>();
+        for(Song song : this.songs)
+        {
+            songsDTO.add(song.toDTOWithoutAlbum());
+        }
+        return new AlbumDTO(this.id, this.name, null, songsDTO);
     }
 
     public AlbumDTO toDTO() {
@@ -110,7 +119,7 @@ public class Album {
         ArrayList<SongDTO> songsDTO = new ArrayList<>();
         for(Artist artist : this.artists)
         {
-            artistsDTO.add(artist.toDTO());
+            artistsDTO.add(artist.toDTOWithoutAlbums());
         }
         for(Song song : this.songs)
         {

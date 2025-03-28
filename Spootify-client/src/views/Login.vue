@@ -14,6 +14,7 @@ let isArtist;
 
 const loginEmail = ref('')
 const loginPassword = ref('')
+const errorMessage = ref('')
 
 
 
@@ -41,6 +42,17 @@ function login() {
 		}
     }).catch(error => {
         console.log(error) // gestionar errores
+		if (error.status == 404) {
+			if (isArtist) {
+				errorMessage.value = "Artista no encontrado ¿Seguro que eres un artista?"
+			} else {
+				errorMessage.value = "Usuario no encontrado ¿Seguro que no eres un artista?"
+			}
+		} else if (error.status == 401) {
+			errorMessage.value = "Contraseña incorrecta"
+		} else {
+			errorMessage.value = "Error desconocido"
+		}
     })
 }
 
@@ -56,7 +68,12 @@ function createAccount() {
 	}).then(response => {
 		console.log(response)
 	}).catch(error => {
-		console.log(error) // gestionar errores
+		console.log(error)
+		if (error.status == 409) {
+			errorMessage.value = "El email ya está en uso"
+		} else {
+			errorMessage.value = "Error desconocido"
+		}
 	})
 }
 </script>
@@ -65,11 +82,12 @@ function createAccount() {
 
 <div class="loginBox">
     <div class="main">  	
-		<input type="checkbox" id="chk" aria-hidden="true" checked>
+		<input type="checkbox" id="chk" aria-hidden="true" checked @click="errorMessage = ''">
 
 			<div class="signup">
 				<form @submit.prevent="createAccount">
 					<label for="chk" id="signup" aria-hidden="true">Sign up</label>
+					<p class="error">{{ errorMessage }}</p>
 					<input type="text" name="txt" placeholder="Name" v-model="signupName" required>
 					<input type="email" name="email" placeholder="Email" v-model="signupEmail" required>
 					<input type="password" name="pswd" placeholder="Password" v-model="signupPassword" required>
@@ -84,6 +102,7 @@ function createAccount() {
 			<div class="login">
 				<form @submit.prevent="login">
 					<label for="chk" aria-hidden="true">Login</label>
+					<p class="error">{{ errorMessage }}</p>
 					<input type="email" name="email" placeholder="Email" required v-model="loginEmail">
 					<input type="password" name="pswd" placeholder="Password" required v-model="loginPassword">
 					<div class="line">
@@ -99,6 +118,14 @@ function createAccount() {
 </template>
 
 <style scoped>
+
+.error {
+	color: red;
+	text-align: center;
+	font-size: 0.8em;
+	padding-right: 5em;
+	padding-left: 5em;
+}
 
 #signup {
 	margin-bottom: 1em;

@@ -47,7 +47,7 @@ public class User extends GenericUser {
 
         List<ArtistDTO> followListDTO = new ArrayList<>();
         for(Artist artist : this.followList) {
-            ArtistDTO artistDTO = artist.toDTO();
+            ArtistDTO artistDTO = artist.toDTOWithoutAlbums();
             followListDTO.add(artistDTO);
         }
 

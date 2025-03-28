@@ -2,11 +2,15 @@
     import { onMounted, ref, inject } from 'vue';
     import Prueba from '../components/Songs.vue';
     import Albums from "../components/Albums.vue";
+    import CreateAlbum from "../components/CreateAlbum.vue";
+    import CreateSong from "../components/CreateSong.vue";
     import axios from 'axios';
 
     let globalState = inject('globalState');
 
     const name = ref("");
+    const showModalAlbum = ref(false);
+    const showModalSong = ref(false);
 
     onMounted(() => {
         let path = "http://localhost:8081/artists/myProfile";
@@ -19,20 +23,23 @@
             console.log(error);
         });
     });
+
 </script>
 
 <template>
     <div class="template">
+        <CreateAlbum :isOpen="showModalAlbum" @close="showModalAlbum = false" />
+        <CreateSong :isOpen="showModalSong" @close="showModalSong = false" />
         <h1>Hola, {{ name }}:</h1>
         <div class="columns">
             <div class="column">
                 <Albums />
                 <div class="botonera">
-                    <button>
+                    <button @click="showModalAlbum = true">
                         <i class="fa-solid fa-plus inside-button"></i>
                         <p class="inside-button">Nuevo álbum</p>
                     </button>
-                    <button>
+                    <button @click="showModalSong = true">
                         <i class="fa-solid fa-plus inside-button"></i>
                         <p class="inside-button">Nueva canción</p>
                     </button>
@@ -49,8 +56,6 @@
 
 
 <style scoped>
-
-
 
     .columns {
         display: flex;
@@ -89,10 +94,11 @@
     }
 
     .botonera {
+        margin-top: 2em;
         display: flex;
         justify-content: space-around;
         align-items: center;
-        height: 50%;
+        height: 40%;
         border: 1px solid aquamarine;
     }
 
@@ -103,5 +109,4 @@
     i {
         font-size: 4em;
     }
-
 </style>

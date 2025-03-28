@@ -39,11 +39,11 @@
       <p id="titulo">Spootify</p>
     </div>
     <div class="side">
-    <div class="header-box"><router-link to="/login"></router-link></div>
-    <div class="header-box"><router-link to="/artist/dashboard">Mi perfil</router-link></div>
+    <div class="header-box" v-if="globalState.token.value == 0"><router-link to="/login">Mi perfil</router-link></div>
+    <div class="header-box" v-else><router-link to="/artist/dashboard">Mi perfil</router-link></div>
     <div class="header-box"><router-link to="/crearAlbum">Home</router-link></div>
     <div class="header-box"><router-link to="/login">Home</router-link></div>
-    <div class="header-box" v-if="globalState.token.value == 0"><router-link to="/login">Log in</router-link></div>
+    <div class="header-box" v-if="globalState.token.value == 0 || globalState.token.value == null"><router-link to="/login">Log in</router-link></div>
     <div class="header-box" v-else><a @click="logout">Log out</a></div>
     </div>
   </div>

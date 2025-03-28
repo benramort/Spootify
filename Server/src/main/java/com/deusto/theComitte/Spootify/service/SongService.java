@@ -41,7 +41,6 @@ public class SongService {
         Song song = new Song(title, album, duration, youtubeUrl);
         album.getSongs().add(song);
         songRepository.save(song);
-
     }
 
     public List<Song> getSongs(long artistId, long albumId) {

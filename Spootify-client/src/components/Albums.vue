@@ -1,9 +1,10 @@
 <script setup>
 
-    import axios from "axios";
+    import router from "@/router";
+import axios from "axios";
     import {onMounted, inject} from "vue";
     import {ref} from "vue";
-import { useRoute } from "vue-router";
+    import { useRoute, useRouter } from "vue-router";
 
     const globalState = inject('globalState')
 
@@ -36,9 +37,9 @@ import { useRoute } from "vue-router";
 <template>
 
     <div class="carousel">
-        <div class="album" v-for="album in albums" :key="album.id">
+        <button class="album" v-for="album in albums" :key="album.id" v-on:click="console.log('hasfd');router.push('/albums/' + album.id)">
             <p>{{ album.name }}</p>
-        </div>
+        </button>
     </div>
 
 </template>
@@ -52,11 +53,16 @@ import { useRoute } from "vue-router";
 
     .album {
         display: inline-flex;
-        width: 25vh;
-        height: 25vh;
+        width: 30vh;
+        height: 30vh;
         margin: 10px;
         background-color: red;
         justify-content: center;
         align-items: center;
+        border: none;
+    }
+
+    .album:hover {
+        background-color: blue;
     }
 </style>
