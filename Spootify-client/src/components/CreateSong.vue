@@ -159,7 +159,7 @@ function createSong() {
 
 function getAlbums() {
     let path = "http://localhost:8081/albums";
-    path += "?artistId=" + globalState.userId.value;
+    path += "?artist=" + globalState.userId.value;
     return axios.get(path).then((response) => {
         albums.value = response.data;
         console.log("Albums: ", albums.value);
