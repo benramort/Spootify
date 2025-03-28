@@ -1,12 +1,25 @@
 <template>
-    <Modal :isOpen="showModalAlbum" @close="showModalAlbum = false">
+    <Modal :isOpen="showModalSong" @close="showModalSong = false">
         <div id="contFormulario">
             <div id="titulo">
-                <p id="crearAlbum">CREAR ÁLBUM</p>
+                <p id="crearAlbum">CREAR CANCIÓN</p>
             </div>
             <div id="campos">
-                <div id="campoNombre">
-                    <input id="inputNombre" type="text" placeholder="Name" v-model="albumName" />
+                <div class="campo" id="campoNombre">
+                    <label for="nombre"></label>
+                    <input id="inputNombre" type="text" placeholder="Name" v-model="songName" />
+                </div>
+                <div class="campo" id="campoAlbum">
+                    <label for="album"></label>
+                    <select id="inputAlbum" v-model="album">
+                        <option v-for="album in albums" :key="album.id" :value="album.name">{{ album.name }}</option>
+                    </select>
+                </div>
+                <div class="campo" id="campoDuracion">
+                    <input id="inputDuracion" type="number" placeholder="Duration" v-model="duration">
+                </div>
+                <div class="campo" id="campoUrl">
+                    <input id="inputUrl" type="text" placeholder="YouTube URL" v-model="youtubeUrl">
                 </div>
                 <div id="button">
                     <button @click="$emit('close'); console.log(albumName); createAlbum();" id="okButton">✔</button>
@@ -19,14 +32,19 @@
 <style scoped>
 #contFormulario {
     width: 300px;
-    height: 120px;
-    border: 2px solid rgb(34, 34, 34);
-    margin: 0 auto;
+    height: 262px;
     background-color: rgb(34, 34, 34);
     box-shadow: 5px 10px 20px black;
     border-radius: 10px;
 }
 
+#campos {
+    height: 250px;
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+}
+ 
 #titulo {
     margin: 0 auto;
     text-align: center;
@@ -37,31 +55,23 @@
     margin-bottom: 0px;
     margin-top: 8px;
     padding-bottom: 0px;
+    padding-top: 10px;
 }
 
 #campoNombre {
-    display: flex;
     align-items: center;
     margin: 0 auto;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    display: inline-block;
+    margin-top: 10px;
 }
 
-#labelNombre {
-    margin-left: 50px;
-}
-
-#inputNombre {
+input {
     background-color: white;
     width: 150px;
     height: 23px;
-    margin-left: 20px;
+    margin-left: 10px;
     border-radius: 5px;
     border-color: white;
-    margin: 0 auto;
     border: 0px;
-    margin-left: 20px;
 }
 
 #crearAlbum {
@@ -72,13 +82,13 @@
 
 #button {
     display: inline-block;
-    margin-right: 40px;
+    align-self: flex-end;
 }
 
 #okButton {
     background-color: rgb(30, 215, 96);
     color: black;
-    border-radius: 5px;
+    border-radius: 1000px;
     border-color: rgb(30, 215, 96);
     margin-right: 10px;
     width: 30px;
@@ -102,13 +112,14 @@
 </style>
 
 <script setup>
-import { inject, ref } from 'vue';
+import { inject, ref, onMounted } from 'vue';
 import Modal from "../components/CreateAlbumModal.vue";
 import axios from 'axios';
 
 const globalState = inject("globalState");
-const showModalAlbum = ref(false);
+const showModalSong = ref(false);
 const albumName = ref("");
+const albums = ref([]);
 
 function createAlbum() {
     let path = "http://localhost:8081/albums";
@@ -121,4 +132,19 @@ function createAlbum() {
         console.log(error);
     });
 }
+
+function getAlbums() {
+    let path = "http://localhost:8081/albums"
+    path += "?token=" + globalState.token.value;
+    axios.get(path).then((response) => {
+        album.value = response.data;
+        return albums;
+    }).catch((error) => {
+        console.log(error);
+    });
+}
+
+onMounted(() => {
+    getAlbums();
+})
 </script>

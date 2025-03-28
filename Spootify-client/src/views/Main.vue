@@ -17,7 +17,7 @@
 </template>
 
 
-<style>
+<style scoped>
     .columns {
         display: flex;
         justify-content: space-between;

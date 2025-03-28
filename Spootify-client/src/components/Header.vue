@@ -1,21 +1,68 @@
 <script setup>
-// You can import any necessary components or define props here
+  import { inject } from 'vue'
+  import { useRouter } from 'vue-router';
+  import axios from 'axios';
+
+  const globalState = inject('globalState');
+
+  const router = useRouter();
+
+  function logout() {
+    console.log("Logging out");
+    let path = "http://localhost:8081/logout";
+    if (globalState.isArtist.value) {
+      path = "http://localhost:8081/artists/logout";
+    }
+    path += "?token=" + globalState.token.value;
+    axios.post(path).then((response) => {
+      console.log(response);
+      globalState.token.value = 0;
+      globalState.userId.value = 0;
+      globalState.isArtist.value = false;
+      localStorage.removeItem("token");
+      localStorage.removeItem("isArtist");
+      localStorage.removeItem("id");
+      console.log("Logged out");
+      router.push("/");
+    }).catch((error) => {
+      console.log(error);
+    });
+    
+  }
+
 </script>
 
 <template>
   <div class="header">
-    <img src="../assets/Spootify_logo.png" alt="Spotify logo"/>
+    <div id="contenedorLogo">
+      <img src="../assets/Spootify_logo.png" alt="Spotify logo"/>
+      <p id="titulo">Spootify</p>
+    </div>
     <div class="side">
-    <div class="header-box"><router-link to="/login">Home</router-link></div>
-    <div class="header-box"><router-link to="/artist/dashboard">Home</router-link></div>
+    <div class="header-box" v-if="globalState.token.value == 0"><router-link to="/login">Mi perfil</router-link></div>
+    <div class="header-box" v-else><router-link to="/artist/dashboard">Mi perfil</router-link></div>
     <div class="header-box"><router-link to="/crearAlbum">Home</router-link></div>
     <div class="header-box"><router-link to="/login">Home</router-link></div>
-    <div class="header-box"><router-link to="/login">Home</router-link></div>
+    <div class="header-box" v-if="globalState.token.value == 0 || globalState.token.value == null"><router-link to="/login">Log in</router-link></div>
+    <div class="header-box" v-else><a @click="logout">Log out</a></div>
     </div>
   </div>
 </template>
 
 <style scoped>
+#titulo {
+  color: white;
+  align-self: center;
+  font-size: x-large;
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+#contenedorLogo {
+  align-items: left;
+  display: flex;
+}
+
 img {
     width: 4em;
     height: 4em;
