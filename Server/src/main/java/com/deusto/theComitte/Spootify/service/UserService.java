@@ -126,10 +126,13 @@ public class UserService {
     public void createPlayList(long userId, String name) {
         User user = activeUsers.get(userId);
         if (user == null) {
-            throw new RuntimeException("User does not exist");
+            System.out.println("aaaaaaaaaaaaa");
+            throw new RuntimeException("User not logged in");
         }
-        user.createSongList(name);
+        SongList songList = new SongList(name, user);
+        user.addSongList(songList);
         userRepository.save(user);
+        songListRepository.save(songList);
     }
 
     public List<SongList> getPlayLists(long userId) {
