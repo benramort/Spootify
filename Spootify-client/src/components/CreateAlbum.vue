@@ -36,14 +36,14 @@
     font-weight: bold;
     margin-bottom: 0px;
     margin-top: 8px;
+    padding-top: 10px;
     padding-bottom: 0px;
 }
 
+
 #campoNombre {
-    display: flex;
-    align-items: center;
     margin: 0 auto;
-    margin-top: 20px;
+    margin-top: 10px;
     margin-bottom: 20px;
     display: inline-block;
 }
@@ -66,19 +66,22 @@
 
 #crearAlbum {
     margin-top: 0px;
-    padding-top: 15px;
+    padding-top: 12px;
     margin: 0 auto;
 }
 
 #button {
     display: inline-block;
     margin-right: 40px;
+    margin-top: 0px;
+    padding-top: 0px;
+    margin-top: 11px;
 }
 
 #okButton {
     background-color: rgb(30, 215, 96);
     color: black;
-    border-radius: 5px;
+    border-radius: 1000px;
     border-color: rgb(30, 215, 96);
     margin-right: 10px;
     width: 30px;
@@ -97,7 +100,6 @@
     margin-top: 0px;
     text-align: center;
     margin: 0 auto;
-    align-items: center;
 }
 </style>
 
