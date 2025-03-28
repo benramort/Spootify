@@ -52,6 +52,7 @@ public class AlbumService {
         if(artist == null) {
             throw new RuntimeException("Artist not logged in");
         }
-        return albumRepository.findByArtistId(artist.getId());
+        return null;
+        // return albumRepository.findByArtistId(artist.getId());
     }
 }
