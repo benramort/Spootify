@@ -31,15 +31,19 @@
                     <h2>{{ name }}Nombre artista</h2>
                 </div>
                 <div id="followButtonDiv">
-                    <button id="followButton">
+                    <button v-if="boton" id="followButton">
                         Follow
+                    </button>
+                    <button v-else id="followButton" disabled>
+                        Following
                     </button>
                     <button id="followCountButton">
                         40 Followes
                     </button>
                 </div>
                 <div id="divAlbums">
-
+                    <h3>Albums</h3>
+                    <Albums />
                 </div>
 
             </div>
