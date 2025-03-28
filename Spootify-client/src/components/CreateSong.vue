@@ -7,7 +7,7 @@
             <div id="campos">
                 <div class="campo" id="campoNombre">
                     <label for="nombre"></label>
-                    <input id="inputNombre" type="text" placeholder="Name" v-model="songName" />
+                    <input id="inputNombre" type="text" placeholder="Name" required="true" v-model="songName" />
                 </div>
                 <div class="campo" id="campoAlbum">
                     <label for="album"></label>
@@ -19,10 +19,10 @@
                     <input id="inputDuracion" type="number" placeholder="Duration" v-model="duration">
                 </div>
                 <div class="campo" id="campoUrl">
-                    <input id="inputUrl" type="text" placeholder="YouTube URL" v-model="youtubeUrl">
+                    <input id="inputUrl" type="text" placeholder="YouTube URL" required="true" v-model="youtubeUrl">
                 </div>
                 <div id="button">
-                    <button @click="$emit('close'); console.log(albumName); createSong();" id="okButton">✔</button>
+                    <button @click="if(validateFields()) {createSong(); $emit('close');}" id="okButton">✔</button>
                 </div>
             </div>
         </div>
@@ -134,6 +134,16 @@ const songName = ref("");
 const album = ref({});
 const duration = ref(0);
 const youtubeUrl = ref("");
+
+function validateFields() {
+    return (
+        songName.value.trim() !== "" &&
+        album.value !== undefined &&
+        album.value.id !== undefined &&
+        duration.value > 0 &&
+        youtubeUrl.value.trim() !== ""
+    );
+}
 
 function createSong() {
     let path = "http://localhost:8081/songs";

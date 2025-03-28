@@ -9,7 +9,7 @@
                     <input id="inputNombre" type="text" placeholder="Name" v-model="albumName" />
                 </div>
                 <div id="button">
-                    <button @click="$emit('close'); console.log(albumName); createAlbum();" id="okButton">✔</button>
+                    <button @click="if(validateFields()) {createAlbum(); $emit('close');}" id="okButton">✔</button>
                 </div>
             </div>
         </div>
@@ -111,6 +111,10 @@ import axios from 'axios';
 const globalState = inject("globalState");
 const showModalAlbum = ref(false);
 const albumName = ref("");
+
+function validateFields() {
+    return albumName.value.trim() !== "";
+}
 
 function createAlbum() {
     let path = "http://localhost:8081/albums";
