@@ -22,7 +22,7 @@
         let actualPath = useRoute().path;
         let path = "http://localhost:8081/songs?";
         if (actualPath == "/artist/dashboard") {
-            path = "http://localhost:8081/songs?artist=" + globalState.userId.value + "&";
+            path = "http://localhost:8081/songs?artistId=" + globalState.userId.value + "&";
         }
         path = path+"token="+globalState.token.value
         console.log(path)
