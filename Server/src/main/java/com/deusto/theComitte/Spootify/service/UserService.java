@@ -118,6 +118,14 @@ public class UserService {
         if (songList == null) {
             throw new RuntimeException("SongList does not exist");
         }
+
+        for(SongList songListAnadir : user.getSongLists()) {
+            if (songListAnadir.getId().equals(songListId)) {
+                songListAnadir.getSongs().add(song);
+                songListAnadir.setUser(user);
+                return;
+            }
+        }
         songList.getSongs().add(song);
         songListRepository.save(songList);
         
