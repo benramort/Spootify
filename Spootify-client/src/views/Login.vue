@@ -11,6 +11,7 @@ const signupEmail = ref('')
 const signupPassword = ref('')
 
 let isArtist;
+const showLogin = ref(false)
 
 const loginEmail = ref('')
 const loginPassword = ref('')
@@ -36,7 +37,7 @@ function login() {
 		localStorage.setItem("isArtist", isArtist)
 		localStorage.setItem("id", response.data.id)
 		if (isArtist) {
-			router.push("/artist/dashboard")
+			router.push("/artists/dashboard")
 		} else {
 			router.push("/")
 		}
@@ -67,6 +68,7 @@ function createAccount() {
 		password: signupPassword.value
 	}).then(response => {
 		console.log(response)
+		showLogin.value = true
 	}).catch(error => {
 		console.log(error)
 		if (error.status == 409) {
@@ -82,7 +84,7 @@ function createAccount() {
 
 <div class="loginBox">
     <div class="main">  	
-		<input type="checkbox" id="chk" aria-hidden="true" checked @click="errorMessage = ''">
+		<input type="checkbox" id="chk" aria-hidden="true" v-model="showLogin" checked @click="errorMessage = ''">
 
 			<div class="signup">
 				<form @submit.prevent="createAccount">
