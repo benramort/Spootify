@@ -55,7 +55,7 @@
             <div class="horizontal-aling">
                 <div>
                     <p><b>{{ song.title }}</b></p>
-                    <p><span class="name">{{ song.album.artists[0].name}}</span> - <span class="album"><i>{{ song.album.name }}</i></span></p>
+                    <p><span class="name"><router-link :to="`/artists/${song.album.artists[0].id}`">{{ song.album.artists[0].name}}</router-link></span> - <span class="album"><router-link :to="`/albums/${song.album.id}`"><em>{{ song.album.name }}</em></router-link></span></p>
                 </div>
                 <p>{{  song.duration }}</p>
             </div>
@@ -110,11 +110,20 @@
         margin: 0.3em;
     }
 
-    i {
+    /* i {
         transition: .2s ease-in;
     }
 
     i:hover{
 	    color: rgb(22, 164, 72);
+    } */
+
+    a {
+        color: black;
+        text-decoration: none;
+    }
+    
+    a:hover {
+        text-decoration: underline;
     }
 </style>
