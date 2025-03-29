@@ -5,6 +5,7 @@ import Main from '../views/Main.vue';
 import ArtistDashboard from '../views/ArtistDashboard.vue';
 import Album from '../views/Album.vue';
 import CreateAlbum from '@/components/CreateAlbum.vue';
+import ArtistDetail from '../views/ArtistDetail.vue';
 
 const routes = [
   { path: '/', component: Main },
@@ -12,7 +13,8 @@ const routes = [
   { path: '/login', component: Login },
   { path: '/artist/dashboard', component: ArtistDashboard },
   { path : '/crearAlbum', component: CreateAlbum },
-  { path : '/albums/:id', component: Album }
+  { path : '/albums/:id', component: Album },
+  { path: '/artists/:id', component: ArtistDetail }
 ];
 
 const router = createRouter({
