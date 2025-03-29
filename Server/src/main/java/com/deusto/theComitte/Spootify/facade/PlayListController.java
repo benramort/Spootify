@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.deusto.theComitte.Spootify.DTO.SongDTO;
 import com.deusto.theComitte.Spootify.DTO.SongListDTO;
 import com.deusto.theComitte.Spootify.entity.SongList;
 import com.deusto.theComitte.Spootify.service.UserService;
@@ -35,6 +36,7 @@ public class PlayListController {
             if (e.getMessage().equals("User not logged in")) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }   
     }
@@ -56,10 +58,26 @@ public class PlayListController {
         }
     }
 
-    @PostMapping("/{id}/songs")
-    public ResponseEntity<Void> addSongToPlayList(@RequestParam long token, @PathVariable long songListId, @RequestParam List<Long> songIds) {
+    // @PostMapping("/{songListId}/songs")
+    // public ResponseEntity<Void> addSongToPlayList(@RequestParam long token, @PathVariable long songListId, @RequestBody SongRequests songIds) {
+    //     try {
+    //         for (long songId : songIds.getSongIds()) {
+    //             userService.addSongToPlayList(token, songId, songListId);
+    //         }
+    //         return new ResponseEntity<>(HttpStatus.OK);
+    //     } catch (RuntimeException e) {
+    //         if (e.getMessage().equals("User not logged in")) {
+    //             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+    //         }
+    //         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    //     }
+    // }
+
+    @PostMapping("/{songListId}/songs")
+    public ResponseEntity<Void> addSongToPlayList(@RequestParam long token, @PathVariable long songListId, @RequestBody SongDTO song) {
         try {
-            userService.addSongsToUser(token, songIds, songListId);
+            userService.addSongToPlayList(token, song.getId(), songListId);
+            System.out.println("id: " + song.getId());
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (RuntimeException e) {
             if (e.getMessage().equals("User not logged in")) {

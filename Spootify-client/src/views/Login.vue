@@ -40,7 +40,7 @@ function login() {
 		if (isArtist) {
 			router.push("/artists/dashboard")
 		} else {
-			router.push("/")
+			router.push("/users/dashboard")
 		}
     }).catch(error => {
         console.log(error) // gestionar errores
@@ -50,7 +50,7 @@ function login() {
 			} else {
 				errorMessage.value = "Usuario no encontrado ¿Seguro que no eres un artista?"
 			}
-		} else if (error.status == 401) {
+		} else if (error.status == 403) {
 			errorMessage.value = "Contraseña incorrecta"
 		} else {
 			errorMessage.value = "Error desconocido"

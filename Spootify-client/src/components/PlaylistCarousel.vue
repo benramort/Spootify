@@ -12,12 +12,23 @@
         path: {
             type: String,
             default: "albums"
+        },
+        playlists: {
+            type: Array,
+            default: null
         }
+
+
     })
 
-    const albums = ref([]);
+    const playlists = ref([]);
 
     onMounted(() => {
+        playlists.value = props.playlists;
+        console.log("playlists: " + playlists.value);
+    });
+
+    function getPlaylists() {
         let path = "http://localhost:8081/" + props.path + "?";
         if (useRoute().path == "/artists/dashboard") {
             path = "http://localhost:8081/albums?artist=" + globalState.userId.value + "&";
@@ -25,7 +36,6 @@
             const artistId = useRoute().path.substring(9); // Extract the artist ID from the route
             path = "http://localhost:8081/albums?artist=" + artistId + "&";
             console.log("path: " + path);
-    
         }
         path = path + "token=" + globalState.token.value;
         console.log(path);
@@ -34,7 +44,9 @@
             console.log(albums.value);
             console.log(albums.value.length);
         });
-    });
+    }
+
+
 
 </script>
 
@@ -42,8 +54,8 @@
 <template>
 
     <div class="carousel">
-        <button class="album" v-for="album in albums" :key="album.id" v-on:click="console.log('hasfd');router.push('/albums/' + album.id)">
-            <p>{{ album.name }}</p>
+        <button class="playlist" v-for="playlist in playlists" :key="playlist.id" v-on:click="console.log('hasfd');router.push('/playlists/' + playlist.id)">
+            <p>{{ playlist.name }}</p>
         </button>
     </div>
 
@@ -56,7 +68,7 @@
         white-space: nowrap;
     }
 
-    .album {
+    .playlist {
         display: inline-flex;
         width: 30vh;
         height: 30vh;
@@ -67,7 +79,7 @@
         border: none;
     }
 
-    .album:hover {
+    .playlist:hover {
         background-color: blue;
     }
 </style>
