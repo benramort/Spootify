@@ -23,9 +23,15 @@
       localStorage.removeItem("isArtist");
       localStorage.removeItem("id");
       console.log("Logged out");
-      router.push("/");
     }).catch((error) => {
       console.log(error);
+      globalState.token.value = null;
+      globalState.userId.value = null;
+      globalState.isArtist.value = false;
+      localStorage.removeItem("token");
+      localStorage.removeItem("isArtist");
+      localStorage.removeItem("id");
+      router.push("/");
     });
     
   }
