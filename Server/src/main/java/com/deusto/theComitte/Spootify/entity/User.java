@@ -82,9 +82,4 @@ public class User extends GenericUser {
         songsList.remove(songList);
         songList.setUser(null);
     }
-
-    public void createSongList(String name) {
-        SongList songList = new SongList(name, this);
-        songsList.add(songList);
-    }
 }

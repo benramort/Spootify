@@ -7,7 +7,7 @@ services:
     volumes:
       - ./Spootify-client:/app
     environment:
-      - NODE_EMV=development
+      - NODE_ENV=development
     command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
   server:
     image: maven:latest
