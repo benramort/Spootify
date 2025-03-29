@@ -10,8 +10,8 @@ const signupName = ref('')
 const signupEmail = ref('')
 const signupPassword = ref('')
 
-let isArtist;
-const showLogin = ref(false)
+let isArtist = false;
+const showLogin = ref(true)
 
 const loginEmail = ref('')
 const loginPassword = ref('')
@@ -29,13 +29,14 @@ function login() {
         email: loginEmail.value,
         password: loginPassword.value
     }).then(response => {
-        console.log(response)
-        globalState.token.value = response.data.token
-		globalState.userId.value = response.data.id
-		globalState.isArtist.value = isArtist
-		localStorage.setItem("token", response.data.token)
-		localStorage.setItem("isArtist", isArtist)
-		localStorage.setItem("id", response.data.id)
+        console.log(response);
+		console.log(response.data.token);
+        globalState.token.value = response.data.token;
+		globalState.userId.value = response.data.id;
+		globalState.isArtist.value = isArtist;
+		localStorage.setItem("token", response.data.token);
+		localStorage.setItem("isArtist", isArtist);
+		localStorage.setItem("id", response.data.id);
 		if (isArtist) {
 			router.push("/artists/dashboard")
 		} else {
