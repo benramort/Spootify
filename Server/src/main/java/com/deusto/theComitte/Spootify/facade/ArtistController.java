@@ -147,7 +147,7 @@ public class ArtistController {
     
     
     @GetMapping("/{id}")
-    public ResponseEntity<ArtistDTO> getArtist(@RequestParam long id) {
+    public ResponseEntity<ArtistDTO> getArtist(@PathVariable long id) {
         try {
             Artist artist = artistService.getArtist(id);
             return ResponseEntity.ok(artist.toDTO());

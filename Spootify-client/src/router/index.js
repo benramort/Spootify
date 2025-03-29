@@ -7,6 +7,7 @@ import Album from '../views/Album.vue';
 import CreateAlbum from '@/components/CreateAlbum.vue';
 import CreatePlayList from '@/components/CreatePlayList.vue';
 import Playlist from '@/components/Playlists.vue';
+import ArtistDetail from '../views/ArtistDetail.vue';
 
 const routes = [
   { path: '/', component: Main },
@@ -16,7 +17,8 @@ const routes = [
   { path : '/crearAlbum', component: CreateAlbum },
   { path : '/albums/:id', component: Album },
   { path : '/crearPlaylist', component: CreatePlayList },
-  { path: '/playlists/:id', component: Playlist}
+  { path: '/playlists/:id', component: Playlist},
+  { path: '/artists/:id', component: ArtistDetail }
 ];
 
 const router = createRouter({
