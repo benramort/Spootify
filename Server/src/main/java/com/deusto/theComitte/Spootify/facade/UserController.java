@@ -87,7 +87,7 @@ public class UserController {
         }
     }
 
-        @GetMapping("/myProfile")
+        @GetMapping("/users/myProfile")
     public ResponseEntity<UserDTO> getMyProfile(@RequestParam long token) {
         try {
             User user = userService.getActiveUser(token);

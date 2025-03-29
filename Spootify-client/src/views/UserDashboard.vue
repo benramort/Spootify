@@ -34,7 +34,6 @@
         <h1>Hola, {{ name }}:</h1>
         <div class="columns">
             <div class="column">
-                <Albums />
                 <div class="botonera">                    
                 </div>
             </div>
