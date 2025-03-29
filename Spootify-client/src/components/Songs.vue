@@ -23,6 +23,11 @@
         let path = "http://localhost:8081/songs?";
         if (actualPath == "/artist/dashboard") {
             path = "http://localhost:8081/songs?artistId=" + globalState.userId.value + "&";
+        }else if (useRoute().path.startsWith("/artists/")){
+            const artistId = useRoute().path.substring(9); // Extract the artist ID from the route
+            path = "http://localhost:8081/songs?artistId=" + artistId + "&";
+            console.log("path: " + path);
+
         }
         path = path+"token="+globalState.token.value
         console.log(path)
