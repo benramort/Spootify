@@ -13,7 +13,7 @@ const routes = [
   { path: '/', component: Main },
   { path: '/prueba', component: Prueba },
   { path: '/login', component: Login },
-  { path: '/artist/dashboard', component: ArtistDashboard },
+  { path: '/artists/dashboard', component: ArtistDashboard },
   { path : '/crearAlbum', component: CreateAlbum },
   { path : '/albums/:id', component: Album },
   { path : '/crearPlaylist', component: CreatePlayList },

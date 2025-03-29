@@ -16,8 +16,8 @@
     path += "?token=" + globalState.token.value;
     axios.post(path).then((response) => {
       console.log(response);
-      globalState.token.value = 0;
-      globalState.userId.value = 0;
+      globalState.token.value = null;
+      globalState.userId.value = null;
       globalState.isArtist.value = false;
       localStorage.removeItem("token");
       localStorage.removeItem("isArtist");
@@ -40,11 +40,11 @@
     </div>
     <div class="side">
     <div class="header-box" v-if="globalState.token.value == 0"><router-link to="/login">Mi perfil</router-link></div>
-    <div class="header-box" v-else><router-link to="/artist/dashboard">Mi perfil</router-link></div>
+    <div class="header-box" v-else><router-link to="/artists/dashboard">Mi perfil</router-link></div>
     <div class="header-box"><router-link to="/crearAlbum">Home</router-link></div>
     <div class="header-box"><router-link to="/login">Home</router-link></div>
-    <div class="header-box" v-if="globalState.token.value == 0 || globalState.token.value == null"><router-link to="/login">Log in</router-link></div>
-    <div class="header-box" v-else><a @click="logout">Log out</a></div>
+    <div class="header-box" v-if="Number.isInteger(globalState.token.value)"><a @click="logout">Log out</a></div>
+    <div class="header-box" v-else><router-link to="/login">Log in</router-link></div>
     <div class="header-box"><router-link to="/playlists">Playlists</router-link></div>
     <div class="header-box"><router-link to="/crearPlaylist">Crear Playlist</router-link></div>
     </div>
