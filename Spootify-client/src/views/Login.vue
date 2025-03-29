@@ -142,6 +142,12 @@ function createAccount() {
 	align-items: center;
 	font-family: 'Jost', sans-serif;
 	border: 1px solid green;
+	/* Add these lines to make it full height and centered */
+    min-height: 100vh; /* Makes it take the full viewport height */
+    width: 100%; /* Ensures it spans the full width */
+    position: absolute; /* Takes it out of normal flow */
+    top: 0; /* Position from the top edge */
+    left: 0; /* Position from the left edge */
 }
 
 .main{
