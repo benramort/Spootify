@@ -13,6 +13,7 @@
 
     onMounted(() => {
          let path = "http://localhost:8081/artists/" + route.params.id;
+         console.log("Path detalle:"+path);
          axios.get(path).then((response) => {
              console.log(response.data);
              name.value = response.data.name;
@@ -28,7 +29,7 @@
         <div class="columns">
             <div class="column">
                 <div id="divNombreArtista">
-                    <h2>{{ name }}Nombre artista</h2>
+                    <h2>{{ name }}</h2>
                 </div>
                 <div id="followButtonDiv">
                     <button v-if="boton" id="followButton">
