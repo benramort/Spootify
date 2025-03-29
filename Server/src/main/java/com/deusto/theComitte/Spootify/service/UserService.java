@@ -113,4 +113,12 @@ public class UserService {
         }
         return user.getSongLists();
     }
+
+    public User getActiveUser(long token) {
+        User user = activeUsers.get(token);
+        if (user == null) {
+            throw new RuntimeException("User not logged in");
+        }
+        return user;
+    }
 }
