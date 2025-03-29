@@ -60,6 +60,14 @@ public class UserService {
     public List<User> getUsers() {
         return userRepository.findAll();
     }
+
+    public User getActiveUser(long token) {
+        User user = activeUsers.get(token);
+        if (user == null) {
+            throw new RuntimeException("User not logged in");
+        }
+        return user;
+    }
     
     public void followArtist(long token, long artistID) {
         User user = activeUsers.get(token);

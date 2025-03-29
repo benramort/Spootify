@@ -10,7 +10,8 @@ const signupName = ref('')
 const signupEmail = ref('')
 const signupPassword = ref('')
 
-let isArtist;
+let isArtist = false;
+const showLogin = ref(true)
 
 const loginEmail = ref('')
 const loginPassword = ref('')
@@ -28,15 +29,16 @@ function login() {
         email: loginEmail.value,
         password: loginPassword.value
     }).then(response => {
-        console.log(response)
-        globalState.token.value = response.data.token
-		globalState.userId.value = response.data.id
-		globalState.isArtist.value = isArtist
-		localStorage.setItem("token", response.data.token)
-		localStorage.setItem("isArtist", isArtist)
-		localStorage.setItem("id", response.data.id)
+        console.log(response);
+		console.log(response.data.token);
+        globalState.token.value = response.data.token;
+		globalState.userId.value = response.data.id;
+		globalState.isArtist.value = isArtist;
+		localStorage.setItem("token", response.data.token);
+		localStorage.setItem("isArtist", isArtist);
+		localStorage.setItem("id", response.data.id);
 		if (isArtist) {
-			router.push("/artist/dashboard")
+			router.push("/artists/dashboard")
 		} else {
 			router.push("/")
 		}
@@ -67,6 +69,7 @@ function createAccount() {
 		password: signupPassword.value
 	}).then(response => {
 		console.log(response)
+		showLogin.value = true
 	}).catch(error => {
 		console.log(error)
 		if (error.status == 409) {
@@ -82,7 +85,7 @@ function createAccount() {
 
 <div class="loginBox">
     <div class="main">  	
-		<input type="checkbox" id="chk" aria-hidden="true" checked @click="errorMessage = ''">
+		<input type="checkbox" id="chk" aria-hidden="true" v-model="showLogin" checked @click="errorMessage = ''">
 
 			<div class="signup">
 				<form @submit.prevent="createAccount">

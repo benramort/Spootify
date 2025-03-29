@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.deusto.theComitte.Spootify.DTO.ArtistDTO;
 import com.deusto.theComitte.Spootify.DTO.CreateUserDTO;
 import com.deusto.theComitte.Spootify.DTO.LoginDTO;
+import com.deusto.theComitte.Spootify.DTO.TokenDTO;
 import com.deusto.theComitte.Spootify.DTO.UserDTO;
 import com.deusto.theComitte.Spootify.entity.Artist;
 import com.deusto.theComitte.Spootify.entity.User;
@@ -42,10 +43,12 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Long> login(@RequestBody LoginDTO loginDTO) {
+    public ResponseEntity<TokenDTO> login(@RequestBody LoginDTO loginDTO) {
         try {
             long token = userService.login(loginDTO.email(), loginDTO.password());
-            return ResponseEntity.ok(token);
+            User user = userService.getActiveUser(token);
+            TokenDTO tokenDTO = new TokenDTO(user.getId(), token);
+            return ResponseEntity.ok(tokenDTO);
         } catch (RuntimeException ex) {
             if (ex.getMessage().equals("User does not exist")) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
