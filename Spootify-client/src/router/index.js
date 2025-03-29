@@ -17,7 +17,7 @@ const routes = [
   { path : '/crearAlbum', component: CreateAlbum },
   { path : '/albums/:id', component: Album },
   { path : '/crearPlaylist', component: CreatePlayList },
-  { path: '/playlists/:id', component: Playlist},
+  { path: '/playlists', component: Playlist},
   { path: '/artists/:id', component: ArtistDetail }
 ];
 
