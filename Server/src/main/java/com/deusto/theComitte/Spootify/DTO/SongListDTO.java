@@ -9,13 +9,11 @@ public class SongListDTO {
     private Long id;
     private String name;
     private List<Song> songs = new ArrayList<>();
-    private UserDTO userDTO;
 
     public SongListDTO() {}
 
-    public SongListDTO(String name, UserDTO userDTO) {
+    public SongListDTO(String name) {
         this.name = name;
-        this.userDTO = userDTO;
     }
 
     public Long getId() {
@@ -40,13 +38,5 @@ public class SongListDTO {
 
     public void setSongs(List<Song> songs) {
         this.songs = songs;
-    }
-
-    public UserDTO getUser() {
-        return userDTO;
-    }
-
-    public void setUser(UserDTO userDTO) {
-        this.userDTO = userDTO;
     }
 }

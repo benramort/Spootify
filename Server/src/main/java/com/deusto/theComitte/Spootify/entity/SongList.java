@@ -72,7 +72,6 @@ public class SongList {
         SongListDTO songListDTO = new SongListDTO();
         songListDTO.setId(this.id);
         songListDTO.setName(this.name);
-        songListDTO.setUser(this.user.toDTO());
         return songListDTO;
     }
 }
