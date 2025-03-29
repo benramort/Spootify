@@ -3,8 +3,6 @@ package com.deusto.theComitte.Spootify.DTO;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.deusto.theComitte.Spootify.entity.Song;
-
 public class SongListDTO {
     private Long id;
     private String name;
