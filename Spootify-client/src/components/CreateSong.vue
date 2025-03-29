@@ -1,5 +1,5 @@
 <template>
-    <Modal :isOpen="showModalSong" @close="showModalSong = false">
+    <Modal :isOpen="showModalSong" @close="closeModal">
         <div id="contFormulario">
             <div id="titulo">
                 <p id="crearAlbum">CREAR CANCIÓN</p>
@@ -22,8 +22,9 @@
                     <input id="inputUrl" type="text" placeholder="YouTube URL" required="true" v-model="youtubeUrl">
                 </div>
                 <div id="button">
-                    <button @click="if(validateFields()) {createSong(); $emit('close');}" id="okButton">✔</button>
+                    <button @click="handleCreateSong()" id="okButton">✔</button>
                 </div>
+                <p v-if="errorMessage" id="errorMessage">{{ errorMessage }}</p>
             </div>
         </div>
     </Modal>
@@ -119,6 +120,11 @@ input {
     border-color: white;
     border: 0px;
 }
+
+#errorMessage {
+    color: red;
+    text-align: center;
+}
 </style>
 
 <script setup>
@@ -128,12 +134,12 @@ import axios from 'axios';
 
 const globalState = inject("globalState");
 const showModalSong = ref(false);
-const albumName = ref("");
 const albums = ref([]);
 const songName = ref("");
 const album = ref({});
 const duration = ref(0);
 const youtubeUrl = ref("");
+const errorMessage = ref("");
 
 function validateFields() {
     return (
@@ -143,6 +149,15 @@ function validateFields() {
         duration.value > 0 &&
         youtubeUrl.value.trim() !== ""
     );
+}
+
+function handleCreateSong() {
+    if (!validateFields()) {
+        errorMessage.value = "Todos los campos son obligatorios.";
+        return;
+    }
+    createSong();
+    showModalSong.value = false;
 }
 
 function createSong() {
@@ -177,6 +192,12 @@ function getAlbums() {
         console.log(error);
         return [];
     });
+}
+
+function closeModal() {
+    showModalSong.value = false;
+    errorMessage.value = "";
+    songName.value = "";
 }
 
 onMounted(() => {

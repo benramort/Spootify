@@ -1,5 +1,5 @@
 <template>
-    <Modal :isOpen="showModalAlbum" @close="showModalAlbum = false">
+    <Modal :isOpen="showModalAlbum" @close="closeModal">
         <div id="contFormulario">
             <div id="titulo">
                 <p id="crearAlbum">CREAR ÁLBUM</p>
@@ -9,9 +9,10 @@
                     <input id="inputNombre" type="text" placeholder="Name" v-model="albumName" />
                 </div>
                 <div id="button">
-                    <button @click="if(validateFields()) {createAlbum(); $emit('close');}" id="okButton">✔</button>
+                    <button @click="handleCreateAlbum()" id="okButton">✔</button>
                 </div>
             </div>
+            <p v-if="errorMessage" id="errorMessage">{{ errorMessage }}</p>
         </div>
     </Modal>
 </template>
@@ -101,6 +102,11 @@
     text-align: center;
     margin: 0 auto;
 }
+
+#errorMessage {
+    color: red;
+    text-align: center;
+}
 </style>
 
 <script setup>
@@ -111,9 +117,20 @@ import axios from 'axios';
 const globalState = inject("globalState");
 const showModalAlbum = ref(false);
 const albumName = ref("");
+const errorMessage = ref("");
+
 
 function validateFields() {
     return albumName.value.trim() !== "";
+}
+
+function handleCreateAlbum() {
+    if (!validateFields()) {
+        errorMessage.value = "Todos los campos son obligatorios.";
+        return;
+    }
+    createAlbum();
+    showModalAlbum.value = false;
 }
 
 function createAlbum() {
@@ -126,5 +143,11 @@ function createAlbum() {
     }).catch((error) => {
         console.log(error);
     });
+}
+
+function closeModal() {
+    showModalAlbum.value = false;
+    errorMessage.value = "";
+    albumName.value = "";
 }
 </script>
