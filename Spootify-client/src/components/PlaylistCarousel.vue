@@ -25,7 +25,6 @@
 
     onMounted(() => {
         playlists.value = props.playlists;
-        console.log("playlists: " + playlists.value);
     });
 
     function getPlaylists() {
@@ -35,26 +34,19 @@
         }else if(useRoute().path.startsWith("/artists/")){
             const artistId = useRoute().path.substring(9); // Extract the artist ID from the route
             path = "http://localhost:8081/albums?artist=" + artistId + "&";
-            console.log("path: " + path);
         }
         path = path + "token=" + globalState.token.value;
-        console.log(path);
         axios.get(path).then((response) => {
             albums.value = response.data;
-            console.log(albums.value);
-            console.log(albums.value.length);
         });
     }
-
-
-
 </script>
 
 
 <template>
 
     <div class="carousel">
-        <button class="playlist" v-for="playlist in playlists" :key="playlist.id" v-on:click="console.log('hasfd');router.push('/playlists/' + playlist.id)">
+        <button class="playlist" v-for="playlist in playlists" :key="playlist.id" v-on:click="router.push('/playlists/' + playlist.id)">
             <p>{{ playlist.name }}</p>
         </button>
     </div>
@@ -77,9 +69,22 @@
         justify-content: center;
         align-items: center;
         border: none;
+        transition: all 0.3s ease;
+        background-color: #282828; /* Dark gray like Spotify */
     }
 
     .playlist:hover {
-        background-color: blue;
+        background-color: #333333; /* Slightly lighter on hover */
+        transform: translateY(-5px);
+    }
+
+    .playlist p {
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        margin: 10px 0 0;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 </style>

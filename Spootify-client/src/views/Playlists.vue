@@ -19,21 +19,21 @@ const props = defineProps({
 const playlists = ref([]);
 
 onMounted(() => {
+    if(isNaN(globalState.token.value) || globalState.isArtist.value) {
+        return;
+    }
     let path = "http://localhost:8081/playlists";
     path = path + "?token=" + globalState.token.value;
-    console.log(path);
 
     // Vacía el array antes de agregar nuevas playlists para evitar duplicados
     playlists.value = [];
-    axios.get(path).then((response) => {
-        const uniquePlaylists = response.data.filter(
-            (playlist, index, self) =>
+        axios.get(path).then((response) => {
+            const uniquePlaylists = response.data.filter(
+                (playlist, index, self) =>
                 index === self.findIndex((p) => p.id === playlist.id)
-        );
-        playlists.value = uniquePlaylists;
-        console.log(playlists.value);
-        console.log(playlists.value.length);
-    });
+            );
+            playlists.value = uniquePlaylists;
+        });
 });
 
 function goToPlaylist(id) {
@@ -42,7 +42,10 @@ function goToPlaylist(id) {
 </script>
 
 <template>
-    <div class="main-container">
+    <div id="contMensajeError" v-if="!globalState.token.value || isNaN(globalState.token.value) || globalState.isArtist.value">
+        <p id="mensajeError">Debes iniciar sesión como usuario antes de poder ver tus playlists.</p>
+    </div>
+    <div class="main-container" v-else>
         <div class="grid-container">
             <!-- Renderiza las playlists -->
             <button
@@ -140,6 +143,7 @@ function goToPlaylist(id) {
 i.fa-plus {
     font-size: 2rem;
     margin-bottom: 10px;
+    color: white;
 }
 
 /* Responsive adjustments */
@@ -154,5 +158,17 @@ i.fa-plus {
     .grid-container {
         grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
     }
+}
+
+#contMensajeError {
+    margin: 0 auto;
+    text-align: center;
+}
+
+#mensajeError {
+    color: red;
+    font-weight: bold;
+    font-size: xx-large;
+    font-family: 'Circular', sans-serif;
 }
 </style>
