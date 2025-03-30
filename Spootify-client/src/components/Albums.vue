@@ -1,7 +1,7 @@
 <script setup>
 
     import router from "@/router";
-import axios from "axios";
+    import axios from "axios";
     import {onMounted, inject} from "vue";
     import {ref} from "vue";
     import { useRoute, useRouter } from "vue-router";

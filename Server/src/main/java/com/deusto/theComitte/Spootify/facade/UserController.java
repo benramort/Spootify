@@ -85,12 +85,13 @@ public class UserController {
         }
     }
 
-        @GetMapping("/users/myProfile")
+    @GetMapping("/users/myProfile")
     public ResponseEntity<UserDTO> getMyProfile(@RequestParam long token) {
         try {
             User user = userService.getActiveUser(token);
             return ResponseEntity.ok(user.toDTO());
         } catch (RuntimeException e) {
+            e.printStackTrace();
             if(e.getMessage().equals("User not logged in")) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }

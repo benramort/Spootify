@@ -9,8 +9,6 @@
     let globalState = inject('globalState');
 
     const name = ref("");
-    const showModalAlbum = ref(false);
-    const showModalSong = ref(false);
 
     onMounted(() => {
         let path = "http://localhost:8081/users/myProfile";
@@ -29,8 +27,6 @@
 
 <template>
     <div class="template">
-        <CreateAlbum :isOpen="showModalAlbum" @close="showModalAlbum = false" />
-        <CreateSong :isOpen="showModalSong" @close="showModalSong = false" />
         <h1>Hola, {{ name }}:</h1>
         <div class="columns">
             <div class="column">

@@ -40,7 +40,7 @@ function login() {
 		if (isArtist) {
 			router.push("/artists/dashboard")
 		} else {
-			router.push("/")
+			router.push("/users/dashboard")
 		}
     }).catch(error => {
         console.log(error) // gestionar errores

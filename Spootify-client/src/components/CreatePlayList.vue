@@ -1,18 +1,17 @@
 <template>
-    <Modal :isOpen="showModalAlbum" @close="closeModal">
+    <Modal :isOpen="showModalPlayList" @close="showModalPlayList = false">
         <div id="contFormulario">
             <div id="titulo">
-                <p id="crearAlbum">CREAR ÁLBUM</p>
+                <p id="crearPlayList">CREAR PLAYLIST</p>
             </div>
             <div id="campos">
                 <div id="campoNombre">
-                    <input id="inputNombre" type="text" placeholder="Name" v-model="albumName" />
+                    <input id="inputNombre" type="text" placeholder="Name" v-model="playListName" />
                 </div>
                 <div id="button">
-                    <button @click="handleCreateAlbum()" id="okButton">✔</button>
+                    <button @click="$emit('close'); console.log(playListName); createPlayList();" id="okButton">✔</button>
                 </div>
             </div>
-            <p v-if="errorMessage" id="errorMessage">{{ errorMessage }}</p>
         </div>
     </Modal>
 </template>
@@ -37,14 +36,14 @@
     font-weight: bold;
     margin-bottom: 0px;
     margin-top: 8px;
-    padding-top: 10px;
     padding-bottom: 0px;
 }
 
-
 #campoNombre {
+    display: flex;
+    align-items: center;
     margin: 0 auto;
-    margin-top: 10px;
+    margin-top: 20px;
     margin-bottom: 20px;
     display: inline-block;
 }
@@ -65,24 +64,21 @@
     margin-left: 20px;
 }
 
-#crearAlbum {
+#crearPlayList {
     margin-top: 0px;
-    padding-top: 12px;
+    padding-top: 15px;
     margin: 0 auto;
 }
 
 #button {
     display: inline-block;
     margin-right: 40px;
-    margin-top: 0px;
-    padding-top: 0px;
-    margin-top: 11px;
 }
 
 #okButton {
     background-color: rgb(30, 215, 96);
     color: black;
-    border-radius: 1000px;
+    border-radius: 5px;
     border-color: rgb(30, 215, 96);
     margin-right: 10px;
     width: 30px;
@@ -101,11 +97,7 @@
     margin-top: 0px;
     text-align: center;
     margin: 0 auto;
-}
-
-#errorMessage {
-    color: red;
-    text-align: center;
+    align-items: center;
 }
 </style>
 
@@ -115,39 +107,18 @@ import Modal from "../components/CreateAlbumModal.vue";
 import axios from 'axios';
 
 const globalState = inject("globalState");
-const showModalAlbum = ref(false);
-const albumName = ref("");
-const errorMessage = ref("");
+const showModalPlayList = ref(false);
+const playListName = ref("");
 
-
-function validateFields() {
-    return albumName.value.trim() !== "";
-}
-
-function handleCreateAlbum() {
-    if (!validateFields()) {
-        errorMessage.value = "Todos los campos son obligatorios.";
-        return;
-    }
-    createAlbum();
-    showModalAlbum.value = false;
-}
-
-function createAlbum() {
-    let path = "http://localhost:8081/albums";
+function createPlayList() {
+    let path = "http://localhost:8081/playlists";
     path += "?token=" + globalState.token.value;
-    axios.post(path, {"name": albumName.value}).then((response) => {
+    axios.post(path, { "name": playListName.value }).then((response) => {
         console.log(response);
-        console.log("Album created");
+        console.log("Playlist created");
         location.reload();
     }).catch((error) => {
         console.log(error);
     });
-}
-
-function closeModal() {
-    showModalAlbum.value = false;
-    errorMessage.value = "";
-    albumName.value = "";
 }
 </script>
