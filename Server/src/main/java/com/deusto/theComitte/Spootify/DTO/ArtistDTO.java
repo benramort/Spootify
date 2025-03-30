@@ -53,11 +53,11 @@ public class ArtistDTO {
         this.albums = albums;
     }
 
-    public List<UserDTO> getFollwersList() {
+    public List<UserDTO> getFollowersList() {
         return followersList;
     }
-    public void setFollwersList(List<UserDTO> follwersList) {
-        this.followersList = follwersList;
+    public void setFollowersList(List<UserDTO> followersList) {
+        this.followersList = followersList;
     }
 
 }

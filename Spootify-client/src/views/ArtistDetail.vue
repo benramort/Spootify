@@ -16,9 +16,10 @@
     onMounted(() => {
          let path = "http://localhost:8081/artists/" + route.params.id;
          axios.get(path).then((response) => {
-             artist.value = response.data;
-             isLoaded.value = true;
-             chechFollow();
+            console.log(response.data);
+            artist.value = response.data;
+            isLoaded.value = true;
+            chechFollow();
          }).catch((error) => {
              console.log(error);
          });
@@ -36,18 +37,17 @@
     function chechFollow(){
         console.log("chechFollow");
         console.log(artist.value);
-        console.log(artist.value.follwersList);
-        artist.value.follwersList.forEach((followedArtist) => {
-
-            if (followedArtist.id == globalState.user.value.id) {
+        console.log("ueadafds");
+        console.log(artist.value.followersList.length);
+        artist.value.followersList.forEach((follower) => {
+            if (follower.id == globalState.userId.value) {
                 console.log("artistaSeguido");
-                
                 isFollowing.value = true;
             }
         });
     }
     function followArtist() {
-        let path = "http://localhost:8081/artists/" + artist.value.id + "/follow";
+        let path = "http://localhost:8081/artists/" + artist.value.id + "/followers";
         path += "?token=" + globalState.token.value;
         axios.post(path).then((response) => {
             console.log(response.data);
