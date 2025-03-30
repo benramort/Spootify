@@ -139,6 +139,7 @@ onMounted(() => {
 i.fa-plus {
     font-size: 2rem;
     margin-bottom: 10px;
+    color: white;
 }
 
 /* Responsive adjustments */
