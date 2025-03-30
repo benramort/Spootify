@@ -8,17 +8,22 @@
     const globalState = inject('globalState')
 
     const props = defineProps({
-        path: {
-            type: String,
-            default: "songs"
+        songs: {
+            type: Array,
+            default: null
         }
-
-        
     })
 
     let songs = ref([]) //ref añade reactividad
     onMounted(() => {
-        console.log(globalState);
+        if (props.songs == null) {
+            getSongs();
+        } else {
+            songs.value = props.songs;
+        }
+    });
+
+    function getSongs() {
         let actualPath = useRoute().path;
         let path = "http://localhost:8081/songs?";
         if (actualPath == "/artists/dashboard") {
@@ -26,25 +31,19 @@
         }else if (useRoute().path.startsWith("/artists/")){
             const artistId = useRoute().path.substring(9); // Extract the artist ID from the route
             path = "http://localhost:8081/songs?artistId=" + artistId + "&";
-            console.log("path: " + path);
-
         }
-        path = path+"token="+globalState.token.value
-        console.log(path)
+        path = path + "token="+globalState.token.value
         axios.get(path).then((response) => {
             songs.value = response.data;
-            console.log(songs.value);
             songs.value.forEach((song) => {
                 song.duration = printDuration(song.duration);
             });
         });
-    });
-
-    function openLink(link) {
-        // console.log(link);
-        window.open(link, "_blank");
     }
 
+    function openLink(link) {
+        window.open(link, "_blank");
+    }
 </script>
 
 
@@ -110,13 +109,13 @@
         margin: 0.3em;
     }
 
-    /* i {
+    i {
         transition: .2s ease-in;
     }
 
     i:hover{
 	    color: rgb(22, 164, 72);
-    } */
+    }
 
     a {
         color: black;

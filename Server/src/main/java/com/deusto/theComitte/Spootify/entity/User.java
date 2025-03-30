@@ -62,7 +62,7 @@ public class User extends GenericUser {
     }
 
     public UserDTO toDTOWithoutFollowing(){
-        return new UserDTO(this.id, this.name, null);
+        return new UserDTO(this.id, this.name, null,null);
     }
 
  

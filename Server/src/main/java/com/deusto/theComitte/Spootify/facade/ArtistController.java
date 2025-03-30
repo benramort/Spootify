@@ -67,7 +67,7 @@ public class ArtistController {
             if(e.getMessage().equals("Artist does not exist")) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             } else if(e.getMessage().equals("Incorrect password")) {
-                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -80,7 +80,7 @@ public class ArtistController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (RuntimeException e) {
             if(e.getMessage().equals("Artist not logged in")) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -98,7 +98,7 @@ public class ArtistController {
         } catch (RuntimeException e) {
             e.printStackTrace();
             if(e.getMessage().equals("Artist not logged in")) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -111,7 +111,7 @@ public class ArtistController {
             return ResponseEntity.ok(artist.toDTOWithoutAlbums());
         } catch (RuntimeException e) {
             if(e.getMessage().equals("Artist not logged in")) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -139,7 +139,7 @@ public class ArtistController {
         } catch (RuntimeException ex) {
             ex.printStackTrace();
             if (ex.getMessage().equals("User not logged in")) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             } else if (ex.getMessage().equals("Artist does not exist")){
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }

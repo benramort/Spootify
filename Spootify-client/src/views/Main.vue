@@ -1,9 +1,10 @@
 <script setup>
     import Prueba from '../components/Songs.vue';
+    import Login from '../views/Login.vue'
 </script>
 
 <template>
-    <h1>Hola, NombreDeUsuario:</h1>
+    <!-- <h1>Hola, NombreDeUsuario:</h1>
     <div class="columns">
         <div class="column">
 
@@ -12,6 +13,13 @@
             <Prueba path="songs"/>
         </div>
 
+    </div> -->
+
+    <div id="contLogo">
+
+    </div>
+    <div id="contLoggearse">
+        <Login/>
     </div>
 
 </template>

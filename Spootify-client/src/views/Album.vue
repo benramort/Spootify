@@ -15,9 +15,7 @@
     function fetchAlbumDetails() {
         let path = "http://localhost:8081/albums/" + route.params.id;
         axios.get(path).then((response) => {
-            console.log(response.data);
             album.value = response.data;
-            console.log(album.value);
             album.value.songs.forEach((song) => {
                 song.duration = printDuration(song.duration);
             });
@@ -141,6 +139,4 @@
     a:hover {
         text-decoration: underline;
     }
-
-    
 </style>

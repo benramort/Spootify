@@ -13,10 +13,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.deusto.theComitte.Spootify.DTO.ArtistDTO;
 import com.deusto.theComitte.Spootify.DTO.CreateUserDTO;
 import com.deusto.theComitte.Spootify.DTO.LoginDTO;
 import com.deusto.theComitte.Spootify.DTO.TokenDTO;
 import com.deusto.theComitte.Spootify.DTO.UserDTO;
+import com.deusto.theComitte.Spootify.entity.Artist;
 import com.deusto.theComitte.Spootify.entity.User;
 import com.deusto.theComitte.Spootify.service.UserService;
 
@@ -51,7 +53,7 @@ public class UserController {
             if (ex.getMessage().equals("User does not exist")) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             } else if (ex.getMessage().equals("Incorrect password")) {
-                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -64,7 +66,7 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (RuntimeException ex) {
             if (ex.getMessage().equals("User not logged in")) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -93,7 +95,7 @@ public class UserController {
         } catch (RuntimeException e) {
             e.printStackTrace();
             if(e.getMessage().equals("User not logged in")) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
