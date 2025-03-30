@@ -19,9 +19,9 @@ public class Artist extends GenericUser {
     @Column(nullable = false)
     protected long followers;    
     
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.PERSIST}, fetch = FetchType.EAGER)
     @JoinTable(
-    name = "Followers",
+    name = "followersList",
     joinColumns = @JoinColumn(name = "artist_id"),
     inverseJoinColumns = @JoinColumn(name = "user_id")
 )private List<User> followersList;
@@ -82,5 +82,13 @@ public class Artist extends GenericUser {
 
     public List<User> getFollowersList() {
         return followersList;
+    }
+
+    public void followArtist(User user) {
+        if (!this.followersList.contains(user)) {
+            this.followersList.add(user);
+            user.getFollowList().add(this);
+            this.setFollowers(this.getFollowers() + 1);
+        }
     }
 }

@@ -11,12 +11,14 @@
 
     const artist = ref("");
     const isLoaded = ref(false);
+    const isFollowing = ref(false);
 
     onMounted(() => {
          let path = "http://localhost:8081/artists/" + route.params.id;
          axios.get(path).then((response) => {
              artist.value = response.data;
              isLoaded.value = true;
+             chechFollow();
          }).catch((error) => {
              console.log(error);
          });
@@ -29,6 +31,26 @@
         });
         return allSongs;
     }
+
+
+    function chechFollow(){
+        artist.value.userFollows.forEach((followedArtist) => {
+            if (followedArtist.id == artist.value.id) {
+                isFollowing.value = true;
+            }
+        });
+    }
+    function followArtist() {
+        let path = "http://localhost:8081/artists/" + artist.value.id + "/follow";
+        path += "?token=" + globalState.token.value;
+        axios.post(path).then((response) => {
+            console.log(response.data);
+            isFollowing.value = true;
+        }).catch((error) => {
+            console.log(error);
+        });
+    }
+
 </script>
 
 <template>
@@ -39,8 +61,14 @@
         <div class="columns">
             <div class="column">
                 <div id="followButtonDiv">
-                    <button id="followButton">
-                        Follow
+                    <button 
+                        id="followButton" 
+                        :disabled="isFollowing" 
+                        @click="followArtist"
+                        
+
+                    >
+                        {{ isFollowing ? "Following" : "Follow" }}
                     </button>
                     <div class="artistInformation" v-if="isLoaded">
                         <div class="informationField">
@@ -167,5 +195,11 @@
     .informationField p {
         margin: 0.5em; /* Remove default margin */
     }
+
+    button:disabled {
+    background: rgb(113, 115, 114);
+    cursor: not-allowed;
+    opacity: 0.6;
+}
 
 </style>
