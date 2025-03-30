@@ -39,7 +39,7 @@ onMounted(() => {
 
 <template>
     <div id="contMensajeError" v-if="!globalState.token.value || isNaN(globalState.token.value) || globalState.isArtist.value">
-        <p id="mensajeError">Debes iniciar sesión antes de poder ver tus playlists.</p>
+        <p id="mensajeError">Debes iniciar sesión como usuario antes de poder ver tus playlists.</p>
     </div>
     <div class="main-container" v-else>
         <div class="grid-container">

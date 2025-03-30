@@ -1,6 +1,23 @@
 <script setup>
-    import Prueba from '../components/Songs.vue';
+    import { inject, onMounted } from 'vue';
+import Prueba from '../components/Songs.vue';
     import Login from '../views/Login.vue'
+import router from '@/router';
+
+    const globalState = inject('globalState');
+
+    onMounted(() => {
+        if(isNaN(globalState.token.value)) {
+            return;
+        } else {
+            if(globalState.isArtist.value) {
+                router.push('/artists/dashboard');
+            } else {
+                router.push('/users/dashboard')
+            }
+        }
+
+    });
 </script>
 
 <template>
