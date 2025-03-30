@@ -22,7 +22,6 @@
     const albums = ref([]);
 
     onMounted(() => {
-        console.log(props.albums);
         if (props.albums == null) {
             getAlbums();
         } else {
@@ -36,16 +35,12 @@
         if (useRoute().path == "/artists/dashboard") {
             path = "http://localhost:8081/albums?artist=" + globalState.userId.value + "&";
         }else if(useRoute().path.startsWith("/artists/")){
-            const artistId = useRoute().path.substring(9); // Extract the artist ID from the route
+            const artistId = useRoute().path.substring(9);
             path = "http://localhost:8081/albums?artist=" + artistId + "&";
-            console.log("path: " + path);
         }
         path = path + "token=" + globalState.token.value;
-        console.log(path);
         axios.get(path).then((response) => {
             albums.value = response.data;
-            console.log(albums.value);
-            console.log(albums.value.length);
         });
     }
 

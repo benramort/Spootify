@@ -176,19 +176,12 @@ function handleCreateSong() {
 function createSong() {
     let path = "http://localhost:8081/songs";
     path += "?token=" + globalState.token.value;
-    console.log("songName: " + songName.value);
-    console.log("ID: " + album.value.id);
-    console.log("Name: " + album.value.name);
-    console.log("Duration: " + duration.value);
-    console.log("Youtube URL: " + youtubeUrl.value);
     axios.post(path, {
         "title": songName.value,
         "album":{"id": album.value.id, "name": album.value.name},
         "duration": duration.value,
         "youtubeUrl": youtubeUrl.value
     }).then((response) => {
-        console.log(response);
-        console.log("Album created");
         location.reload();
     }).catch((error) => {
         console.log(error);
@@ -200,7 +193,6 @@ function getAlbums() {
     path += "?artist=" + globalState.userId.value;
     return axios.get(path).then((response) => {
         albums.value = response.data;
-        console.log("Albums: ", albums.value);
     }).catch((error) => {
         console.log(error);
         return [];

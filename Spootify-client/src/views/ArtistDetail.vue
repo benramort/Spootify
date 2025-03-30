@@ -14,12 +14,9 @@
 
     onMounted(() => {
          let path = "http://localhost:8081/artists/" + route.params.id;
-         console.log("Path detalle:"+path);
          axios.get(path).then((response) => {
-             console.log(response.data);
              artist.value = response.data;
              isLoaded.value = true;
-             console.log(artist.value);
          }).catch((error) => {
              console.log(error);
          });
@@ -73,9 +70,6 @@
 
 
 <style scoped>
-
-
-
     .columns {
         display: flex;
         justify-content: space-between;

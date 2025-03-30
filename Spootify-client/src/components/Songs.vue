@@ -12,8 +12,6 @@
             type: Array,
             default: null
         }
-
-        
     })
 
     let songs = ref([]) //ref añade reactividad
@@ -26,7 +24,6 @@
     });
 
     function getSongs() {
-        console.log(globalState);
         let actualPath = useRoute().path;
         let path = "http://localhost:8081/songs?";
         if (actualPath == "/artists/dashboard") {
@@ -34,13 +31,10 @@
         }else if (useRoute().path.startsWith("/artists/")){
             const artistId = useRoute().path.substring(9); // Extract the artist ID from the route
             path = "http://localhost:8081/songs?artistId=" + artistId + "&";
-            console.log("path: " + path);
         }
-        path = path+"token="+globalState.token.value
-        console.log(path)
+        path = path + "token="+globalState.token.value
         axios.get(path).then((response) => {
             songs.value = response.data;
-            console.log(songs.value);
             songs.value.forEach((song) => {
                 song.duration = printDuration(song.duration);
             });
@@ -48,10 +42,8 @@
     }
 
     function openLink(link) {
-        // console.log(link);
         window.open(link, "_blank");
     }
-
 </script>
 
 

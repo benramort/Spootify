@@ -24,7 +24,6 @@ onMounted(() => {
     }
     let path = "http://localhost:8081/playlists";
     path = path + "?token=" + globalState.token.value;
-    console.log(path);
 
     // Vacía el array antes de agregar nuevas playlists para evitar duplicados
     playlists.value = [];

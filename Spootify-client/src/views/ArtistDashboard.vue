@@ -16,9 +16,7 @@
         let path = "http://localhost:8081/artists/myProfile";
         path += "?token=" + globalState.token.value;
         axios.get(path).then((response) => {
-            console.log(response.data);
             name.value = response.data.name;
-            console.log(name.value);
         }).catch((error) => {
             console.log(error);
         });

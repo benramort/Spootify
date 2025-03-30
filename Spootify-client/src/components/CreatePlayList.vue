@@ -9,7 +9,7 @@
                     <input id="inputNombre" type="text" placeholder="Name" v-model="playListName" />
                 </div>
                 <div id="button">
-                    <button @click="$emit('close'); console.log(playListName); createPlayList();" id="okButton">✔</button>
+                    <button @click="$emit('close'); createPlayList();" id="okButton">✔</button>
                 </div>
             </div>
         </div>
@@ -114,8 +114,6 @@ function createPlayList() {
     let path = "http://localhost:8081/playlists";
     path += "?token=" + globalState.token.value;
     axios.post(path, { "name": playListName.value }).then((response) => {
-        console.log(response);
-        console.log("Playlist created");
         location.reload();
     }).catch((error) => {
         console.log(error);
