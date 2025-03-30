@@ -148,7 +148,7 @@ public class UserService {
         SongList songList = new SongList(name, user);
         user.addSongList(songList);
         userRepository.save(user);
-        songListRepository.save(songList);
+        //songListRepository.save(songList);
     }
 
     public List<SongList> getPlayLists(long userId) {
