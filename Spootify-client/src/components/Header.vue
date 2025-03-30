@@ -58,6 +58,10 @@
 </template>
 
 <style scoped>
+.header {
+  font-family: 'Circular', sans-serif;
+}
+
 #titulo {
   color: white;
   align-self: center;
