@@ -69,9 +69,22 @@
         justify-content: center;
         align-items: center;
         border: none;
+        transition: all 0.3s ease;
+        background-color: #282828; /* Dark gray like Spotify */
     }
 
     .playlist:hover {
-        background-color: blue;
+        background-color: #333333; /* Slightly lighter on hover */
+        transform: translateY(-5px);
+    }
+
+    .playlist p {
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        margin: 10px 0 0;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 </style>

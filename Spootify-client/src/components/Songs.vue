@@ -109,13 +109,13 @@
         margin: 0.3em;
     }
 
-    /* i {
+    i {
         transition: .2s ease-in;
     }
 
     i:hover{
 	    color: rgb(22, 164, 72);
-    } */
+    }
 
     a {
         color: black;
