@@ -35,6 +35,10 @@ onMounted(() => {
         console.log(playlists.value.length);
     });
 });
+
+function goToPlaylist(id) {
+    router.push(`/playlists/${id}`); // Navega a la ruta de la playlist con su ID
+}
 </script>
 
 <template>
@@ -45,7 +49,7 @@ onMounted(() => {
                 class="playlist"
                 v-for="playlist in playlists"
                 :key="playlist.id"
-                @click="router.push('/playlists/' + playlist.id)"
+                @click="goToPlaylist(playlist.id)"
             >
                 <p>{{ playlist.name }}</p>
             </button>

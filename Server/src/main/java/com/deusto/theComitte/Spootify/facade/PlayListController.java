@@ -86,4 +86,21 @@ public class PlayListController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<SongListDTO> getPlaylistById(@RequestParam long token, @PathVariable Long id) {
+        try {
+            SongListDTO playlist = userService.getPlaylistById(token, id);
+            if (playlist != null) {
+                return ResponseEntity.ok(playlist);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+        } catch (RuntimeException e) {
+            if (e.getMessage().equals("User not logged in")) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 }

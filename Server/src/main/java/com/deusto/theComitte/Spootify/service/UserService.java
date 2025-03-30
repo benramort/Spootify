@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.deusto.theComitte.Spootify.DAO.UserRepository;
+import com.deusto.theComitte.Spootify.DTO.SongListDTO;
 import com.deusto.theComitte.Spootify.DAO.ArtistRepository;
 import com.deusto.theComitte.Spootify.DAO.PlayListRepository;
 import com.deusto.theComitte.Spootify.DAO.SongRepository;
@@ -159,5 +160,16 @@ public class UserService {
         return user.getSongLists();
     }
 
-
+    public SongListDTO getPlaylistById(long userId, long songListId) {
+        User user = activeUsers.get(userId);
+        if (user == null) {
+            throw new RuntimeException("User does not exist");
+        }
+        for (SongList songList : user.getSongLists()) {
+            if (songList.getId().equals(songListId)) {
+                return songList.toDTO();
+            }
+        }
+        throw new RuntimeException("SongList does not exist");
+    }
 }
