@@ -58,12 +58,10 @@
     .columns {
         display: flex;
         justify-content: space-between;
-        border: 4px solid rgb(30, 215, 96);
         height: 100%;
     }
 
     .column {
-        border: 2px solid black;
         width: 50%;
         height: 68vh;
     }

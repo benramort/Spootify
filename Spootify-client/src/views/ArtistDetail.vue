@@ -11,12 +11,15 @@
 
     const artist = ref("");
     const isLoaded = ref(false);
+    const isFollowing = ref(false);
 
     onMounted(() => {
          let path = "http://localhost:8081/artists/" + route.params.id;
          axios.get(path).then((response) => {
-             artist.value = response.data;
-             isLoaded.value = true;
+            console.log(response.data);
+            artist.value = response.data;
+            isLoaded.value = true;
+            chechFollow();
          }).catch((error) => {
              console.log(error);
          });
@@ -29,6 +32,31 @@
         });
         return allSongs;
     }
+
+
+    function chechFollow(){
+        console.log("chechFollow");
+        console.log(artist.value);
+        console.log("ueadafds");
+        console.log(artist.value.followersList.length);
+        artist.value.followersList.forEach((follower) => {
+            if (follower.id == globalState.userId.value) {
+                console.log("artistaSeguido");
+                isFollowing.value = true;
+            }
+        });
+    }
+    function followArtist() {
+        let path = "http://localhost:8081/artists/" + artist.value.id + "/followers";
+        path += "?token=" + globalState.token.value;
+        axios.post(path).then((response) => {
+            console.log(response.data);
+            isFollowing.value = true;
+        }).catch((error) => {
+            console.log(error);
+        });
+    }
+
 </script>
 
 <template>
@@ -39,13 +67,19 @@
         <div class="columns">
             <div class="column">
                 <div id="followButtonDiv">
-                    <button id="followButton">
-                        Follow
+                    <button 
+                        id="followButton" 
+                        :disabled="isFollowing" 
+                        @click="followArtist"
+                        
+
+                    >
+                        {{ isFollowing ? "Following" : "Follow" }}
                     </button>
                     <div class="artistInformation" v-if="isLoaded">
                         <div class="informationField">
                             <p>Followers:</p>
-                            <p>5</p>
+                            <p>{{ artist.followersList.length }}</p>
                         </div>
                         <div class="informationField">
                             <p>Albums:</p>
@@ -61,7 +95,7 @@
 
             </div>
             <div class="column">
-                <Songs /> <!-- Esto no va de momento, cambiarlo va a doler-->
+                <Songs />
             </div>
         </div>
     </div>
@@ -73,12 +107,10 @@
     .columns {
         display: flex;
         justify-content: space-between;
-        border: 5px solid blue;
         height: 100%;
     }
 
     .column {
-        border: 2px solid red;
         width: 50%;
         height: 68vh;
     }
@@ -147,6 +179,9 @@
         margin-top: 15px;
         
     }
+    #divAlbums {
+    margin-top: 100px; /* Ajusta el valor según sea necesario */
+}
 
     .informationField {
         display: flex;
@@ -164,5 +199,11 @@
     .informationField p {
         margin: 0.5em; /* Remove default margin */
     }
+
+    button:disabled {
+    background: rgb(113, 115, 114);
+    cursor: not-allowed;
+    opacity: 0.6;
+}
 
 </style>
