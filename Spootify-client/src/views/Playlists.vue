@@ -19,27 +19,28 @@ const props = defineProps({
 const playlists = ref([]);
 
 onMounted(() => {
+    if(isNaN(globalState.token.value) || globalState.isArtist.value) {
+        return;
+    }
     let path = "http://localhost:8081/playlists";
     path = path + "?token=" + globalState.token.value;
     console.log(path);
 
     // Vacía el array antes de agregar nuevas playlists para evitar duplicados
     playlists.value = [];
-    axios.get(path).then((response) => {
-        const uniquePlaylists = response.data.filter(
-            (playlist, index, self) =>
+        axios.get(path).then((response) => {
+            const uniquePlaylists = response.data.filter(
+                (playlist, index, self) =>
                 index === self.findIndex((p) => p.id === playlist.id)
-        );
-        playlists.value = uniquePlaylists;
-        console.log(playlists.value);
-        console.log(playlists.value.length);
-    });
+            );
+            playlists.value = uniquePlaylists;
+        });
 });
 </script>
 
 <template>
     <div id="contMensajeError" v-if="!globalState.token.value || isNaN(globalState.token.value) || globalState.isArtist.value">
-        <p id="mensajeError">Debes iniciar sesión antes de poder ver tus playlist.</p>
+        <p id="mensajeError">Debes iniciar sesión antes de poder ver tus playlists.</p>
     </div>
     <div class="main-container" v-else>
         <div class="grid-container">
