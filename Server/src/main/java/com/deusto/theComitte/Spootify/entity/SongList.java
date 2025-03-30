@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.query.sqm.CastType;
+
 import com.deusto.theComitte.Spootify.DTO.SongDTO;
 import com.deusto.theComitte.Spootify.DTO.SongListDTO;
 
@@ -26,7 +28,7 @@ public class SongList {
     )
     private List<Song> songs = new ArrayList<>();
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
