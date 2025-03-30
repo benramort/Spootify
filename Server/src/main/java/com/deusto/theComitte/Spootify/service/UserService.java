@@ -79,6 +79,7 @@ public class UserService {
             throw new RuntimeException("Artist does not exist");
         }
         user.getFollowList().add(artist);
+        artist.getFollowersList().add(user);
         userRepository.save(user);
         artist.setFollowers(artist.getFollowers() + 1);
         artistRepository.save(artist);

@@ -47,10 +47,12 @@ public class ArtistController {
             artistService.createArtist(artistDTO.name(), artistDTO.email(), artistDTO.password());
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (RuntimeException e){
+            e.printStackTrace();
             if(e.getMessage().equals("Artist already exists")) {
                 return new ResponseEntity<>(HttpStatus.CONFLICT);
             }
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            
         }
     }
 
@@ -141,6 +143,7 @@ public class ArtistController {
             } else if (ex.getMessage().equals("Artist does not exist")){
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
+
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST); 
         }
     }
@@ -150,7 +153,7 @@ public class ArtistController {
     public ResponseEntity<ArtistDTO> getArtist(@PathVariable long id) {
         try {
             Artist artist = artistService.getArtist(id);
-            return ResponseEntity.ok(artist.toDTO());
+            return ResponseEntity.ok(artist.toDTOWithFollowers());
         } catch (RuntimeException e) {
             if(e.getMessage().equals("Artist does not exist")) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);

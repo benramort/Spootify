@@ -26,10 +26,10 @@
 
 <template>
     <div class="template">
+        <h1>{{ name }}</h1>
         <div class="columns">
             <div class="column">
                 <div id="divNombreArtista">
-                    <h2>{{ name }}</h2>
                 </div>
                 <div id="followButtonDiv">
                     <button v-if="boton" id="followButton">
@@ -50,7 +50,6 @@
             </div>
             <div class="column">
                 <div id="top5SongsDiv">
-                    <h3>{{name}} songs</h3>
                     <Songs />
                 </div>
 
@@ -80,7 +79,7 @@
 
     button {
         width: 49%;
-        height: 100%;
+        height: 150%;
         margin: 10px auto;
         display: flex;
         flex-direction: column;
@@ -141,5 +140,8 @@
 
         
     }
+    #divAlbums {
+    margin-top: 100px; /* Ajusta el valor según sea necesario */
+}
 
 </style>
