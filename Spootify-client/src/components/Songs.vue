@@ -56,7 +56,7 @@
                     <p><b>{{ song.title }}</b></p>
                     <p><span class="name"><router-link :to="`/artists/${song.album.artists[0].id}`">{{ song.album.artists[0].name}}</router-link></span> - <span class="album"><router-link :to="`/albums/${song.album.id}`"><em>{{ song.album.name }}</em></router-link></span></p>
                 </div>
-                <p>{{  song.duration }}</p>
+                <p>{{ song.duration }}</p>
             </div>
         </div>
     </div>
