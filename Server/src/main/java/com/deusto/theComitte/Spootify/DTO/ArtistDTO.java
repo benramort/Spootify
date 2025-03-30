@@ -8,7 +8,7 @@ public class ArtistDTO {
     private String name;
     private long followers;
     private List<AlbumDTO> albums;
-    private List<UserDTO> follwersList;
+    private List<UserDTO> followersList;
 
     public ArtistDTO() {
     }
@@ -18,7 +18,7 @@ public class ArtistDTO {
         this.name = name;
         this.followers = followers;
         this.albums = albums;
-        this.follwersList= followersList;
+        this.followersList= followersList;
     }
 
     public long getId() {
@@ -54,10 +54,10 @@ public class ArtistDTO {
     }
 
     public List<UserDTO> getFollwersList() {
-        return follwersList;
+        return followersList;
     }
     public void setFollwersList(List<UserDTO> follwersList) {
-        this.follwersList = follwersList;
+        this.followersList = follwersList;
     }
 
 }

@@ -34,8 +34,14 @@
 
 
     function chechFollow(){
-        artist.value.userFollows.forEach((followedArtist) => {
-            if (followedArtist.id == artist.value.id) {
+        console.log("chechFollow");
+        console.log(artist.value);
+        console.log(artist.value.follwersList);
+        artist.value.follwersList.forEach((followedArtist) => {
+
+            if (followedArtist.id == globalState.user.value.id) {
+                console.log("artistaSeguido");
+                
                 isFollowing.value = true;
             }
         });
