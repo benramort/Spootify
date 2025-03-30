@@ -16,9 +16,7 @@
         let path = "http://localhost:8081/artists/myProfile";
         path += "?token=" + globalState.token.value;
         axios.get(path).then((response) => {
-            console.log(response.data);
             name.value = response.data.name;
-            console.log(name.value);
         }).catch((error) => {
             console.log(error);
         });
@@ -60,12 +58,12 @@
     .columns {
         display: flex;
         justify-content: space-between;
-        border: 5px solid blue;
+        border: 4px solid rgb(30, 215, 96);
         height: 100%;
     }
 
     .column {
-        border: 2px solid red;
+        border: 2px solid black;
         width: 50%;
         height: 68vh;
     }
@@ -99,7 +97,6 @@
         justify-content: space-around;
         align-items: center;
         height: 40%;
-        border: 1px solid aquamarine;
     }
 
     .inside-button {

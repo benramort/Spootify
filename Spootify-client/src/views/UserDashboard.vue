@@ -37,7 +37,7 @@
                     <h2>Tus artistas seguidos: </h2>
                     <div class="artist" v-for="artist in user?.userFollows" :key="artist.id">
                         <div class="artist">
-                            <i class="fa-solid fa-music"></i>
+                            <i class="fa-solid fa-user"></i>
                             <router-link :to="`/artists/${artist.id}`">{{ artist.name }}</router-link>
                         </div>
                     </div>
@@ -86,12 +86,12 @@
     .columns {
         display: flex;
         justify-content: space-between;
-        border: 5px solid blue;
+        border: 4px solid rgb(30, 215, 96);
         height: 100%;
     }
 
     .column {
-        border: 2px solid red;
+        border: 2px solid black;
         width: 50%;
         height: 68vh;
         padding-right: 1em;

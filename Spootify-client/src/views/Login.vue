@@ -29,8 +29,6 @@ function login() {
         email: loginEmail.value,
         password: loginPassword.value
     }).then(response => {
-        console.log(response);
-		console.log(response.data.token);
         globalState.token.value = response.data.token;
 		globalState.userId.value = response.data.id;
 		globalState.isArtist.value = isArtist;
@@ -43,7 +41,7 @@ function login() {
 			router.push("/users/dashboard")
 		}
     }).catch(error => {
-        console.log(error) // gestionar errores
+        console.log(error)
 		if (error.status == 404) {
 			if (isArtist) {
 				errorMessage.value = "Artista no encontrado ¿Seguro que eres un artista?"
@@ -68,7 +66,6 @@ function createAccount() {
 		email: signupEmail.value,
 		password: signupPassword.value
 	}).then(response => {
-		console.log(response)
 		showLogin.value = true
 	}).catch(error => {
 		console.log(error)
@@ -104,7 +101,7 @@ function createAccount() {
 
 			<div class="login">
 				<form @submit.prevent="login">
-					<label for="chk" aria-hidden="true">Login</label>
+					<label for="chk" aria-hidden="true" id="loginText">Login</label>
 					<p class="error">{{ errorMessage }}</p>
 					<input type="email" name="email" placeholder="Email" required v-model="loginEmail">
 					<input type="password" name="pswd" placeholder="Password" required v-model="loginPassword">
@@ -112,7 +109,7 @@ function createAccount() {
 						<input type="checkbox" id="artist" v-model="isArtist">
 						<label for="artist" class="checkLabel">Soy un artista</label>
 					</div>
-					<button>Login</button>
+					<button id="loginButton">Login</button>
 				</form>
 			</div>
 	</div>
@@ -121,6 +118,11 @@ function createAccount() {
 </template>
 
 <style scoped>
+
+#loginText {
+	padding-top: 20px;
+	margin-bottom: 40px;
+}
 
 .error {
 	color: red;
@@ -142,6 +144,12 @@ function createAccount() {
 	align-items: center;
 	font-family: 'Jost', sans-serif;
 	border: 1px solid green;
+	/* Add these lines to make it full height and centered */
+    min-height: 100vh; /* Makes it take the full viewport height */
+    width: 100%; /* Ensures it spans the full width */
+    position: absolute; /* Takes it out of normal flow */
+    top: 0; /* Position from the top edge */
+    left: 0; /* Position from the left edge */
 }
 
 .main{
@@ -251,5 +259,7 @@ button:hover{
 	transform: scale(.6);
 }
 
-
+#loginButton {
+	margin-top: 35px;
+}
 </style>

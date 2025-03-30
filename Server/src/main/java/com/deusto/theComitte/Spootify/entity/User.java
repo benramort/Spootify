@@ -61,6 +61,10 @@ public class User extends GenericUser {
         return new UserDTO(this.id, this.name, followListDTO, songListDTOList);
     }
 
+    public UserDTO toDTOWithoutFollowing(){
+        return new UserDTO(this.id, this.name, null,null);
+    }
+
  
     public List<Artist> getFollowList() {
         return this.followList;

@@ -1,8 +1,11 @@
 <template>
     <Modal :isOpen="showModalAlbum" @close="closeModal">
-        <div id="contFormulario">
+        <div :class="['contFormulario', { 'contFormularioError': errorMessage }]">
             <div id="titulo">
-                <p id="crearAlbum">CREAR ÁLBUM</p>
+                <p id="crearAlbum">NUEVO ÁLBUM</p>
+            </div>
+            <div id="mensajeError">
+                <p v-if="errorMessage" id="errorMessage">{{ errorMessage }}</p>
             </div>
             <div id="campos">
                 <div id="campoNombre">
@@ -12,13 +15,12 @@
                     <button @click="handleCreateAlbum()" id="okButton">✔</button>
                 </div>
             </div>
-            <p v-if="errorMessage" id="errorMessage">{{ errorMessage }}</p>
         </div>
     </Modal>
 </template>
 
 <style scoped>
-#contFormulario {
+.contFormulario {
     width: 300px;
     height: 120px;
     border: 2px solid rgb(34, 34, 34);
@@ -26,6 +28,10 @@
     background-color: rgb(34, 34, 34);
     box-shadow: 5px 10px 20px black;
     border-radius: 10px;
+}
+
+.contFormularioError {
+    height: 140px;
 }
 
 #titulo {
@@ -36,21 +42,16 @@
     color: white;
     font-weight: bold;
     margin-bottom: 0px;
-    margin-top: 8px;
+    margin-top: 0px;
     padding-top: 10px;
     padding-bottom: 0px;
 }
-
 
 #campoNombre {
     margin: 0 auto;
     margin-top: 10px;
     margin-bottom: 20px;
     display: inline-block;
-}
-
-#labelNombre {
-    margin-left: 50px;
 }
 
 #inputNombre {
@@ -63,12 +64,6 @@
     margin: 0 auto;
     border: 0px;
     margin-left: 20px;
-}
-
-#crearAlbum {
-    margin-top: 0px;
-    padding-top: 12px;
-    margin: 0 auto;
 }
 
 #button {
@@ -101,11 +96,25 @@
     margin-top: 0px;
     text-align: center;
     margin: 0 auto;
+    margin-left: 10px;
 }
 
 #errorMessage {
     color: red;
     text-align: center;
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+    margin-top: 0px;
+    padding-top: 0px;
+}
+
+#mensajeError {
+    margin: 0 auto;
+    text-align: center;
+    margin-bottom: 5px;
+    padding-bottom: 0px;
+    margin-top: 0px;
+    padding-top: 0px;
 }
 </style>
 
@@ -118,7 +127,6 @@ const globalState = inject("globalState");
 const showModalAlbum = ref(false);
 const albumName = ref("");
 const errorMessage = ref("");
-
 
 function validateFields() {
     return albumName.value.trim() !== "";
@@ -136,9 +144,7 @@ function handleCreateAlbum() {
 function createAlbum() {
     let path = "http://localhost:8081/albums";
     path += "?token=" + globalState.token.value;
-    axios.post(path, {"name": albumName.value}).then((response) => {
-        console.log(response);
-        console.log("Album created");
+    axios.post(path, { "name": albumName.value }).then((response) => {
         location.reload();
     }).catch((error) => {
         console.log(error);

@@ -1,8 +1,11 @@
 <template>
     <Modal :isOpen="showModalSong" @close="closeModal">
-        <div id="contFormulario">
+        <div :class="['contFormulario', { 'contFormularioError': errorMessage }]">
             <div id="titulo">
-                <p id="crearAlbum">CREAR CANCIÓN</p>
+                <p id="crearAlbum">NUEVA CANCIÓN</p>
+            </div>
+            <div>
+                <p v-if="errorMessage" id="errorMessage">{{ errorMessage }}</p>
             </div>
             <div id="campos">
                 <div class="campo" id="campoNombre">
@@ -24,19 +27,22 @@
                 <div id="button">
                     <button @click="handleCreateSong()" id="okButton">✔</button>
                 </div>
-                <p v-if="errorMessage" id="errorMessage">{{ errorMessage }}</p>
             </div>
         </div>
     </Modal>
 </template>
 
 <style scoped>
-#contFormulario {
+.contFormulario {
     width: 300px;
     height: 262px;
     background-color: rgb(34, 34, 34);
     box-shadow: 5px 10px 20px black;
     border-radius: 10px;
+}
+
+.contFormularioError {
+    height: 298px;
 }
 
 #campos {
@@ -54,7 +60,6 @@
     color: white;
     font-weight: bold;
     margin-bottom: 0px;
-    margin-top: 8px;
     padding-bottom: 0px;
     padding-top: 10px;
 }
@@ -105,7 +110,7 @@ input {
 
 #campos {
     display: flex;
-    margin-top: 0px;
+    margin-top: 10px;
     text-align: center;
     margin: 0 auto;
     align-items: center;
@@ -123,6 +128,14 @@ input {
 
 #errorMessage {
     color: red;
+    text-align: center;
+    margin-top: 0px;
+    padding-top: 0px;
+
+}
+
+#mensajeError {
+    margin: 0 auto;
     text-align: center;
 }
 </style>
@@ -163,19 +176,12 @@ function handleCreateSong() {
 function createSong() {
     let path = "http://localhost:8081/songs";
     path += "?token=" + globalState.token.value;
-    console.log("songName: " + songName.value);
-    console.log("ID: " + album.value.id);
-    console.log("Name: " + album.value.name);
-    console.log("Duration: " + duration.value);
-    console.log("Youtube URL: " + youtubeUrl.value);
     axios.post(path, {
         "title": songName.value,
         "album":{"id": album.value.id, "name": album.value.name},
         "duration": duration.value,
         "youtubeUrl": youtubeUrl.value
     }).then((response) => {
-        console.log(response);
-        console.log("Album created");
         location.reload();
     }).catch((error) => {
         console.log(error);
@@ -187,7 +193,6 @@ function getAlbums() {
     path += "?artist=" + globalState.userId.value;
     return axios.get(path).then((response) => {
         albums.value = response.data;
-        console.log("Albums: ", albums.value);
     }).catch((error) => {
         console.log(error);
         return [];

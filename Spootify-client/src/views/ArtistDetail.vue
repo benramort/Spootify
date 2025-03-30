@@ -9,51 +9,93 @@
 
     const route = useRoute();
 
-    const name = ref("");
+    const artist = ref("");
+    const isLoaded = ref(false);
+    const isFollowing = ref(false);
 
     onMounted(() => {
          let path = "http://localhost:8081/artists/" + route.params.id;
-         console.log("Path detalle:"+path);
          axios.get(path).then((response) => {
-             console.log(response.data);
-             name.value = response.data.name;
-             console.log(name.value);
+             artist.value = response.data;
+             isLoaded.value = true;
+             chechFollow();
          }).catch((error) => {
              console.log(error);
          });
     });
+
+    function getAllSongs(albums) {
+        let allSongs = [];
+        albums.forEach((album) => {
+            allSongs = allSongs.concat(album.songs);
+        });
+        return allSongs;
+    }
+
+
+    function chechFollow(){
+        console.log("chechFollow");
+        console.log(artist.value);
+        console.log(artist.value.follwersList);
+        artist.value.follwersList.forEach((followedArtist) => {
+
+            if (followedArtist.id == globalState.user.value.id) {
+                console.log("artistaSeguido");
+                
+                isFollowing.value = true;
+            }
+        });
+    }
+    function followArtist() {
+        let path = "http://localhost:8081/artists/" + artist.value.id + "/follow";
+        path += "?token=" + globalState.token.value;
+        axios.post(path).then((response) => {
+            console.log(response.data);
+            isFollowing.value = true;
+        }).catch((error) => {
+            console.log(error);
+        });
+    }
+
 </script>
 
 <template>
     <div class="template">
+        <div id="divNombreArtista">
+                    <h1>{{ artist.name }}</h1>
+                </div>
         <div class="columns">
             <div class="column">
-                <div id="divNombreArtista">
-                    <h2>{{ name }}</h2>
-                </div>
                 <div id="followButtonDiv">
-                    <button v-if="boton" id="followButton">
-                        Follow
+                    <button 
+                        id="followButton" 
+                        :disabled="isFollowing" 
+                        @click="followArtist"
+                        
+
+                    >
+                        {{ isFollowing ? "Following" : "Follow" }}
                     </button>
-                    <button v-else id="followButton" disabled>
-                        Following
-                    </button>
-                    <button id="followCountButton">
-                        40 Followes
-                    </button>
+                    <div class="artistInformation" v-if="isLoaded">
+                        <div class="informationField">
+                            <p>Followers:</p>
+                            <p>5</p>
+                        </div>
+                        <div class="informationField">
+                            <p>Albums:</p>
+                            <p>{{ artist.albums.length }}</p>
+                        </div>
+
+                    </div>
                 </div>
                 <div id="divAlbums">
                     <h3>Albums</h3>
-                    <Albums />
+                    <Albums v-if="isLoaded" :albums="artist.albums"  />
                 </div>
 
             </div>
             <div class="column">
-                <div id="top5SongsDiv">
-                    <h3>{{name}} songs</h3>
-                    <Songs />
-                </div>
-
+                <Songs /> <!-- Esto no va de momento, cambiarlo va a doler-->
             </div>
         </div>
     </div>
@@ -62,9 +104,6 @@
 
 
 <style scoped>
-
-
-
     .columns {
         display: flex;
         justify-content: space-between;
@@ -79,8 +118,8 @@
     }
 
     button {
-        width: 49%;
-        height: 100%;
+        width: 70%;
+        height: 5em;
         margin: 10px auto;
         display: flex;
         flex-direction: column;
@@ -96,6 +135,7 @@
         transition: .2s ease-in;
         cursor: pointer;
     }
+
     button:disabled{
         background: rgb(113, 115, 114);
         cursor: unset;  
@@ -126,20 +166,46 @@
         font-size: 4em;
     }
 
-    #followButtonDiv {
-    display: flex;
-    justify-content: space-between; /* Adds space between the buttons */
-    align-items: center; /* Aligns buttons vertically in the center */
-    gap: 10px; /* Adds spacing between buttons */
+    .artistInformation {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
     }
 
-    #followCountButton{
-        cursor: unset;  
-    }
-    #followCountButton:hover{
-        background: rgb(30, 215, 96);
-
+    .artistInformation {
+        display: flex;
+        justify-content: center; /* Changed from center to space-around */
+        align-items: center;
+        width: 100%;
+        margin-top: 15px;
         
     }
+    #divAlbums {
+    margin-top: 100px; /* Ajusta el valor según sea necesario */
+}
+
+    .informationField {
+        display: flex;
+        flex-direction: column; /* Stack elements vertically */
+        align-items: center; /* Center horizontally */
+        text-align: center; /* Center text */
+        border-right: 2px solid gray;
+        min-width: 20%;
+    }
+
+    .informationField:last-child {
+        border-right: none; /* Remove right border from the last field */
+    }
+
+    .informationField p {
+        margin: 0.5em; /* Remove default margin */
+    }
+
+    button:disabled {
+    background: rgb(113, 115, 114);
+    cursor: not-allowed;
+    opacity: 0.6;
+}
 
 </style>
