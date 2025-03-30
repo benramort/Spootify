@@ -17,7 +17,7 @@
                 </div>
                 <div class="song-actions">
                     <p>{{ song.duration }}</p>
-                    <button class="add-button" @click="openPlaylistModal(song)">+</button>
+                    <button v-if="globalState.isArtist.value === false" class="add-button" @click="openPlaylistModal(song)">+</button>
                 </div>
             </div>
         </div>
@@ -205,5 +205,18 @@ function addToPlaylist(playlist, song) {
 
 .close-button:hover {
     background-color: darkred;
+}
+
+a {
+    color: black;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+i:hover {
+    color: rgb(22, 164, 72);
 }
 </style>

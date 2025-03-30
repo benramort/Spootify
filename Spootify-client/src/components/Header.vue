@@ -52,8 +52,6 @@
     
     <div class="header-box" v-if="Number.isInteger(globalState.token.value)"><a @click="logout">Log out</a></div>
     <div class="header-box" v-else><router-link to="/login">Log in</router-link></div>
-    <div class="header-box"><router-link to="/playlists">Playlists</router-link></div>
-    <div class="header-box"><router-link to="/crearPlaylist">Crear Playlist</router-link></div>
     </div>
   </div>
 </template>
