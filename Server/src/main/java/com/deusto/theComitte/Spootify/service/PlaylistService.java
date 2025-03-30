@@ -56,42 +56,39 @@ public class PlaylistService {
     }
 
     public void addSongToPlayList(long userId, long songId, long songListId) {
-        User user = userService.getActiveUser(userId);
+        User user = userService.getActiveUser(userId); // Obtén el usuario activo
         if (user == null) {
             throw new RuntimeException("User does not exist");
         }
-        Song song = songRepository.findById(songId);
+    
+        Song song = songRepository.findById(songId); // Busca la canción en la base de datos
         if (song == null) {
             throw new RuntimeException("Song does not exist");
         }
-
-        SongList songList = songListRepository.findById(songListId);
+    
+        SongList songList = songListRepository.findById(songListId); // Busca la playlist en la base de datos
         if (songList == null) {
             throw new RuntimeException("SongList does not exist");
         }
-
-        for(SongList songListAnadir : user.getSongLists()) {
-            if (songListAnadir.getId().equals(songListId)) {
-                songListAnadir.getSongs().add(song);
-                songListAnadir.setUser(user);
-                return;
-            }
-        }
+    
+        // Añade la canción a la playlist
         songList.getSongs().add(song);
+    
+        // Guarda la playlist en la base de datos
         songListRepository.save(songList);
-        
+        userRepository.save(user); // Guarda el usuario en la base de datos
     }
 
-    public void createPlayList(long userId, String name) {
-        User user = userService.getActiveUser(userId);
+    public void createPlayList(long token, String name) {
+        User user = userService.getActiveUser(token);
         if (user == null) {
             System.out.println("aaaaaaaaaaaaa");
             throw new RuntimeException("User not logged in");
         }
         SongList songList = new SongList(name, user);
         user.addSongList(songList);
-        userRepository.save(user);
-        //songListRepository.save(songList);
+        //userRepository.save(user);
+        songListRepository.save(songList);
     }
 
     public List<SongList> getPlayLists(long userId) {

@@ -44,6 +44,7 @@
                 </div>
             </div>
             <div class="column">
+                <Songs path="http://localhost:8081/songs?token={{ globalState.token.value }}" />
             </div>
         </div>
     </div>
