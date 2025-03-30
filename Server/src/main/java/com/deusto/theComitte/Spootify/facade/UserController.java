@@ -53,7 +53,7 @@ public class UserController {
             if (ex.getMessage().equals("User does not exist")) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             } else if (ex.getMessage().equals("Incorrect password")) {
-                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -66,7 +66,7 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (RuntimeException ex) {
             if (ex.getMessage().equals("User not logged in")) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -95,7 +95,7 @@ public class UserController {
         } catch (RuntimeException e) {
             e.printStackTrace();
             if(e.getMessage().equals("User not logged in")) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

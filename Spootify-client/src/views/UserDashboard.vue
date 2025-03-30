@@ -5,10 +5,12 @@
     import CreateAlbum from "../components/CreateAlbum.vue";
     import CreateSong from "../components/CreateSong.vue";
     import axios from 'axios';
+    import PlaylistCarousel from '../components/PlaylistCarousel.vue';
 
     let globalState = inject('globalState');
 
-    const name = ref("");
+    const user = ref();
+    const isLoaded = ref(false);
 
     onMounted(() => {
         let path = "http://localhost:8081/users/myProfile";
@@ -16,8 +18,8 @@
         console.log(path);
         axios.get(path).then((response) => {
             console.log(response.data);
-            name.value = response.data.name;
-            console.log(name.value);
+            user.value = response.data;
+            isLoaded.value = true;
         }).catch((error) => {
             console.log(error);
         });
@@ -27,10 +29,18 @@
 
 <template>
     <div class="template">
-        <h1>Hola, {{ name }}:</h1>
+        <h1>Hola, {{ user?.name }}:</h1>
         <div class="columns">
             <div class="column">
-                <div class="botonera">                    
+                <PlaylistCarousel v-if="isLoaded" :playlists="user?.playlists"/>
+                <div class="artists">
+                    <h2>Tus artistas seguidos: </h2>
+                    <div class="artist" v-for="artist in user?.userFollows" :key="artist.id">
+                        <div class="artist">
+                            <i class="fa-solid fa-music"></i>
+                            <router-link :to="`/artists/${artist.id}`">{{ artist.name }}</router-link>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="column">
@@ -43,6 +53,36 @@
 
 <style scoped>
 
+    a {
+        text-decoration: none;
+        color: black;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+    .artist i {
+        font-size: 2em;
+        margin-right: 1.5em;
+    }
+
+    .artist {
+        background-color: rgb(244, 244, 244);
+        border-radius: 1.5em;
+        padding: 0em;
+        margin: 1em;
+        display: flex;
+        align-items: center;
+
+    }
+
+    .artists {
+        height: 100%;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
     .columns {
         display: flex;
         justify-content: space-between;
@@ -54,6 +94,7 @@
         border: 2px solid red;
         width: 50%;
         height: 68vh;
+        padding-right: 1em;
     }
 
     button {

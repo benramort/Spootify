@@ -1,0 +1,85 @@
+<script setup>
+
+    import router from "@/router";
+    import axios from "axios";
+    import {onMounted, inject} from "vue";
+    import {ref} from "vue";
+    import { useRoute, useRouter } from "vue-router";
+
+    const globalState = inject('globalState')
+
+    const props = defineProps({
+        path: {
+            type: String,
+            default: "albums"
+        },
+        playlists: {
+            type: Array,
+            default: null
+        }
+
+
+    })
+
+    const playlists = ref([]);
+
+    onMounted(() => {
+        playlists.value = props.playlists;
+        console.log("playlists: " + playlists.value);
+    });
+
+    function getPlaylists() {
+        let path = "http://localhost:8081/" + props.path + "?";
+        if (useRoute().path == "/artists/dashboard") {
+            path = "http://localhost:8081/albums?artist=" + globalState.userId.value + "&";
+        }else if(useRoute().path.startsWith("/artists/")){
+            const artistId = useRoute().path.substring(9); // Extract the artist ID from the route
+            path = "http://localhost:8081/albums?artist=" + artistId + "&";
+            console.log("path: " + path);
+        }
+        path = path + "token=" + globalState.token.value;
+        console.log(path);
+        axios.get(path).then((response) => {
+            albums.value = response.data;
+            console.log(albums.value);
+            console.log(albums.value.length);
+        });
+    }
+
+
+
+</script>
+
+
+<template>
+
+    <div class="carousel">
+        <button class="playlist" v-for="playlist in playlists" :key="playlist.id" v-on:click="console.log('hasfd');router.push('/playlists/' + playlist.id)">
+            <p>{{ playlist.name }}</p>
+        </button>
+    </div>
+
+</template>
+
+
+<style scoped>
+    .carousel {
+        overflow: auto;
+        white-space: nowrap;
+    }
+
+    .playlist {
+        display: inline-flex;
+        width: 30vh;
+        height: 30vh;
+        margin: 10px;
+        background-color: red;
+        justify-content: center;
+        align-items: center;
+        border: none;
+    }
+
+    .playlist:hover {
+        background-color: blue;
+    }
+</style>
