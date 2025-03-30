@@ -12,12 +12,26 @@
         path: {
             type: String,
             default: "albums"
+        },
+        albums: {
+            type: Array,
+            default: null
         }
     })
 
     const albums = ref([]);
 
     onMounted(() => {
+        console.log(props.albums);
+        if (props.albums == null) {
+            getAlbums();
+        } else {
+            albums.value = props.albums;
+        }
+    });
+
+    function getAlbums() {
+        
         let path = "http://localhost:8081/" + props.path + "?";
         if (useRoute().path == "/artists/dashboard") {
             path = "http://localhost:8081/albums?artist=" + globalState.userId.value + "&";
@@ -25,7 +39,6 @@
             const artistId = useRoute().path.substring(9); // Extract the artist ID from the route
             path = "http://localhost:8081/albums?artist=" + artistId + "&";
             console.log("path: " + path);
-    
         }
         path = path + "token=" + globalState.token.value;
         console.log(path);
@@ -34,7 +47,7 @@
             console.log(albums.value);
             console.log(albums.value.length);
         });
-    });
+    }
 
 </script>
 

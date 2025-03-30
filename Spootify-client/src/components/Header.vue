@@ -23,6 +23,7 @@
       localStorage.removeItem("isArtist");
       localStorage.removeItem("id");
       console.log("Logged out");
+      router.push("/login");
     }).catch((error) => {
       console.log(error);
       globalState.token.value = null;
@@ -45,14 +46,15 @@
       <p id="titulo">Spootify</p>
     </div>
     <div class="side">
-    <div class="header-box" v-if="globalState.token.value == 0"><router-link to="/login">Mi perfil</router-link></div>
-    <div class="header-box" v-else><router-link to="/artists/dashboard">Mi perfil</router-link></div>
-    <div class="header-box"><router-link to="/crearAlbum">Home</router-link></div>
-    <div class="header-box"><router-link to="/login">Home</router-link></div>
+    <div class="header-box" v-if="!Number.isInteger(globalState.token.value)"><router-link to="/login">Mi perfil</router-link></div>
+    <div class="header-box" v-else-if="globalState.isArtist.value === true"><router-link to="/artists/dashboard">Mi perfil</router-link></div>
+    <div class="header-box" v-else-if="globalState.isArtist.value === false"><router-link to="/users/dashboard">Mi perfil</router-link></div>
+    
+    <div class="header-box" v-if="!Number.isInteger(globalState.token.value)"><router-link to="/login">Mis playlists</router-link></div>
+    <div class="header-box" v-else><router-link to="/playlists">Mis playlists</router-link></div>
+    
     <div class="header-box" v-if="Number.isInteger(globalState.token.value)"><a @click="logout">Log out</a></div>
     <div class="header-box" v-else><router-link to="/login">Log in</router-link></div>
-    <div class="header-box"><router-link to="/playlists">Playlists</router-link></div>
-    <div class="header-box"><router-link to="/crearPlaylist">Crear Playlist</router-link></div>
     </div>
   </div>
 </template>
@@ -109,7 +111,7 @@ a.router-link-exact-active {
 
 .side {
   display: flex;
-  width: 60%;
+  width: 50%;
   background-color: transparent;
   height: 60px;
 }

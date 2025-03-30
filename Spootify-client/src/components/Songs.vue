@@ -8,9 +8,9 @@
     const globalState = inject('globalState')
 
     const props = defineProps({
-        path: {
-            type: String,
-            default: "songs"
+        songs: {
+            type: Array,
+            default: null
         }
 
         
@@ -18,6 +18,14 @@
 
     let songs = ref([]) //ref añade reactividad
     onMounted(() => {
+        if (props.songs == null) {
+            getSongs();
+        } else {
+            songs.value = props.songs;
+        }
+    });
+
+    function getSongs() {
         console.log(globalState);
         let actualPath = useRoute().path;
         let path = "http://localhost:8081/songs?";
@@ -27,7 +35,6 @@
             const artistId = useRoute().path.substring(9); // Extract the artist ID from the route
             path = "http://localhost:8081/songs?artistId=" + artistId + "&";
             console.log("path: " + path);
-
         }
         path = path+"token="+globalState.token.value
         console.log(path)
@@ -38,7 +45,7 @@
                 song.duration = printDuration(song.duration);
             });
         });
-    });
+    }
 
     function openLink(link) {
         // console.log(link);
