@@ -58,21 +58,6 @@ public class PlayListController {
         }
     }
 
-    // @PostMapping("/{songListId}/songs")
-    // public ResponseEntity<Void> addSongToPlayList(@RequestParam long token, @PathVariable long songListId, @RequestBody SongRequests songIds) {
-    //     try {
-    //         for (long songId : songIds.getSongIds()) {
-    //             userService.addSongToPlayList(token, songId, songListId);
-    //         }
-    //         return new ResponseEntity<>(HttpStatus.OK);
-    //     } catch (RuntimeException e) {
-    //         if (e.getMessage().equals("User not logged in")) {
-    //             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-    //         }
-    //         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    //     }
-    // }
-
     @PostMapping("/{songListId}/songs")
     public ResponseEntity<Void> addSongToPlayList(@RequestParam long token, @PathVariable long songListId, @RequestBody SongDTO song) {
         try {
@@ -90,15 +75,20 @@ public class PlayListController {
     @GetMapping("/{id}")
     public ResponseEntity<SongListDTO> getPlaylistById(@RequestParam long token, @PathVariable Long id) {
         try {
-            SongListDTO playlist = playlistService.getPlaylistById(token, id);
+            SongList playlist = playlistService.getPlaylistById(token, id);
             if (playlist != null) {
-                return ResponseEntity.ok(playlist);
+                return ResponseEntity.ok(playlist.toDTO());
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
             }
         } catch (RuntimeException e) {
+            e.printStackTrace();
             if (e.getMessage().equals("User not logged in")) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            } else if (e.getMessage().equals("SongList does not exist")) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            } else if (e.getMessage().equals("User does not have access to this playlist")) {
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

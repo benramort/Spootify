@@ -87,7 +87,7 @@ public class PlaylistService {
         }
         SongList songList = new SongList(name, user);
         user.addSongList(songList);
-        //userRepository.save(user);
+        userRepository.save(user);
         songListRepository.save(songList);
     }
 
@@ -96,19 +96,22 @@ public class PlaylistService {
         if (user == null) {
             throw new RuntimeException("User does not exist");
         }
-        return user.getSongLists();
+        User updatedUser = userRepository.findById(user.getId()); //Beñat del futuro, busca una manera de hacer esto mejor
+        return updatedUser.getSongLists();
     }
 
-    public SongListDTO getPlaylistById(long userId, long songListId) {
+    public SongList getPlaylistById(long userId, long songListId) {
         User user = userService.getActiveUser(userId);
         if (user == null) {
             throw new RuntimeException("User does not exist");
         }
-        for (SongList songList : user.getSongLists()) {
-            if (songList.getId().equals(songListId)) {
-                return songList.toDTO();
-            }
+        SongList songList = songListRepository.findById(songListId);
+        if (songList == null) {
+            throw new RuntimeException("SongList does not exist");
         }
-        throw new RuntimeException("SongList does not exist");
+        if (songList.getUser().getId() != user.getId()) {
+            throw new RuntimeException("User does not have access to this playlist");
+        }
+        return songList;
     }
 }
