@@ -38,7 +38,10 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="main-container">
+    <div id="contMensajeError" v-if="!globalState.token.value || isNaN(globalState.token.value) || globalState.isArtist.value">
+        <p id="mensajeError">Debes iniciar sesión antes de poder ver tus playlist.</p>
+    </div>
+    <div class="main-container" v-else>
         <div class="grid-container">
             <!-- Renderiza las playlists -->
             <button
@@ -150,5 +153,17 @@ i.fa-plus {
     .grid-container {
         grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
     }
+}
+
+#contMensajeError {
+    margin: 0 auto;
+    text-align: center;
+}
+
+#mensajeError {
+    color: red;
+    font-weight: bold;
+    font-size: xx-large;
+    font-family: 'Circular', sans-serif;
 }
 </style>
