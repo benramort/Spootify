@@ -1,8 +1,11 @@
 <template>
-    <Modal :isOpen="showModalSong" @close="showModalSong = false">
-        <div id="contFormulario">
+    <Modal :isOpen="showModalSong" @close="closeModal">
+        <div :class="['contFormulario', { 'contFormularioError': errorMessage }]">
             <div id="titulo">
-                <p id="crearAlbum">CREAR CANCIÓN</p>
+                <p id="crearAlbum">NUEVA CANCIÓN</p>
+            </div>
+            <div>
+                <p v-if="errorMessage" id="errorMessage">{{ errorMessage }}</p>
             </div>
             <div id="campos">
                 <div class="campo" id="campoNombre">
@@ -22,7 +25,7 @@
                     <input id="inputUrl" type="text" placeholder="YouTube URL" required="true" v-model="youtubeUrl">
                 </div>
                 <div id="button">
-                    <button @click="if(validateFields()) {createSong(); $emit('close');}" id="okButton">✔</button>
+                    <button @click="handleCreateSong()" id="okButton">✔</button>
                 </div>
             </div>
         </div>
@@ -30,12 +33,16 @@
 </template>
 
 <style scoped>
-#contFormulario {
+.contFormulario {
     width: 300px;
     height: 262px;
     background-color: rgb(34, 34, 34);
     box-shadow: 5px 10px 20px black;
     border-radius: 10px;
+}
+
+.contFormularioError {
+    height: 298px;
 }
 
 #campos {
@@ -53,7 +60,6 @@
     color: white;
     font-weight: bold;
     margin-bottom: 0px;
-    margin-top: 8px;
     padding-bottom: 0px;
     padding-top: 10px;
 }
@@ -104,7 +110,7 @@ input {
 
 #campos {
     display: flex;
-    margin-top: 0px;
+    margin-top: 10px;
     text-align: center;
     margin: 0 auto;
     align-items: center;
@@ -119,6 +125,19 @@ input {
     border-color: white;
     border: 0px;
 }
+
+#errorMessage {
+    color: red;
+    text-align: center;
+    margin-top: 0px;
+    padding-top: 0px;
+
+}
+
+#mensajeError {
+    margin: 0 auto;
+    text-align: center;
+}
 </style>
 
 <script setup>
@@ -128,12 +147,12 @@ import axios from 'axios';
 
 const globalState = inject("globalState");
 const showModalSong = ref(false);
-const albumName = ref("");
 const albums = ref([]);
 const songName = ref("");
 const album = ref({});
 const duration = ref(0);
 const youtubeUrl = ref("");
+const errorMessage = ref("");
 
 function validateFields() {
     return (
@@ -143,6 +162,15 @@ function validateFields() {
         duration.value > 0 &&
         youtubeUrl.value.trim() !== ""
     );
+}
+
+function handleCreateSong() {
+    if (!validateFields()) {
+        errorMessage.value = "Todos los campos son obligatorios.";
+        return;
+    }
+    createSong();
+    showModalSong.value = false;
 }
 
 function createSong() {
@@ -177,6 +205,12 @@ function getAlbums() {
         console.log(error);
         return [];
     });
+}
+
+function closeModal() {
+    showModalSong.value = false;
+    errorMessage.value = "";
+    songName.value = "";
 }
 
 onMounted(() => {

@@ -3,33 +3,27 @@ package com.deusto.theComitte.Spootify.DTO;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.deusto.theComitte.Spootify.entity.Song;
-
 public class SongListDTO {
     private Long id;
     private String name;
     private List<SongDTO> songs;
-    private UserDTO userDTO;
 
     public SongListDTO() {}
 
-    public SongListDTO(String name, UserDTO userDTO) {
+    public SongListDTO(String name) {
         this.name = name;
-        this.userDTO = userDTO;
         this.songs = new ArrayList<>();
     }
 
-    public SongListDTO(Long id, String name, UserDTO userDTO) {
+    public SongListDTO(Long id, String name) {
         this.id = id;
         this.name = name;
-        this.userDTO = userDTO;
         this.songs = new ArrayList<>();
     }
 
-    public SongListDTO(Long id, String name, UserDTO userDTO, List<SongDTO> songs) {
+    public SongListDTO(Long id, String name, List<SongDTO> songs) {
         this.id = id;
         this.name = name;
-        this.userDTO = userDTO;
         this.songs = songs;
     }
 
@@ -55,13 +49,5 @@ public class SongListDTO {
 
     public void setSongs(List<SongDTO> songs) {
         this.songs = songs;
-    }
-
-    public UserDTO getUser() {
-        return userDTO;
-    }
-
-    public void setUser(UserDTO userDTO) {
-        this.userDTO = userDTO;
     }
 }

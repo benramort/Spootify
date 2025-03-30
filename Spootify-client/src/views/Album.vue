@@ -40,7 +40,7 @@
     <div class="columns">
         <div class="columnLeft">
             <h2>{{ album.name }}</h2>
-            <p v-for="artist in album.artists">{{ artist.name }}</p>
+            <p v-for="artist in album.artists"><router-link :to="`/artists/${artist.id}`">{{ artist.name }}</router-link></p>
         </div>
         <div class="columnRight">
             <div class="songs">
@@ -122,6 +122,7 @@
     p {
         font-size: 1.2em;
         margin: 0.3em;
+        margin-left: 0;
     }
 
     i {
@@ -131,4 +132,15 @@
     i:hover{
 	    color: rgb(22, 164, 72);
     }
+
+    a {
+        color: black;
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+    
 </style>

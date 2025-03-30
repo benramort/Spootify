@@ -1,6 +1,7 @@
 package com.deusto.theComitte.Spootify.entity;
 
 import com.deusto.theComitte.Spootify.DTO.ArtistDTO;
+import com.deusto.theComitte.Spootify.DTO.SongListDTO;
 import com.deusto.theComitte.Spootify.DTO.UserDTO;
 
 import java.util.ArrayList;
@@ -51,7 +52,13 @@ public class User extends GenericUser {
             followListDTO.add(artistDTO);
         }
 
-        return new UserDTO(this.id, this.name, followListDTO);
+        List<SongListDTO> songListDTOList = new ArrayList<>();
+        for (SongList songList : this.songsList) {
+            SongListDTO songListDTO = songList.toDTO();
+            songListDTOList.add(songListDTO);
+        }
+
+        return new UserDTO(this.id, this.name, followListDTO, songListDTOList);
     }
 
  

@@ -40,7 +40,7 @@ function login() {
 		if (isArtist) {
 			router.push("/artists/dashboard")
 		} else {
-			router.push("/")
+			router.push("/users/dashboard")
 		}
     }).catch(error => {
         console.log(error) // gestionar errores
@@ -50,7 +50,7 @@ function login() {
 			} else {
 				errorMessage.value = "Usuario no encontrado ¿Seguro que no eres un artista?"
 			}
-		} else if (error.status == 401) {
+		} else if (error.status == 403) {
 			errorMessage.value = "Contraseña incorrecta"
 		} else {
 			errorMessage.value = "Error desconocido"
@@ -142,6 +142,12 @@ function createAccount() {
 	align-items: center;
 	font-family: 'Jost', sans-serif;
 	border: 1px solid green;
+	/* Add these lines to make it full height and centered */
+    min-height: 100vh; /* Makes it take the full viewport height */
+    width: 100%; /* Ensures it spans the full width */
+    position: absolute; /* Takes it out of normal flow */
+    top: 0; /* Position from the top edge */
+    left: 0; /* Position from the left edge */
 }
 
 .main{

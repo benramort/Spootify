@@ -89,6 +89,6 @@ public class SongList {
         for (Song song : this.songs) {
             songs.add(new SongDTO(song.getId(), song.getName(), song.getAlbum().toDTOWithoutSongs(), song.getDuration(), song.getYoutubeUrl()));
         }
-        return new SongListDTO(this.id, this.name, this.user.toDTO(), songs);
+        return new SongListDTO(this.id, this.name, songs);
     }
 }
