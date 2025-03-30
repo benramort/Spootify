@@ -145,8 +145,6 @@ function createAlbum() {
     let path = "http://localhost:8081/albums";
     path += "?token=" + globalState.token.value;
     axios.post(path, { "name": albumName.value }).then((response) => {
-        console.log(response);
-        console.log("Album created");
         location.reload();
     }).catch((error) => {
         console.log(error);

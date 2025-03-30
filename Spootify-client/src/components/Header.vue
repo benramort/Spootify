@@ -8,21 +8,18 @@
   const router = useRouter();
 
   function logout() {
-    console.log("Logging out");
     let path = "http://localhost:8081/logout";
     if (globalState.isArtist.value) {
       path = "http://localhost:8081/artists/logout";
     }
     path += "?token=" + globalState.token.value;
     axios.post(path).then((response) => {
-      console.log(response);
       globalState.token.value = null;
       globalState.userId.value = null;
       globalState.isArtist.value = false;
       localStorage.removeItem("token");
       localStorage.removeItem("isArtist");
       localStorage.removeItem("id");
-      console.log("Logged out");
       router.push("/login");
     }).catch((error) => {
       console.log(error);
@@ -95,7 +92,7 @@ a {
 
 /* Style for exact active links (optional) */
 a.router-link-exact-active {
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 .header {
