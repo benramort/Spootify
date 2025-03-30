@@ -74,7 +74,6 @@ public class UserService {
         if (artist == null) {
             throw new RuntimeException("Artist does not exist");
         }
-        user.getFollowList().add(artist);
         artist.followArtist(user);
         userRepository.save(user);
         artistRepository.save(artist);

@@ -22,9 +22,9 @@ public class User extends GenericUser {
 
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
     @JoinTable(
-        name = "ArtistUsers",
+        name = "Following",
         joinColumns = @JoinColumn(name = "user_id"),
-        inverseJoinColumns = @JoinColumn(name = "user2_id")
+        inverseJoinColumns = @JoinColumn(name = "artist_id")
     )
     private List<Artist> followList;
 

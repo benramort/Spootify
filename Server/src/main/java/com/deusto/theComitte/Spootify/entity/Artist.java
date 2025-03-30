@@ -19,12 +19,8 @@ public class Artist extends GenericUser {
     @Column(nullable = false)
     protected long followers;    
     
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.PERSIST}, fetch = FetchType.EAGER)
-    @JoinTable(
-    name = "followersList",
-    joinColumns = @JoinColumn(name = "artist_id"),
-    inverseJoinColumns = @JoinColumn(name = "user_id")
-)private List<User> followersList;
+    @ManyToMany(mappedBy = "followList", fetch = FetchType.EAGER)
+    private List<User> followersList;
 
     public Artist(long id, String name, String email, String password) {
         super(id, name, email, password);
