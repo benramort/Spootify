@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, inject } from "vue";
 import { useRoute } from "vue-router";
 import axios from "axios";
 
@@ -46,21 +46,28 @@ function openLink(link) {
 </script>
 
 <template>
-    <div v-if="playlist">
+    <div v-if="playlist.name">
         <div class="columns">
             <div class="columnLeft">
                 <h2>{{ playlist.name }}</h2>
             </div>
             <div class="columnRight">
                 <div class="songs">
-                    <div class="song" v-for="song in playlist.songs" :key="song.id">
-                        <i class="fa-solid fa-circle-play" @click="openLink(song.youtubeUrl)"></i>
-                        <div class="horizontal-aling">
-                            <div>
-                                <p><b>{{ song.title }}</b></p>
+                    <!-- Verifica si la playlist tiene canciones -->
+                    <div v-if="playlist.songs.length > 0">
+                        <div class="song" v-for="song in playlist.songs" :key="song.id">
+                            <i class="fa-solid fa-circle-play" @click="openLink(song.youtubeUrl)"></i>
+                            <div class="horizontal-aling">
+                                <div>
+                                    <p><b>{{ song.title }}</b></p>
+                                </div>
+                                <p>{{ song.duration }}</p>
                             </div>
-                            <p>{{ song.duration }}</p>
                         </div>
+                    </div>
+                    <!-- Mensaje si no hay canciones -->
+                    <div v-else>
+                        <p>Esta playlist no tiene canciones.</p>
                     </div>
                 </div>
             </div>
@@ -90,9 +97,10 @@ function openLink(link) {
 }
 
 .songs {
-    height: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
+    height: 400px; /* Define una altura fija para la sección de canciones */
+    overflow-y: auto; /* Habilita el scroll vertical */
+    overflow-x: hidden; /* Oculta el scroll horizontal */
+    padding-right: 10px; /* Opcional: agrega espacio para evitar que el contenido se superponga con el scroll */
 }
 
 .fa-circle-play {
