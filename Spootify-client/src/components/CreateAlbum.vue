@@ -134,7 +134,7 @@ function validateFields() {
 
 function handleCreateAlbum() {
     if (!validateFields()) {
-        errorMessage.value = "Todos los campos son obligatorios.";
+        errorMessage.value = "Todos los campos son obligatorios";
         return;
     }
     createAlbum();

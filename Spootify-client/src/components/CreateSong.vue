@@ -166,7 +166,7 @@ function validateFields() {
 
 function handleCreateSong() {
     if (!validateFields()) {
-        errorMessage.value = "Todos los campos son obligatorios.";
+        errorMessage.value = "Todos los campos son obligatorios";
         return;
     }
     createSong();
