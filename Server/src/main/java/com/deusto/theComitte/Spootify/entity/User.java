@@ -1,6 +1,7 @@
 package com.deusto.theComitte.Spootify.entity;
 
 import com.deusto.theComitte.Spootify.DTO.ArtistDTO;
+import com.deusto.theComitte.Spootify.DTO.SongListDTO;
 import com.deusto.theComitte.Spootify.DTO.UserDTO;
 
 import java.util.ArrayList;
@@ -21,13 +22,13 @@ public class User extends GenericUser {
 
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
     @JoinTable(
-        name = "ArtistUsers",
+        name = "Following",
         joinColumns = @JoinColumn(name = "user_id"),
-        inverseJoinColumns = @JoinColumn(name = "user2_id")
+        inverseJoinColumns = @JoinColumn(name = "artist_id")
     )
     private List<Artist> followList;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", orphanRemoval = true, fetch = FetchType.EAGER)
     private List<SongList> songsList = new ArrayList<>();
 
     public User(long id, String name, String email, String password) {
@@ -51,7 +52,17 @@ public class User extends GenericUser {
             followListDTO.add(artistDTO);
         }
 
-        return new UserDTO(this.id, this.name, followListDTO);
+        List<SongListDTO> songListDTOList = new ArrayList<>();
+        for (SongList songList : this.songsList) {
+            SongListDTO songListDTO = songList.toDTO();
+            songListDTOList.add(songListDTO);
+        }
+
+        return new UserDTO(this.id, this.name, followListDTO, songListDTOList);
+    }
+
+    public UserDTO toDTOWithoutFollowing(){
+        return new UserDTO(this.id, this.name, null,null);
     }
 
  
@@ -74,10 +85,5 @@ public class User extends GenericUser {
     public void removeSongList(SongList songList) {
         songsList.remove(songList);
         songList.setUser(null);
-    }
-
-    public void createSongList(String name) {
-        SongList songList = new SongList(name, this);
-        songsList.add(songList);
     }
 }

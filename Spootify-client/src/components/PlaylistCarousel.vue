@@ -13,29 +13,26 @@
             type: String,
             default: "albums"
         },
-        albums: {
+        playlists: {
             type: Array,
             default: null
         }
+
+
     })
 
-    const albums = ref([]);
+    const playlists = ref([]);
 
     onMounted(() => {
-        if (props.albums == null) {
-            getAlbums();
-        } else {
-            albums.value = props.albums;
-        }
+        playlists.value = props.playlists;
     });
 
-    function getAlbums() {
-        
+    function getPlaylists() {
         let path = "http://localhost:8081/" + props.path + "?";
         if (useRoute().path == "/artists/dashboard") {
             path = "http://localhost:8081/albums?artist=" + globalState.userId.value + "&";
         }else if(useRoute().path.startsWith("/artists/")){
-            const artistId = useRoute().path.substring(9);
+            const artistId = useRoute().path.substring(9); // Extract the artist ID from the route
             path = "http://localhost:8081/albums?artist=" + artistId + "&";
         }
         path = path + "token=" + globalState.token.value;
@@ -43,15 +40,14 @@
             albums.value = response.data;
         });
     }
-
 </script>
 
 
 <template>
 
     <div class="carousel">
-        <button class="album" v-for="album in albums" :key="album.id" v-on:click="console.log('hasfd');router.push('/albums/' + album.id)">
-            <p>{{ album.name }}</p>
+        <button class="playlist" v-for="playlist in playlists" :key="playlist.id" v-on:click="router.push('/playlists/' + playlist.id)">
+            <p>{{ playlist.name }}</p>
         </button>
     </div>
 
@@ -64,7 +60,7 @@
         white-space: nowrap;
     }
 
-    .album {
+    .playlist {
         display: inline-flex;
         width: 30vh;
         height: 30vh;
@@ -77,12 +73,12 @@
         background-color: #282828; /* Dark gray like Spotify */
     }
 
-    .album:hover {
+    .playlist:hover {
         background-color: #333333; /* Slightly lighter on hover */
         transform: translateY(-5px);
     }
 
-    .album p {
+    .playlist p {
         color: white;
         font-size: 16px;
         font-weight: bold;

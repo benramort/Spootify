@@ -10,7 +10,8 @@ const signupName = ref('')
 const signupEmail = ref('')
 const signupPassword = ref('')
 
-let isArtist;
+let isArtist = false;
+const showLogin = ref(true)
 
 const loginEmail = ref('')
 const loginPassword = ref('')
@@ -28,27 +29,26 @@ function login() {
         email: loginEmail.value,
         password: loginPassword.value
     }).then(response => {
-        console.log(response)
-        globalState.token.value = response.data.token
-		globalState.userId.value = response.data.id
-		globalState.isArtist.value = isArtist
-		localStorage.setItem("token", response.data.token)
-		localStorage.setItem("isArtist", isArtist)
-		localStorage.setItem("id", response.data.id)
+        globalState.token.value = response.data.token;
+		globalState.userId.value = response.data.id;
+		globalState.isArtist.value = isArtist;
+		localStorage.setItem("token", response.data.token);
+		localStorage.setItem("isArtist", isArtist);
+		localStorage.setItem("id", response.data.id);
 		if (isArtist) {
-			router.push("/artist/dashboard")
+			router.push("/artists/dashboard")
 		} else {
-			router.push("/")
+			router.push("/users/dashboard")
 		}
     }).catch(error => {
-        console.log(error) // gestionar errores
+        console.log(error)
 		if (error.status == 404) {
 			if (isArtist) {
 				errorMessage.value = "Artista no encontrado ¿Seguro que eres un artista?"
 			} else {
 				errorMessage.value = "Usuario no encontrado ¿Seguro que no eres un artista?"
 			}
-		} else if (error.status == 401) {
+		} else if (error.status == 403) {
 			errorMessage.value = "Contraseña incorrecta"
 		} else {
 			errorMessage.value = "Error desconocido"
@@ -66,7 +66,7 @@ function createAccount() {
 		email: signupEmail.value,
 		password: signupPassword.value
 	}).then(response => {
-		console.log(response)
+		showLogin.value = true
 	}).catch(error => {
 		console.log(error)
 		if (error.status == 409) {
@@ -82,7 +82,7 @@ function createAccount() {
 
 <div class="loginBox">
     <div class="main">  	
-		<input type="checkbox" id="chk" aria-hidden="true" checked @click="errorMessage = ''">
+		<input type="checkbox" id="chk" aria-hidden="true" v-model="showLogin" checked @click="errorMessage = ''">
 
 			<div class="signup">
 				<form @submit.prevent="createAccount">
@@ -101,7 +101,7 @@ function createAccount() {
 
 			<div class="login">
 				<form @submit.prevent="login">
-					<label for="chk" aria-hidden="true">Login</label>
+					<label for="chk" aria-hidden="true" id="loginText">Login</label>
 					<p class="error">{{ errorMessage }}</p>
 					<input type="email" name="email" placeholder="Email" required v-model="loginEmail">
 					<input type="password" name="pswd" placeholder="Password" required v-model="loginPassword">
@@ -109,7 +109,7 @@ function createAccount() {
 						<input type="checkbox" id="artist" v-model="isArtist">
 						<label for="artist" class="checkLabel">Soy un artista</label>
 					</div>
-					<button>Login</button>
+					<button id="loginButton">Login</button>
 				</form>
 			</div>
 	</div>
@@ -118,6 +118,11 @@ function createAccount() {
 </template>
 
 <style scoped>
+
+#loginText {
+	padding-top: 20px;
+	margin-bottom: 40px;
+}
 
 .error {
 	color: red;
@@ -139,6 +144,12 @@ function createAccount() {
 	align-items: center;
 	font-family: 'Jost', sans-serif;
 	border: 1px solid green;
+	/* Add these lines to make it full height and centered */
+    min-height: 100vh; /* Makes it take the full viewport height */
+    width: 100%; /* Ensures it spans the full width */
+    position: absolute; /* Takes it out of normal flow */
+    top: 0; /* Position from the top edge */
+    left: 0; /* Position from the left edge */
 }
 
 .main{
@@ -248,5 +259,7 @@ button:hover{
 	transform: scale(.6);
 }
 
-
+#loginButton {
+	margin-top: 35px;
+}
 </style>

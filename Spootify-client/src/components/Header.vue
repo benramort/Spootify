@@ -8,24 +8,28 @@
   const router = useRouter();
 
   function logout() {
-    console.log("Logging out");
     let path = "http://localhost:8081/logout";
     if (globalState.isArtist.value) {
       path = "http://localhost:8081/artists/logout";
     }
     path += "?token=" + globalState.token.value;
     axios.post(path).then((response) => {
-      console.log(response);
-      globalState.token.value = 0;
-      globalState.userId.value = 0;
+      globalState.token.value = null;
+      globalState.userId.value = null;
       globalState.isArtist.value = false;
       localStorage.removeItem("token");
       localStorage.removeItem("isArtist");
       localStorage.removeItem("id");
-      console.log("Logged out");
-      router.push("/");
+      router.push("/login");
     }).catch((error) => {
       console.log(error);
+      globalState.token.value = null;
+      globalState.userId.value = null;
+      globalState.isArtist.value = false;
+      localStorage.removeItem("token");
+      localStorage.removeItem("isArtist");
+      localStorage.removeItem("id");
+      router.push("/");
     });
     
   }
@@ -39,17 +43,24 @@
       <p id="titulo">Spootify</p>
     </div>
     <div class="side">
-    <div class="header-box" v-if="globalState.token.value == 0"><router-link to="/login">Mi perfil</router-link></div>
-    <div class="header-box" v-else><router-link to="/artist/dashboard">Mi perfil</router-link></div>
-    <div class="header-box"><router-link to="/crearAlbum">Home</router-link></div>
-    <div class="header-box"><router-link to="/login">Home</router-link></div>
-    <div class="header-box" v-if="globalState.token.value == 0 || globalState.token.value == null"><router-link to="/login">Log in</router-link></div>
-    <div class="header-box" v-else><a @click="logout">Log out</a></div>
+    <div class="header-box" v-if="!Number.isInteger(globalState.token.value)"><router-link to="/login">Mi perfil</router-link></div>
+    <div class="header-box" v-else-if="globalState.isArtist.value === true"><router-link to="/artists/dashboard">Mi perfil</router-link></div>
+    <div class="header-box" v-else-if="globalState.isArtist.value === false"><router-link to="/users/dashboard">Mi perfil</router-link></div>
+    
+    <div class="header-box" v-if="!Number.isInteger(globalState.token.value)"><router-link to="/login">Mis playlists</router-link></div>
+    <div class="header-box" v-else><router-link to="/playlists">Mis playlists</router-link></div>
+    
+    <div class="header-box" v-if="Number.isInteger(globalState.token.value)"><a @click="logout">Log out</a></div>
+    <div class="header-box" v-else><router-link to="/login">Log in</router-link></div>
     </div>
   </div>
 </template>
 
 <style scoped>
+.header {
+  font-family: 'Circular', sans-serif;
+}
+
 #titulo {
   color: white;
   align-self: center;
@@ -81,7 +92,7 @@ a {
 
 /* Style for exact active links (optional) */
 a.router-link-exact-active {
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 .header {
@@ -97,7 +108,7 @@ a.router-link-exact-active {
 
 .side {
   display: flex;
-  width: 60%;
+  width: 50%;
   background-color: transparent;
   height: 60px;
 }

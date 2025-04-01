@@ -6,19 +6,24 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.deusto.theComitte.Spootify.DTO.ArtistDTO;
 import com.deusto.theComitte.Spootify.DTO.CreateUserDTO;
 import com.deusto.theComitte.Spootify.DTO.LoginDTO;
+import com.deusto.theComitte.Spootify.DTO.TokenDTO;
 import com.deusto.theComitte.Spootify.DTO.UserDTO;
+import com.deusto.theComitte.Spootify.entity.Artist;
 import com.deusto.theComitte.Spootify.entity.User;
 import com.deusto.theComitte.Spootify.service.UserService;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:8080")
 public class UserController {
     
     @Autowired
@@ -38,15 +43,17 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Long> login(@RequestBody LoginDTO loginDTO) {
+    public ResponseEntity<TokenDTO> login(@RequestBody LoginDTO loginDTO) {
         try {
             long token = userService.login(loginDTO.email(), loginDTO.password());
-            return ResponseEntity.ok(token);
+            User user = userService.getActiveUser(token);
+            TokenDTO tokenDTO = new TokenDTO(user.getId(), token);
+            return ResponseEntity.ok(tokenDTO);
         } catch (RuntimeException ex) {
             if (ex.getMessage().equals("User does not exist")) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             } else if (ex.getMessage().equals("Incorrect password")) {
-                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -59,7 +66,7 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (RuntimeException ex) {
             if (ex.getMessage().equals("User not logged in")) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -76,6 +83,20 @@ public class UserController {
             }
             return ResponseEntity.ok(userDTOs);
         } catch (RuntimeException ex) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/users/myProfile")
+    public ResponseEntity<UserDTO> getMyProfile(@RequestParam long token) {
+        try {
+            User user = userService.getActiveUser(token);
+            return ResponseEntity.ok(user.toDTO());
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            if(e.getMessage().equals("User not logged in")) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
