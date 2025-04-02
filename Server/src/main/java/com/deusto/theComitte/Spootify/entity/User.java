@@ -1,5 +1,7 @@
 package com.deusto.theComitte.Spootify.entity;
 
+import com.deusto.theComitte.Spootify.DTO.ArtistDTO;
+import com.deusto.theComitte.Spootify.DTO.SongListDTO;
 import com.deusto.theComitte.Spootify.DTO.UserDTO;
 
 import java.util.ArrayList;
@@ -20,11 +22,14 @@ public class User extends GenericUser {
 
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
     @JoinTable(
-        name = "SongList",
+        name = "Following",
         joinColumns = @JoinColumn(name = "user_id"),
-        inverseJoinColumns = @JoinColumn(name = "song_id")
+        inverseJoinColumns = @JoinColumn(name = "artist_id")
     )
-    private List<User> songList;
+    private List<Artist> followList;
+
+    @OneToMany(mappedBy = "user", orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<SongList> songsList = new ArrayList<>();
 
     public User(long id, String name, String email, String password) {
         super(id, name, email, password);
@@ -41,16 +46,46 @@ public class User extends GenericUser {
     }
 
     public UserDTO toDTO() {
-        return new UserDTO(this.id, this.name);
+
+        List<ArtistDTO> followListDTO = new ArrayList<>();
+        for(Artist artist : this.followList) {
+            ArtistDTO artistDTO = artist.toDTOWithoutAlbums();
+            followListDTO.add(artistDTO);
+        }
+
+        List<SongListDTO> songListDTOList = new ArrayList<>();
+        for (SongList songList : this.songsList) {
+            SongListDTO songListDTO = songList.toDTO();
+            songListDTOList.add(songListDTO);
+        }
+
+        return new UserDTO(this.id, this.name, followListDTO, songListDTOList);
     }
 
-    public UserDTO toDTOWithFriends() {
-        List<UserDTO> friendsDTO = new ArrayList<>();
-        for(User user : this.friendsList) {
-            UserDTO userDTO = user.toDTO();
-            friendsDTO.add(userDTO);
-        }
-        return new UserDTO(this.id, this.name, friendsDTO);
+    public UserDTO toDTOWithoutFollowing(){
+        return new UserDTO(this.id, this.name, null,null);
+    }
+
+ 
+    public List<Artist> getFollowList() {
+        return this.followList;
+    }
+    public List<SongList> getSongLists() {
+        return songsList;
+    }
+
+    public void setSongLists(List<SongList> songLists) {
+        this.songsList = songLists;
+    }
+
+    public void addSongList(SongList songList) {
+        songsList.add(songList);
+        songList.setUser(this);
+    }
+
+    public void removeSongList(SongList songList) {
+        songsList.remove(songList);
+        songList.setUser(null);
     }
 
     public UserDTO toDTOWithSongs() {

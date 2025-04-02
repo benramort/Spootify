@@ -1,21 +1,79 @@
 <script setup>
-// You can import any necessary components or define props here
+  import { inject } from 'vue'
+  import { useRouter } from 'vue-router';
+  import axios from 'axios';
+
+  const globalState = inject('globalState');
+
+  const router = useRouter();
+
+  function logout() {
+    let path = "http://localhost:8081/logout";
+    if (globalState.isArtist.value) {
+      path = "http://localhost:8081/artists/logout";
+    }
+    path += "?token=" + globalState.token.value;
+    axios.post(path).then((response) => {
+      globalState.token.value = null;
+      globalState.userId.value = null;
+      globalState.isArtist.value = false;
+      localStorage.removeItem("token");
+      localStorage.removeItem("isArtist");
+      localStorage.removeItem("id");
+      router.push("/login");
+    }).catch((error) => {
+      console.log(error);
+      globalState.token.value = null;
+      globalState.userId.value = null;
+      globalState.isArtist.value = false;
+      localStorage.removeItem("token");
+      localStorage.removeItem("isArtist");
+      localStorage.removeItem("id");
+      router.push("/");
+    });
+    
+  }
+
 </script>
 
 <template>
   <div class="header">
-    <img src="../assets/Spootify_logo.png" alt="Spotify logo"/>
+    <div id="contenedorLogo">
+      <img src="../assets/Spootify_logo.png" alt="Spotify logo"/>
+      <p id="titulo">Spootify</p>
+    </div>
     <div class="side">
-    <div class="header-box"> <router-link to="/login">Home</router-link></div>
-    <div class="header-box"><router-link to="/login">Home</router-link></div>
-    <div class="header-box"><router-link to="/login">Home</router-link></div>
-    <div class="header-box"><router-link to="/login">Home</router-link></div>
-    <div class="header-box"><router-link to="/login">Home</router-link></div>
+    <div class="header-box" v-if="!Number.isInteger(globalState.token.value)"><router-link to="/login">Mi perfil</router-link></div>
+    <div class="header-box" v-else-if="globalState.isArtist.value === true"><router-link to="/artists/dashboard">Mi perfil</router-link></div>
+    <div class="header-box" v-else-if="globalState.isArtist.value === false"><router-link to="/users/dashboard">Mi perfil</router-link></div>
+    
+    <div class="header-box" v-if="!Number.isInteger(globalState.token.value)"><router-link to="/login">Mis playlists</router-link></div>
+    <div class="header-box" v-else><router-link to="/playlists">Mis playlists</router-link></div>
+    
+    <div class="header-box" v-if="Number.isInteger(globalState.token.value)"><a @click="logout">Log out</a></div>
+    <div class="header-box" v-else><router-link to="/login">Log in</router-link></div>
     </div>
   </div>
 </template>
 
 <style scoped>
+.header {
+  font-family: 'Circular', sans-serif;
+}
+
+#titulo {
+  color: white;
+  align-self: center;
+  font-size: x-large;
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+#contenedorLogo {
+  align-items: left;
+  display: flex;
+}
+
 img {
     width: 4em;
     height: 4em;
@@ -34,7 +92,7 @@ a {
 
 /* Style for exact active links (optional) */
 a.router-link-exact-active {
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 .header {
@@ -50,7 +108,7 @@ a.router-link-exact-active {
 
 .side {
   display: flex;
-  width: 60%;
+  width: 50%;
   background-color: transparent;
   height: 60px;
 }

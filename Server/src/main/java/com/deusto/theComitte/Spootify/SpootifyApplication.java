@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SpootifyApplication {
 
 	public static void main(String[] args) {
+		System.out.println("ccccccccccccccc");
 		SpringApplication.run(SpootifyApplication.class, args);
 	}
 

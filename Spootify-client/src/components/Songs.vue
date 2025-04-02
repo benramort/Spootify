@@ -1,81 +1,222 @@
+<template>
+    <div class="songs">
+        <div class="song" v-for="song in songs" :key="song.title">
+            <i class="fa-solid fa-circle-play" @click="openLink(song.youtubeUrl)"></i>
+            <div class="horizontal-aling">
+                <div>
+                    <p><b>{{ song.title }}</b></p>
+                    <p>
+                        <span class="name">
+                            <router-link :to="`/artists/${song.album.artists[0].id}`">{{ song.album.artists[0].name }}</router-link>
+                        </span>
+                        -
+                        <span class="album">
+                            <router-link :to="`/albums/${song.album.id}`"><em>{{ song.album.name }}</em></router-link>
+                        </span>
+                    </p>
+                </div>
+                <div class="song-actions">
+                    <p>{{ song.duration }}</p>
+                    <button v-if="globalState.isArtist.value === false" class="add-button" @click="openPlaylistModal(song)">+</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para seleccionar la playlist -->
+        <div v-if="showModal" class="modal-overlay">
+            <div class="modal">
+                <h3>Selecciona una playlist</h3>
+                <div class="playlist-scroll">
+                    <ul>
+                        <li v-for="playlist in playlists" :key="playlist.id">
+                            <button @click="addToPlaylist(playlist, selectedSong)">{{ playlist.name }}</button>
+                        </li>
+                    </ul>
+                </div>
+                <button class="close-button" @click="closeModal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</template>
+
 <script setup>
-    import axios from "axios";
-    import {onMounted} from "vue";
-    import {ref} from "vue";
+import axios from "axios";
+import { onMounted, inject, ref } from "vue";
+import { useRoute } from "vue-router";
+import { printDuration } from "../main.js";
 
-    const props = defineProps({
-        path: {
-            type: String,
-            default: "songs"
-        }
-    })
+const globalState = inject("globalState");
 
-    let songs = ref([]) //ref añade reactividad
-    onMounted(() => {
-        let path = "http://localhost:8081/" + props.path
-        console.log(path)
-        axios.get(path).then((response) => {
-            songs.value = response.data;
-            // console.log(songs.value);
-            songs.value.forEach((song) => {
-                song.duration = printDuration(song.duration);
-            });
+const props = defineProps({
+    path: {
+        type: String,
+        default: "songs",
+    },
+});
+
+let songs = ref([]);
+let playlists = ref([]); // Lista de playlists
+let showModal = ref(false); // Controla la visibilidad del modal
+let selectedSong = ref(null); // Canción seleccionada para añadir a una playlist
+
+onMounted(() => {
+    console.log(globalState);
+    let actualPath = useRoute().path;
+    let path = "http://localhost:8081/songs?";
+    if (actualPath == "/artists/dashboard") {
+        path = "http://localhost:8081/songs?artistId=" + globalState.userId.value + "&";
+    } else if (useRoute().path.startsWith("/artists/")) {
+        const artistId = useRoute().path.substring(9);
+        path = "http://localhost:8081/songs?artistId=" + artistId + "&";
+        console.log("path: " + path);
+    }
+    path = path + "token=" + globalState.token.value;
+    console.log(path);
+    axios.get(path).then((response) => {
+        songs.value = response.data;
+        console.log(songs.value);
+        songs.value.forEach((song) => {
+            song.duration = printDuration(song.duration);
         });
     });
 
-    function printDuration(seconds) {
-        let minutes = Math.floor(seconds / 60);
-        let remainingSeconds = seconds % 60;
-        return `${minutes}:${remainingSeconds}`;
-    }
+    // Cargar las playlists del usuario
+    const playlistPath = `http://localhost:8081/playlists?token=${globalState.token.value}`;
+    axios.get(playlistPath).then((response) => {
+        playlists.value = response.data;
+    });
+});
 
-    function openLink(link) {
-        // console.log(link);
-        window.open(link, "_blank");
-    }
+function openLink(link) {
+    window.open(link, "_blank");
+}
 
+function openPlaylistModal(song) {
+    selectedSong.value = song; // Guarda la canción seleccionada
+    showModal.value = true; // Muestra el modal
+}
+
+function closeModal() {
+    showModal.value = false; // Oculta el modal
+    selectedSong.value = null; // Limpia la canción seleccionada
+}
+
+function addToPlaylist(playlist, song) {
+    const path = `http://localhost:8081/playlists/${playlist.id}/songs?token=${globalState.token.value}`;
+    axios.post(path, { id: song.id }).then(() => {
+        console.log(`Canción añadida a la playlist: ${playlist.name}`);
+        closeModal(); // Cierra el modal después de añadir la canción
+    }).catch((error) => {
+        console.error("Error al añadir la canción a la playlist:", error);
+    });
+}
 </script>
 
-
-<template>
-    <div class="song" v-for="song in songs" :key="song.title"> <!-- Key para reaccionar bien a los cambios-->
-        <i class="fa-solid fa-circle-play" @click="openLink(song.youtubeUrl)"></i>
-        <div class="horizontal-aling">
-            <div>
-                <p><b>{{ song.title }}</b></p>
-                <p>{{ song.artist.name }}</p>
-            </div>
-            <p>{{  song.duration }}</p>
-        </div>
-    </div>
-    
-</template>
-
 <style scoped>
-    .fa-circle-play {
-        color: rgb(30, 215, 96);
-        font-size: 4em;
-        margin-right: 0.7em;
-        margin-left: 0.3em;
-    }
+.songs {
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
 
-    .song {
-        background-color: rgb(244, 244, 244);
-        border-radius: 1.5em;
-        padding: 0.5em;
-        margin: 1em;
-        display: flex;
-        align-items: center;
-    }
+.fa-circle-play {
+    color: rgb(30, 215, 96);
+    font-size: 4em;
+    margin-right: 0.7em;
+    margin-left: 0.3em;
+}
 
-    .horizontal-aling {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-    }
+.song {
+    background-color: rgb(244, 244, 244);
+    border-radius: 1.5em;
+    padding: 0.5em;
+    margin: 1em;
+    display: flex;
+    align-items: center;
+}
 
-    p {
-        margin: 0.3em;
-    }
+.horizontal-aling {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.song-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.add-button {
+    background-color: rgb(30, 215, 96);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-size: 1.2em;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.add-button:hover {
+    background-color: rgb(22, 164, 72);
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.playlist-scroll {
+    max-height: 200px;
+    overflow-y: auto;
+    margin: 10px 0;
+}
+
+.close-button {
+    margin-top: 10px;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.close-button:hover {
+    background-color: darkred;
+}
+
+a {
+    color: black;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+i:hover {
+    color: rgb(22, 164, 72);
+}
 </style>

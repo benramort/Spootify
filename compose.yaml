@@ -1,12 +1,14 @@
 services:
   client:
-    build: ./Spootify-client
+    image: node:lts-alpine
+    working_dir: /app
     ports:
       - "8080:5173"
     volumes:
-      - type: bind
-        source: ./Spootify-client
-        target: /app
+      - ./Spootify-client:/app
+    environment:
+      - NODE_ENV=development
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
   server:
     image: maven:latest
     ports:
@@ -14,7 +16,7 @@ services:
     volumes:
       - ./Server:/app
     working_dir: /app
-    command: mvn spring-boot:run -X
+    command: sh -c "mvn clean verify && mvn spring-boot:run -X"
   database:
     image: mysql:latest
     ports:
@@ -29,6 +31,9 @@ services:
 
 volumes:
   spootifydb:
+
+
+# Es recomendable tener otros servicios para el entorno de pruebas
   
 
 

@@ -19,7 +19,7 @@ public class Album {
     private long id;
     @Column(nullable = false)
     private String name;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable
     (
         name = "AlbumArtists",
@@ -30,6 +30,7 @@ public class Album {
     @OneToMany(mappedBy = "album", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Song> songs;
 
+    public Album() {}
 
     public Album(long id, String name) {
         this.id = id;
@@ -95,21 +96,47 @@ public class Album {
         this.songs.remove(song);
     }
 
-    public AlbumDTO toDto() {
-        return new AlbumDTO(this.id, this.name);
+    public AlbumDTO toDTOWithoutSongs() {
+        ArrayList<ArtistDTO> artistsDTO = new ArrayList<>();
+        for(Artist artist : this.artists)
+        {
+            artistsDTO.add(artist.toDTOWithoutAlbums());
+        }
+        return new AlbumDTO(this.id, this.name, artistsDTO, null);
     }
 
-    public AlbumDTO toDtoWithLists() {
+    public AlbumDTO toDTOWithoutArtists() {
+        ArrayList<SongDTO> songsDTO = new ArrayList<>();
+        for(Song song : this.songs)
+        {
+            songsDTO.add(song.toDTOWithoutAlbum());
+        }
+        return new AlbumDTO(this.id, this.name, null, songsDTO);
+    }
+
+    public AlbumDTO toDTO() {
         ArrayList<ArtistDTO> artistsDTO = new ArrayList<>();
         ArrayList<SongDTO> songsDTO = new ArrayList<>();
         for(Artist artist : this.artists)
         {
-            artistsDTO.add(artist.toDTO());
+            artistsDTO.add(artist.toDTOWithoutAlbums());
         }
         for(Song song : this.songs)
         {
-            songsDTO.add(song.toDTO());
+            songsDTO.add(song.toDTOWithoutAlbum());
         }
         return new AlbumDTO(this.id, this.name, artistsDTO, songsDTO);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Album album = (Album) obj;
+        return this.id == album.id;
     }
 }
