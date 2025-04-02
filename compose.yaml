@@ -1,21 +1,21 @@
 services:
   client:
-    image: node:lts-alpine
+    build: Spootify-client/.
     working_dir: /app
     ports:
       - "8080:5173"
     volumes:
       - ./Spootify-client:/app
-    environment:
-      - NODE_ENV=development
-    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
+    command: sh -c "npm run dev -- --host 0.0.0.0"
   server:
-    image: maven:latest
+    build: Server/.
     ports:
       - "8081:8081"
     volumes:
       - ./Server:/app
     working_dir: /app
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/spootifydb
     command: sh -c "mvn clean verify && mvn spring-boot:run -X"
   database:
     image: mysql:latest

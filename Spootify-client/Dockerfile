@@ -15,11 +15,4 @@ ENV NODE_ENV=development
 # install project dependencies
 RUN npm install
 
-# Install vite globally
-# RUN npm install -g vite
-
-# copy project files and folders to the current working directory (i.e. 'app' folder)
-#COPY . .
-
 EXPOSE 5173
-CMD ["npm", "run", "dev"]
