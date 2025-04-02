@@ -167,6 +167,7 @@ function addToPlaylist(playlist, song) {
     background-color: rgb(22, 164, 72);
 }
 
+/* Estilo de la ventana para añadir una canción a una playlist */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -180,31 +181,104 @@ function addToPlaylist(playlist, song) {
 }
 
 .modal {
-    background-color: white;
+    background-color: rgb(0, 0, 0);
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
+    border: 2px solid rgb(30, 215, 96); /* Borde del modal */
+    display: flex;
+    flex-direction: column; /* Asegura que los elementos estén en una columna */
+    align-items: center; /* Centra todos los elementos horizontalmente */
+}
+
+.modal h3 {
+    color: rgb(30, 215, 96); /* Título del modal */
+    margin-bottom: 20px; /* Espaciado inferior */
 }
 
 .playlist-scroll {
     max-height: 200px;
     overflow-y: auto;
     margin: 10px 0;
+    display: flex;
+    flex-direction: column; /* Asegura que los botones estén en una columna */
+    align-items: center; /* Centra los botones horizontalmente */
+}
+
+.playlist-scroll::-webkit-scrollbar {
+    width: 10px; /* Ancho del scroll */
+    background-color: transparent; /* Sin color de fondo */
+}
+
+.playlist-scroll::-webkit-scrollbar-thumb {
+    background-color: rgb(30, 215, 96); /* Color verde para el thumb (barra de desplazamiento) */
+    border-radius: 5px; /* Bordes redondeados */
+}
+
+.playlist-scroll::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(22, 164, 72); /* Color más oscuro al pasar el cursor */
+}
+
+.playlist-scroll::-webkit-scrollbar-button {
+    background-color: rgb(30, 215, 96); /* Color verde para las flechas */
+    height: 10px; /* Altura de las flechas */
+}
+
+.playlist-scroll::-webkit-scrollbar-button:hover {
+    background-color: rgb(22, 164, 72); /* Color más oscuro al pasar el cursor sobre las flechas */
+}
+
+/* Elimina los puntos de la lista */
+.playlist-scroll ul {
+    list-style: none; /* Elimina los puntos de la lista */
+    padding: 0; /* Elimina el padding por defecto */
+    margin: 0; /* Elimina el margen por defecto */
+    width: 100%; /* Asegura que la lista ocupe todo el ancho del modal */
+}
+
+.playlist-scroll li {
+    margin-bottom: 10px; /* Espaciado entre elementos de la lista */
+    display: flex;
+    justify-content: center; /* Centra los botones dentro de cada elemento */
+}
+
+/* Estilo para truncar títulos largos de las playlists */
+.playlist-scroll button {
+    white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+    overflow: hidden; /* Oculta el texto que no cabe */
+    text-overflow: ellipsis; /* Muestra los tres puntos (...) */
+    max-width: 100%; /* Limita el ancho del botón */
+    display: inline-block; /* Asegura que el botón respete las reglas de truncamiento */
+    background-color: rgb(30, 215, 96); /* Color de fondo del botón */
+    color: white; /* Color del texto */
+    border: none; /* Sin bordes */
+    border-radius: 5px; /* Bordes redondeados */
+    padding: 5px 10px; /* Espaciado interno */
+    cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+    margin: 5px 0; /* Espaciado entre botones */
+    transition: background-color 0.2s ease-in-out; /* Transición suave al cambiar el color */
+}
+
+.playlist-scroll button:hover {
+    background-color: rgb(22, 164, 72); /* Color de fondo al pasar el cursor */
 }
 
 .close-button {
-    margin-top: 10px;
-    background-color: red;
+    margin-top: 20px; /* Espaciado superior para separarlo de los botones de las playlists */
+    background-color: rgb(30, 215, 96);
     color: white;
     border: none;
     border-radius: 5px;
     padding: 5px 10px;
     cursor: pointer;
+    display: block; /* Asegura que el botón ocupe una línea completa */
+    margin-left: 48%; /* Centra horizontalmente */
+    margin-right: 52%; /* Centra horizontalmente */
 }
 
 .close-button:hover {
-    background-color: darkred;
+    background-color: rgb(22, 164, 72);
 }
 
 a {
