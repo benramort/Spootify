@@ -6,13 +6,8 @@ import java.util.List;
 public class UserDTO {
     private long id;
     private String name;
-<<<<<<< HEAD
-    private List<UserDTO> userFriends;
-    private List<SongDTO> userSongs;
-=======
     private List<ArtistDTO> userFollows;
     private List<SongListDTO> playlists;
->>>>>>> main
 
     public UserDTO() {
     }
@@ -27,13 +22,6 @@ public class UserDTO {
         this.name = name;
         this.userFollows = userFollows;
         this.playlists = playlists;
-    }
-
-    public UserDTO(long id, String name, List<UserDTO> userFriends, List<SongDTO> userSongs) {
-        this.id = id;
-        this.name = name;
-        this.userFriends = userFriends;
-        this.userSongs = userSongs;
     }
 
     public Long getId() {
@@ -67,13 +55,5 @@ public class UserDTO {
 
     public void setPlaylists(List<SongListDTO> playlists) {
         this.playlists = playlists;
-    }
-
-    public void setSongs(List<SongDTO> userSongs) {
-        this.userSongs = userSongs;
-    }
-
-    public List<SongDTO> getUserSongs() {
-        return this.userSongs;
     }
 }
