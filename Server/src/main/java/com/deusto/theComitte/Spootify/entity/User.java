@@ -38,7 +38,6 @@ public class User extends GenericUser {
     public User(String name, String email, String password) {
         super(name, email, password);
         this.friendsList = new ArrayList<>();
-        this.songList = new ArrayList<>();
     }
 
     public User() {
@@ -86,14 +85,5 @@ public class User extends GenericUser {
     public void removeSongList(SongList songList) {
         songsList.remove(songList);
         songList.setUser(null);
-    }
-
-    public UserDTO toDTOWithSongs() {
-        List<UserDTO> songsDTO = new ArrayList<>();
-        for(User user : this.songList) {
-            UserDTO userDTO = user.toDTO();
-            songsDTO.add(userDTO);
-        }
-        return new UserDTO(this.id, this.name, songsDTO);
     }
 }

@@ -2,7 +2,6 @@ package com.deusto.theComitte.Spootify.DTO;
 
 import java.util.List;
 
-
 public class UserDTO {
     private long id;
     private String name;
