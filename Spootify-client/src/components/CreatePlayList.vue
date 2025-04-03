@@ -2,7 +2,7 @@
     <Modal :isOpen="showModalPlayList" @close="closeModal">
         <div :class="['contFormulario', { 'contFormularioError': errorMessage }]">
             <div id="titulo">
-                <p id="crearPlayList">CREAR PLAYLIST</p>
+                <p id="crearPlayList">NUEVA PLAYLIST</p>
             </div>
             <!-- Mensaje de error entre el título y el cuadro de texto -->
             <div v-if="errorMessage" id="mensajeError">
@@ -21,6 +21,11 @@
 </template>
 
 <style scoped>
+#crearPlayList {
+    color: white;
+    font-family: 'Circular', sans-serif;
+}
+
 .contFormulario {
     width: 300px;
     height: 120px;
