@@ -17,7 +17,7 @@ services:
     working_dir: /app
     environment:
       - SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/spootifydb
-    command: sh -c "mvn clean verify && mvn spring-boot:run -X"
+    command: sh -c "mvn spring-boot:run -X"
   database:
     image: mysql:latest
     ports:
