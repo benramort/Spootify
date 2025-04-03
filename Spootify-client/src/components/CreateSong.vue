@@ -84,6 +84,7 @@ input {
     margin-top: 0px;
     padding-top: 15px;
     margin: 0 auto;
+    font-family: 'Circular', sans-serif;
 }
 
 #button {

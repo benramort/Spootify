@@ -20,6 +20,11 @@
 </template>
 
 <style scoped>
+#crearAlbum {
+    color: white;
+    font-family: 'Circular', sans-serif;
+}
+
 .contFormulario {
     width: 300px;
     height: 120px;
