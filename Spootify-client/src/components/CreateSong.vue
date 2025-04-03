@@ -84,6 +84,7 @@ input {
     margin-top: 0px;
     padding-top: 15px;
     margin: 0 auto;
+    font-family: 'Circular', sans-serif;
 }
 
 #button {
@@ -166,7 +167,7 @@ function validateFields() {
 
 function handleCreateSong() {
     if (!validateFields()) {
-        errorMessage.value = "Todos los campos son obligatorios.";
+        errorMessage.value = "Todos los campos son obligatorios";
         return;
     }
     createSong();

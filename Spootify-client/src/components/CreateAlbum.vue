@@ -20,6 +20,11 @@
 </template>
 
 <style scoped>
+#crearAlbum {
+    color: white;
+    font-family: 'Circular', sans-serif;
+}
+
 .contFormulario {
     width: 300px;
     height: 120px;
@@ -134,7 +139,7 @@ function validateFields() {
 
 function handleCreateAlbum() {
     if (!validateFields()) {
-        errorMessage.value = "Todos los campos son obligatorios.";
+        errorMessage.value = "Todos los campos son obligatorios";
         return;
     }
     createAlbum();
