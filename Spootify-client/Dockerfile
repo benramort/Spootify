@@ -15,9 +15,6 @@ ENV NODE_ENV=development
 # install project dependencies
 RUN npm install
 
-<<<<<<< HEAD
-EXPOSE 5173
-=======
 # Install vite globally
 # RUN npm install -g vite
 
@@ -26,4 +23,3 @@ EXPOSE 5173
 
 EXPOSE 5173
 CMD ["npm", "run", "dev"]
->>>>>>> main
