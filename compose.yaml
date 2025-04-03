@@ -1,5 +1,7 @@
 services:
   client:
+    profiles:
+      - prod
     build: Spootify-client/.
     working_dir: /app
     ports:
@@ -9,6 +11,8 @@ services:
       - /app/node_modules
     command: sh -c "npm run dev -- --host 0.0.0.0"
   server:
+    profiles:
+      - prod
     build: Server/.
     ports:
       - "8081:8081"
@@ -19,6 +23,8 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/spootifydb
     command: sh -c "mvn spring-boot:run -X"
   database:
+    profiles:
+      - prod
     image: mysql:latest
     ports:
       - "3300:3306"
@@ -29,6 +35,20 @@ services:
       - MYSQL_PASSWORD=user
     volumes:
       - spootifydb:/var/lib/mysql
+
+
+  server-test:
+    build: Server/.
+    profiles:
+      - test
+    ports:
+      - "8081:8081"
+    volumes:
+      - ./Server:/app
+    working_dir: /app
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/spootifydb
+    command: mvn verify
 
 volumes:
   spootifydb:
