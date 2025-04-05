@@ -93,4 +93,11 @@ public class SongList {
         }
         return new SongListDTO(this.id, this.name, songs);
     }
+
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SongList)) return false;
+        SongList songList = (SongList) o;
+        return id.equals(songList.id) && name.equals(songList.name) && songs.equals(songList.songs) && user.equals(songList.user);
+    }
 }
