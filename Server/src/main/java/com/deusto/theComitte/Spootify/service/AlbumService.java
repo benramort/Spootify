@@ -47,12 +47,5 @@ public class AlbumService {
         return album;
     }
 
-    public List<Album> getArtistAlbums(long artistId) {
-        Artist artist = artistService.getActiveArtist(artistId);
-        if(artist == null) {
-            throw new RuntimeException("Artist not logged in");
-        }
-        return null;
-        // return albumRepository.findByArtistId(artist.getId());
-    }
+
 }
