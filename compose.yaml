@@ -25,6 +25,7 @@ services:
   database:
     profiles:
       - prod
+      - test
     image: mysql:latest
     ports:
       - "3300:3306"
