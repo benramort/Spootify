@@ -6,9 +6,9 @@ import org.junit.jupiter.api.Test;
 
 public class prueba {
 
-    // @Test
-    // public void pruebita() {
-    //     assertTrue(false);
-    // }
+    @Test
+    public void pruebita() {
+        assertTrue(true);
+    }
     
 }

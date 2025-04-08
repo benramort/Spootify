@@ -39,6 +39,10 @@ public class Artist extends GenericUser {
         return this.albums;
     }
 
+    public void setAlbums(List<Album> albums) {
+        this.albums = albums;
+    }
+
     public ArtistDTO toDTOWithoutAlbums() {
         return new ArtistDTO(this.id, this.name, null,null);
     }
