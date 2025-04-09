@@ -18,7 +18,7 @@ import com.deusto.theComitte.Spootify.service.MusicStreamingService;
 @RequestMapping("/stream")
 public class MusicStreamingController {
 
-    private static final long MAX_CHUNK_SIZE = 2 * 1024 * 1024; // 2MB Cambiar por property
+    private static final long MAX_CHUNK_SIZE = 1024 * 1024; // 2MB Cambiar por property
     
     @Autowired
     private MusicStreamingService musicStreamingService;
