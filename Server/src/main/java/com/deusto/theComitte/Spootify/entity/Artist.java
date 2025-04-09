@@ -16,8 +16,6 @@ public class Artist extends GenericUser {
 
     @ManyToMany(mappedBy = "artists", fetch = FetchType.EAGER)
     private List<Album> albums;
-    @Column(nullable = false)
-    protected long followers;    
     
     @ManyToMany(mappedBy = "followList", fetch = FetchType.EAGER)
     private List<User> followersList;
@@ -41,19 +39,23 @@ public class Artist extends GenericUser {
         return this.albums;
     }
 
+    public void setAlbums(List<Album> albums) {
+        this.albums = albums;
+    }
+
     public ArtistDTO toDTOWithoutAlbums() {
-        return new ArtistDTO(this.id, this.name, this.followers, null,null);
+        return new ArtistDTO(this.id, this.name, null,null);
     }
 
     public ArtistDTO toDTO() {
         List<AlbumDTO> albumDTOs = this.albums.stream().map(m -> m.toDTOWithoutArtists()).toList();
-        return new ArtistDTO(this.id, this.name, this.followers, albumDTOs, null);
+        return new ArtistDTO(this.id, this.name, albumDTOs, null);
     }
 
     public ArtistDTO toDTOWithFollowers() {
         List<AlbumDTO> albumDTOs = this.albums.stream().map(m -> m.toDTOWithoutArtists()).toList();
         List<UserDTO> userDTOs = this.followersList.stream().map(m -> m.toDTOWithoutFollowing()).toList();
-        return new ArtistDTO(this.id, this.name, this.followers, albumDTOs, userDTOs);
+        return new ArtistDTO(this.id, this.name, albumDTOs, userDTOs);
     }
 
     @Override
@@ -67,14 +69,6 @@ public class Artist extends GenericUser {
         Artist artist = (Artist) obj;
         return this.id == artist.id;
     }
-    
-    public long getFollowers() {
-        return followers;
-    }
-
-    public void setFollowers(long followers) {
-        this.followers = followers;
-    }
 
     public List<User> getFollowersList() {
         return followersList;
@@ -84,7 +78,6 @@ public class Artist extends GenericUser {
         if (!this.followersList.contains(user)) {
             this.followersList.add(user);
             user.getFollowList().add(this);
-            this.setFollowers(this.getFollowers() + 1);
         }
     }
 }

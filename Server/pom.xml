@@ -112,7 +112,7 @@
                     <!-- Generate a report after the tests -->
                     <execution>
                         <id>report</id>
-                        <phase>verify</phase>
+                        <phase>test</phase>
                         <goals>
                             <goal>report</goal>
                         </goals>
@@ -140,6 +140,27 @@
 
                 </executions>
             </plugin>
+
+            <plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId> <!--Plugin nativo de maven para pruebas unitarias-->
+				<configuration>
+					<excludes>
+						<exclude>**/SpootifyApplicationTests.java</exclude>
+						<exclude>**/integration/**</exclude>
+						<exclude>**/performance/**</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<configuration>
+					<includes>
+						<include>**/integration/**</include>
+					</includes>
+				</configuration>
+			</plugin>
 
 		</plugins>
 	</build>
