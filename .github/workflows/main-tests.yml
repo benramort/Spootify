@@ -20,3 +20,10 @@ jobs:
     - name: Build and run test containers
       run: |
         docker compose --profile=test up --build --abort-on-container-exit --exit-code-from server-test
+
+    - name: Upload the reports
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-report
+        path: Server/target/site
