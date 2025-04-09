@@ -10,6 +10,8 @@ services:
       - ./Spootify-client:/app
       - /app/node_modules
     command: sh -c "npm run dev -- --host 0.0.0.0"
+    depends_on:
+      - server
   server:
     profiles:
       - prod
@@ -22,6 +24,8 @@ services:
     environment:
       - SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/spootifydb
     command: sh -c "mvn spring-boot:run -X"
+    depends_on:
+      - database
   database:
     profiles:
       - prod
@@ -50,6 +54,8 @@ services:
     environment:
       - SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/spootifydb
     command: mvn verify
+    depends_on:
+      - database
 
 volumes:
   spootifydb:
