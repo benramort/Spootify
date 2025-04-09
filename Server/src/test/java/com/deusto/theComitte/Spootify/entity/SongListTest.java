@@ -82,67 +82,89 @@ class SongListTest {
     @Test
     @DisplayName("Test para convertir SongList a DTO")
     void testToDTO() {
-    // Crear álbum para las canciones
-    Album album = new Album(1L, "Test Album");
+        // Crear álbum para las canciones
+        Album album = new Album(1L, "Test Album");
 
-    // Configurar canciones con álbum
-    song1.setAlbum(album);
-    song2.setAlbum(album);
+        // Configurar canciones con álbum
+        song1.setAlbum(album);
+        song2.setAlbum(album);
 
-    // Crear lista de canciones
-    List<Song> songs = new ArrayList<>();
-    songs.add(song1);
-    songs.add(song2);
+        // Crear lista de canciones
+        List<Song> songs = new ArrayList<>();
+        songs.add(song1);
+        songs.add(song2);
 
-    // Configurar SongList
-    songList.setId(1L);
-    songList.setName("My Playlist");
-    songList.setSongs(songs);
-    songList.setUser(user);
+        // Configurar SongList
+        songList.setId(1L);
+        songList.setName("My Playlist");
+        songList.setSongs(songs);
+        songList.setUser(user);
 
-    // Convertir a DTO
-    SongListDTO dto = songList.toDTO();
+        // Convertir a DTO
+        SongListDTO dto = songList.toDTO();
 
-    // Verificar los valores del DTO
-    assertEquals(1L, dto.getId());
-    assertEquals("My Playlist", dto.getName());
-    assertNotNull(dto.getSongs());
-    assertEquals(2, dto.getSongs().size());
+        // Verificar los valores del DTO
+        assertEquals(1L, dto.getId());
+        assertEquals("My Playlist", dto.getName());
+        assertNotNull(dto.getSongs());
+        assertEquals(2, dto.getSongs().size());
 
-    // Verificar que las canciones se conviertan correctamente
-    assertEquals(song1.getId(), dto.getSongs().get(0).getId());
-    assertEquals(song1.getName(), dto.getSongs().get(0).getTitle());
-    assertEquals(album.getId(), dto.getSongs().get(0).getAlbum().getId());
-    assertEquals(album.getName(), dto.getSongs().get(0).getAlbum().getName());
+        // Verificar que las canciones se conviertan correctamente
+        assertEquals(song1.getId(), dto.getSongs().get(0).getId());
+        assertEquals(song1.getName(), dto.getSongs().get(0).getTitle());
+        assertEquals(album.getId(), dto.getSongs().get(0).getAlbum().getId());
+        assertEquals(album.getName(), dto.getSongs().get(0).getAlbum().getName());
 
-    assertEquals(song2.getId(), dto.getSongs().get(1).getId());
-    assertEquals(song2.getName(), dto.getSongs().get(1).getTitle());
-    assertEquals(album.getId(), dto.getSongs().get(1).getAlbum().getId());
-    assertEquals(album.getName(), dto.getSongs().get(1).getAlbum().getName());
-}
+        assertEquals(song2.getId(), dto.getSongs().get(1).getId());
+        assertEquals(song2.getName(), dto.getSongs().get(1).getTitle());
+        assertEquals(album.getId(), dto.getSongs().get(1).getAlbum().getId());
+        assertEquals(album.getName(), dto.getSongs().get(1).getAlbum().getName());
+    }
 
     @Test
     @DisplayName("Test equals method")
     void testEquals() {
-    SongList songList = new SongList(1L, "Test Playlist", null, new ArrayList<>());
-    SongList sameIdSongList = new SongList(1L, "Different Name", null, new ArrayList<>());
-    SongList differentIdSongList = new SongList(2L, "Test Playlist", null, new ArrayList<>());
+        SongList songList = new SongList(1L, "Test Playlist", user, new ArrayList<>());
+        SongList sameIdSongList = new SongList(1L, "Different Name", user, new ArrayList<>());
+        SongList differentIdSongList = new SongList(2L, "Test Playlist", user, new ArrayList<>());
 
-    // Same object reference
-    assertTrue(songList.equals(songList));
+        // Same object reference
+        assertTrue(songList.equals(songList));
 
-    // Same ID, different name
-    assertFalse(songList.equals(sameIdSongList));
+        // Same ID, different name
+        assertFalse(songList.equals(sameIdSongList));
 
-    // Different ID, same name
-    assertFalse(songList.equals(differentIdSongList));
+        // Different ID, same name
+        assertFalse(songList.equals(differentIdSongList));
 
-    // Null check
-    assertFalse(songList.equals(null));
+        // Null check
+        assertFalse(songList.equals(null));
 
-    // Different class
-    assertFalse(songList.equals("Not a SongList"));
-}
+        // Different class
+        assertFalse(songList.equals("Not a SongList"));
+    }
+
+    @Test
+    @DisplayName("Test equals method with null attributes")
+    void testEqualsWithNullAttributes() {
+        SongList songList = new SongList(1L, "Test Playlist", user, new ArrayList<>());
+
+        // Caso donde el ID es null
+        SongList songListWithNullId = new SongList(null, "Test Playlist", user, new ArrayList<>());
+        assertFalse(songList.equals(songListWithNullId));
+
+        // Caso donde el nombre es null
+        SongList songListWithNullName = new SongList(1L, null, user, new ArrayList<>());
+        assertFalse(songList.equals(songListWithNullName));
+
+        // Caso donde la lista de canciones es null
+        SongList songListWithNullSongs = new SongList(1L, "Test Playlist", user, null);
+        assertFalse(songList.equals(songListWithNullSongs));
+
+        // Caso donde el usuario es null
+        SongList songListWithNullUser = new SongList(1L, "Test Playlist", null, new ArrayList<>());
+        assertFalse(songList.equals(songListWithNullUser));
+    }
 
     @Test
     @DisplayName("Test para el constructor vacío")
