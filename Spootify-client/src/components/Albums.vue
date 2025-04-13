@@ -86,16 +86,19 @@
         transition: all 0.3s ease;
         background-size: cover;
         background-position: center;
+        background-color: rgba(0, 0, 0, 0.4); /* Fallback color */
+        background-blend-mode: darken;
     }
 
     .album:hover {
-        background-color: #333333; /* Slightly lighter on hover */
+        background-color: rgba(255, 255, 255, 0.4); /* Slightly lighter on hover */
+        background-blend-mode: saturation;
         transform: translateY(-5px);
     }
 
     .album p {
         color: white;
-        font-size: 16px;
+        font-size: 25px;
         font-weight: bold;
         margin: 10px 0 0;
         max-width: 100%;
