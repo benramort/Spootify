@@ -40,8 +40,15 @@
         }
         path = path + "token=" + globalState.token.value;
         axios.get(path).then((response) => {
-            albums.value = response.data;
+            albums.value = response.data.map((album) => {
+            if (album.cover && !album.cover.startsWith("http")) {
+                album.cover = "http://localhost:8081/" + album.cover.substring(9);
+            }
+            return album;
         });
+    }).catch((error) => {
+        console.error("Error al obtener los álbumes:", error);
+    });
     }
 
 </script>
@@ -50,7 +57,11 @@
 <template>
 
     <div class="carousel">
-        <button class="album" v-for="album in albums" :key="album.id" v-on:click="console.log('hasfd');router.push('/albums/' + album.id)">
+        <button 
+        class="album" 
+        v-for="album in albums" 
+        :key="album.id" v-on:click="router.push('/albums/' + album.id);console.log(album.cover)"
+        :style="{ backgroundImage: 'url(' + album.cover + ')' }">
             <p>{{ album.name }}</p>
         </button>
     </div>
@@ -69,12 +80,12 @@
         width: 30vh;
         height: 30vh;
         margin: 10px;
-        background-color: red;
         justify-content: center;
         align-items: center;
         border: none;
         transition: all 0.3s ease;
-        background-color: #282828; /* Dark gray like Spotify */
+        background-size: cover;
+        background-position: center;
     }
 
     .album:hover {

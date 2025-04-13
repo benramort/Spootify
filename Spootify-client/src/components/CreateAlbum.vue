@@ -11,6 +11,9 @@
                 <div id="campoNombre">
                     <input id="inputNombre" type="text" placeholder="Name" v-model="albumName" />
                 </div>
+                <div id="campoPortada">
+                    <input id="inputPortada" type="file" @change="(event) => { handleFileChange(event); console.log('archivo cargado'); }" />
+                </div>
                 <div id="button">
                     <button @click="handleCreateAlbum()" id="okButton">✔</button>
                 </div>
@@ -132,6 +135,12 @@ const globalState = inject("globalState");
 const showModalAlbum = ref(false);
 const albumName = ref("");
 const errorMessage = ref("");
+const coverImage = ref(null);
+
+function handleFileChange(event) {
+    coverImage.value = event.target.files[0];
+    console.log("Imagen:" + coverImage.value);
+}
 
 function validateFields() {
     return albumName.value.trim() !== "";
@@ -147,9 +156,27 @@ function handleCreateAlbum() {
 }
 
 function createAlbum() {
+    if (!globalState.token.value || isNaN(globalState.token.value)) {
+        return;
+    }    
+
     let path = "http://localhost:8081/albums";
-    path += "?token=" + globalState.token.value;
-    axios.post(path, { "name": albumName.value }).then((response) => {
+
+    const formData = new FormData();
+    formData.append("name", albumName.value);
+    if(coverImage.value) {
+        formData.append("cover", coverImage.value);
+    }
+    formData.append("token", globalState.token.value);
+
+    axios.post(path, formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    }).then(() => {
+        for (let pair of formData.entries()) {
+            console.log(`${pair[0]}: ${pair[1]}`);
+        }
         location.reload();
     }).catch((error) => {
         console.log(error);

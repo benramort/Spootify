@@ -31,6 +31,9 @@ function saveToken(token) {
 }
 
 onMounted(() => {
+    if(globalState.isArtist.value === true) {
+        return;
+    }
     let path = "http://localhost:8081/playlists";
     path = path + "?token=" + globalState.token.value;
     console.log(path);
