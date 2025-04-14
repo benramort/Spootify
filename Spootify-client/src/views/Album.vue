@@ -14,6 +14,8 @@
 
     function fetchAlbumDetails() {
         let path = "http://localhost:8081/albums/" + route.params.id;
+        console.log('Params: ' + route.params.id);
+        console.log('Cover ' + album.cover);
         axios.get(path).then((response) => {
             album.value = response.data;
             album.value.songs.forEach((song) => {
@@ -37,6 +39,8 @@
 
     <div class="columns">
         <div class="columnLeft">
+            <div class="cover">
+            </div>
             <h2>{{ album.name }}</h2>
             <p v-for="artist in album.artists"><router-link :to="`/artists/${artist.id}`">{{ artist.name }}</router-link></p>
         </div>
@@ -60,6 +64,21 @@
 
 
 <style scoped>
+
+.cover {
+        display: inline-flex;
+        width: 20vh;
+        height: 20vh;
+        margin: 0px;
+        justify-content: center;
+        align-items: center;
+        border: none;
+        transition: all 0.3s ease;
+        background-size: cover;
+        background-position: center;
+        background-color: rgba(0, 0, 0, 0.3); /* Fallback color */
+        background-blend-mode: darken;
+    }
 
     .columns {
         display: flex;
