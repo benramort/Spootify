@@ -14,11 +14,17 @@
 
     function fetchAlbumDetails() {
         let path = "http://localhost:8081/albums/" + route.params.id;
+        console.log('Params: ' + route.params.id);
+        console.log('Cover ' + album.cover);
         axios.get(path).then((response) => {
             album.value = response.data;
+            console.log('Portada antes ' + album.value.cover);
+            album.value.cover = "http://localhost:8081/" + album.value.cover.substring(31);
+            console.log('Portada despues ' + album.value.cover);
             album.value.songs.forEach((song) => {
                 song.duration = printDuration(song.duration);
             });
+            return album;
         }).catch((error) => {
             console.log(error);
         });
@@ -37,6 +43,8 @@
 
     <div class="columns">
         <div class="columnLeft">
+            <div class="cover" :style="{ backgroundImage: 'url(' + album.cover + ')' }">
+            </div>
             <h2>{{ album.name }}</h2>
             <p v-for="artist in album.artists"><router-link :to="`/artists/${artist.id}`">{{ artist.name }}</router-link></p>
         </div>
@@ -60,6 +68,32 @@
 
 
 <style scoped>
+
+.cover {
+    display: inline-flex;
+    width: 30vh;
+    height: 30vh;
+    margin: 0px;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    transition: all 0.3s ease;
+    background-size: cover;
+    background-position: center;
+    box-shadow: 7px 7px 25px #2a2a2a;
+}
+
+.columnLeft div {
+    margin-top: 25px; /* Agrega espacio encima de la cabecera */
+}
+
+h2 {
+    font-family: 'Circular', 'sans-serif';
+    font-size: xx-large;
+    margin: 0;
+    margin-top: 20px;
+}
+
 
     .columns {
         display: flex;

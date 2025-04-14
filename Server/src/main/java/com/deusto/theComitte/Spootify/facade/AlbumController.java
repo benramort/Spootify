@@ -83,7 +83,12 @@ public class AlbumController {
     public ResponseEntity<AlbumDTO> getAlbum(@PathVariable long id){
         try {
             Album album = albumService.getAlbum(id);
-            return ResponseEntity.ok(album.toDTO());
+            AlbumDTO albumDTO = album.toDTO();
+            if(album.getCover() != null) {
+                String coverUrl = "http://localhost:8081/" + album.getCover();
+                albumDTO.setCover(coverUrl);
+            }
+            return ResponseEntity.ok(albumDTO);
         } catch(RuntimeException e) {
             e.printStackTrace();
             if (e.getMessage().equals("Album not found")) {
