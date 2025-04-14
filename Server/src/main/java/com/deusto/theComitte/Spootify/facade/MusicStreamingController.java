@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.http.HttpHeaders;
 
 import com.deusto.theComitte.Spootify.service.MusicStreamingService;
@@ -25,14 +26,30 @@ public class MusicStreamingController {
 
 
     @GetMapping()
-    public ResponseEntity<Resource> streamMusic(@RequestHeader(value = "Range", required = false) String rangeHeader) {
+    public ResponseEntity<Resource> streamMusic(
+        @RequestHeader(value = "Range", required = false) String rangeHeader,
+        @RequestParam(name = "song") String songId
+    ) {
         long start = 0;
         long end = MAX_CHUNK_SIZE - 1;
         long contentLength = 0;
 
+        String path = "";
+        try {
+            long songIdlong = Long.parseLong(songId);
+            path = musicStreamingService.getSongPath(songIdlong);
+            System.out.println(path);
+        } catch (NumberFormatException ex) {
+            ex.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } catch (RuntimeException ex) {
+            ex.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        
         Resource fullResource;
         try {
-            fullResource = musicStreamingService.getFullResource();
+            fullResource = musicStreamingService.getFullResource(path);
             contentLength = fullResource.contentLength();
         } catch (IOException e) {
             e.printStackTrace();
@@ -58,7 +75,7 @@ public class MusicStreamingController {
             }   
         }
 
-        Resource chunk = musicStreamingService.getChunk(start, end);
+        Resource chunk = musicStreamingService.getChunk(path, start, end);
 
         try {
             HttpHeaders headers = new HttpHeaders();

@@ -127,7 +127,7 @@ watch(() => audioPlayer.value, (newPlayer) => {
     <!-- Hidden audio element -->
     <audio 
       ref="audioPlayer" 
-      src="http://localhost:8081/stream" 
+      src="http://localhost:8081/stream?song=1" 
       preload="metadata">
     </audio>
     
