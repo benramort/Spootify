@@ -61,7 +61,7 @@
         class="album" 
         v-for="album in albums" 
         :key="album.id" v-on:click="router.push('/albums/' + album.id);console.log(album.cover)"
-        :style="{ backgroundImage: 'url(' + album.cover + ')' }">
+        :style="album.cover ? { backgroundImage: 'url(' + album.cover + ')' } : { backgroundImage: 'url(http://localhost:8081/default.png)'}">
             <p>{{ album.name }}</p>
         </button>
     </div>
@@ -86,12 +86,12 @@
         transition: all 0.3s ease;
         background-size: cover;
         background-position: center;
-        background-color: rgba(0, 0, 0, 0.4); /* Fallback color */
+        background-color: rgba(0, 0, 0, 0.3); /* Fallback color */
         background-blend-mode: darken;
     }
 
     .album:hover {
-        background-color: rgba(255, 255, 255, 0.4); /* Slightly lighter on hover */
+        background-color: rgba(127, 127, 127, 0.4); /* Slightly lighter on hover */
         background-blend-mode: saturation;
         transform: translateY(-5px);
     }
