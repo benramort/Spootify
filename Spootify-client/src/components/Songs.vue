@@ -17,7 +17,12 @@
                 </div>
                 <div class="song-actions">
                     <p>{{ song.duration }}</p>
+                    <!-- Botón de añadir -->
                     <button class="add-button" @click="openPlaylistModal(song)">+</button>
+                    <!-- Botón de corazón -->
+                    <button class="heart-button" @click="toggleFavorite(song)">
+                        <i :class="{'fa-solid fa-heart': song.isFavorite, 'fa-regular fa-heart': !song.isFavorite}"></i>
+                    </button>
                 </div>
             </div>
         </div>
@@ -77,6 +82,7 @@ onMounted(() => {
         console.log(songs.value);
         songs.value.forEach((song) => {
             song.duration = printDuration(song.duration);
+            song.isFavorite = false; // Inicializa el estado de favorito
         });
     });
 
@@ -109,6 +115,11 @@ function addToPlaylist(playlist, song) {
     }).catch((error) => {
         console.error("Error al añadir la canción a la playlist:", error);
     });
+}
+
+function toggleFavorite(song) {
+    song.isFavorite = !song.isFavorite; // Cambia el estado de favorito
+    console.log(`Canción ${song.title} es favorita: ${song.isFavorite}`);
 }
 </script>
 
@@ -165,6 +176,26 @@ function addToPlaylist(playlist, song) {
 
 .add-button:hover {
     background-color: rgb(22, 164, 72);
+}
+
+.heart-button {
+    background-color: transparent;
+    color: rgb(30, 215, 96);
+    border: none;
+    font-size: 1.2em;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.2s ease-in-out;
+}
+
+.heart-button:hover {
+    transform: scale(1.2); /* Aumenta el tamaño al pasar el cursor */
+}
+
+.fa-heart {
+    font-size: 1.5em;
 }
 
 .modal-overlay {
