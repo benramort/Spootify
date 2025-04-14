@@ -11,11 +11,13 @@
                 <div id="campoNombre">
                     <input id="inputNombre" type="text" placeholder="Name" v-model="albumName" />
                 </div>
-                <div id="campoPortada">
-                    <input id="inputPortada" type="file" @change="(event) => { handleFileChange(event); console.log('archivo cargado'); }" />
-                </div>
-                <div id="button">
-                    <button @click="handleCreateAlbum()" id="okButton">✔</button>
+                <div id="portadaYBoton">
+                    <div id="campoPortada">
+                        <input id="inputPortada" type="file" @change="(event) => { handleFileChange(event); console.log('archivo cargado'); }" />
+                    </div>
+                    <div id="button">
+                        <button @click="handleCreateAlbum()" id="okButton">✔</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -29,8 +31,8 @@
 }
 
 .contFormulario {
-    width: 300px;
-    height: 120px;
+    width: 450px;
+    height: 140px;
     border: 2px solid rgb(34, 34, 34);
     margin: 0 auto;
     background-color: rgb(34, 34, 34);
@@ -57,9 +59,15 @@
 
 #campoNombre {
     margin: 0 auto;
-    margin-top: 10px;
-    margin-bottom: 20px;
-    display: inline-block;
+    margin-top: 0px;
+    margin-bottom: 10px;
+}
+
+#campoPortada {
+    margin-top: 20px;
+    margin: 0 auto;
+    margin-top: 0px;
+    margin-bottom: 0px;
 }
 
 #inputNombre {
@@ -68,18 +76,28 @@
     height: 23px;
     margin-left: 20px;
     border-radius: 5px;
-    border-color: white;
     margin: 0 auto;
     border: 0px;
+    margin-left: 0px;
+}
+
+#inputPortada {
+    background-color: white;
+    width: 320px;
+    height: 23px;
     margin-left: 20px;
+    border-radius: 5px;
+    margin: 0 auto;
+    border: 0px;
+    margin-left: 30px;
 }
 
 #button {
-    display: inline-block;
-    margin-right: 40px;
+    margin-right: 0px;
     margin-top: 0px;
     padding-top: 0px;
-    margin-top: 11px;
+    margin-top: 0px;
+    margin-left: 20px;
 }
 
 #okButton {
@@ -101,6 +119,7 @@
 
 #campos {
     display: flex;
+    flex-direction: column;
     margin-top: 0px;
     text-align: center;
     margin: 0 auto;
@@ -123,6 +142,13 @@
     padding-bottom: 0px;
     margin-top: 0px;
     padding-top: 0px;
+}
+
+#portadaYBoton {
+    margin: 0 auto;
+    display: flex; 
+    align-items: center; 
+    justify-content: center;  
 }
 </style>
 
