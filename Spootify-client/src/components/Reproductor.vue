@@ -23,6 +23,27 @@ const songInfo = ref({
   albumCover: "https://i.scdn.co/image/ab67616d0000b273593d6762cc88b82c37ef55ad"
 });
 
+const song = ref(null);
+
+function selectSong(songParam) {
+  console.log(songParam);
+  song.value = songParam;
+  
+  setTimeout(
+  () => {
+      if (audioPlayer.value && songParam) {
+      audioPlayer.value.src = `http://localhost:8081/stream?song=${songParam.id}`;
+      audioPlayer.value.load(); // Important: reload the audio element
+      // Auto-play if desired 
+      }
+
+      audioPlayer.value.play()
+          .catch(err => console.error("Playback failed:", err));
+      isPlaying.value = true;
+  }, 100);
+
+}
+
 // Format time functions
 const formatTime = (seconds) => {
   const mins = Math.floor(seconds / 60);
@@ -120,14 +141,17 @@ watch(() => audioPlayer.value, (newPlayer) => {
   }
 }, { immediate: true });
 
+defineExpose({
+  selectSong
+});
 </script>
 
 <template>
-  <div class="player-wrapper">
+  <div class="player-wrapper" v-if="song">
     <!-- Hidden audio element -->
     <audio 
       ref="audioPlayer" 
-      src="http://localhost:8081/stream?song=1" 
+      :src="`http://localhost:8081/stream?song=${song.id}`" 
       preload="metadata">
     </audio>
     
@@ -139,8 +163,8 @@ watch(() => audioPlayer.value, (newPlayer) => {
           <img :src="songInfo.albumCover" alt="Album Cover" />
         </div>
         <div class="song-info">
-          <div class="song-title">{{ songInfo.title }}</div>
-          <div class="song-artist">{{ songInfo.artist }}</div>
+          <div class="song-title">{{ song.title }}</div>
+          <div class="song-artist">{{ song.album.artists[0].name }}</div>
         </div>
         <div class="like-button" @click="toggleLike">
           <i :class="['fa', isLiked ? 'fa-heart' : 'fa-heart-o']"></i>

@@ -1,7 +1,7 @@
 <template>
     <div class="songs">
         <div class="song" v-for="song in songs" :key="song.title">
-            <i class="fa-solid fa-circle-play" @click="openLink(song.youtubeUrl)"></i>
+            <i class="fa-solid fa-circle-play" @click="play(song)"></i>
             <div class="horizontal-aling">
                 <div>
                     <p><b>{{ song.title }}</b></p>
@@ -46,6 +46,7 @@ import { useRoute } from "vue-router";
 import { printDuration } from "../main.js";
 
 const globalState = inject("globalState");
+const reproductor = inject("reproductor");
 
 const props = defineProps({
     path: {
@@ -87,8 +88,8 @@ onMounted(() => {
     });
 });
 
-function openLink(link) {
-    window.open(link, "_blank");
+function play(song) {
+    reproductor.playSong(song);
 }
 
 function openPlaylistModal(song) {

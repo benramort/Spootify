@@ -10,7 +10,7 @@ import Playlists from '@/views/Playlists.vue';
 import ArtistDetail from '../views/ArtistDetail.vue';
 import UserDashboard from '../views/UserDashboard.vue';
 import Playlist from '@/views/Playlist.vue';
-import Reproductor from '@/views/Reproductor.vue';
+import Reproductor from '@/components/Reproductor.vue';
 
 const routes = [
   { path: '/', component: Main },
