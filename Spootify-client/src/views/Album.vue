@@ -49,7 +49,7 @@
             <p v-for="artist in album.artists"><router-link :to="`/artists/${artist.id}`">{{ artist.name }}</router-link></p>
         </div>
         <div class="columnRight">
-            <div class="songs">
+            <div v-if="album.songs && album.songs.length > 0" class="songs">
                 <div class="song" v-for="song in album.songs" :key="song.id"> <!-- Key para reaccionar bien a los cambios-->
                     <i class="fa-solid fa-circle-play" @click="openLink(song.youtubeUrl)"></i>
                     <div class="horizontal-aling">
@@ -57,9 +57,12 @@
                             <p><b>{{ song.title }}</b></p>
                             <!-- <p><span class="name">{{ song.album.artists[0].name}}</span> - <span class="album"><i>{{ song.album.name }}</i></span></p> -->
                         </div>
-                        <p>{{  song.duration }}</p>
+                        <p>{{ song.duration }}</p>
                     </div>
                 </div>
+            </div>
+            <div v-else>
+                <p id="errorNoCanciones">Todavía no hay canciones para este álbum</p>
             </div>
         </div>
     </div>
@@ -168,6 +171,19 @@ h2 {
     a {
         color: black;
         text-decoration: none;
+    }
+
+    #errorNoCanciones {
+        color: red;
+        text-align: center;
+        font-weight: bold;
+        font-family: 'Circular', 'sans-serif';
+        font-size: xx-large;
+        margin: 0 auto;
+        margin-bottom: 0px;
+        padding-bottom: 0px;
+        margin-top: 0px;
+        padding-top: 0px;
     }
 
     a:hover {

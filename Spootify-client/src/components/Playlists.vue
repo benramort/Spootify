@@ -31,7 +31,7 @@ function saveToken(token) {
 }
 
 onMounted(() => {
-    if(globalState.isArtist.value === true) {
+    if(globalState.isArtist.value == true) {
         return;
     }
     let path = "http://localhost:8081/playlists";
