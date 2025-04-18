@@ -20,7 +20,9 @@
                     <!-- Botón de añadir -->
                     <button class="add-button" @click="openPlaylistModal(song)">+</button>
                     <!-- Botón de corazón -->
-                    <button class="heart-button" @click="toggleFavorite(song)">
+                    <button 
+                        class="heart-button" 
+                        @click="() => { toggleFavorite(song); addToPlaylistMeGustan(song); }">
                         <i :class="{'fa-solid fa-heart': song.isFavorite, 'fa-regular fa-heart': !song.isFavorite}"></i>
                     </button>
                 </div>
@@ -115,6 +117,43 @@ function addToPlaylist(playlist, song) {
     }).catch((error) => {
         console.error("Error al añadir la canción a la playlist:", error);
     });
+}
+
+function addToPlaylistMeGustan(song) {
+    // Realiza una llamada a la API para obtener el perfil del usuario
+    const token = globalState.token.value; // Asegúrate de que el token esté disponible
+    axios
+        .get(`http://localhost:8081/users/myProfile?token=${token}`)
+        .then((response) => {
+            const userName = response.data.name; // Obtiene el nombre del usuario del perfil
+            console.log("Nombre del usuario:", userName);
+
+            // Construye el nombre de la playlist
+            const playlistName = `Canciones que me gustan de ${userName}`;
+            console.log("Buscando playlist con nombre:", playlistName);
+
+            // Busca la playlist en la lista de playlists
+            const playlist = playlists.value.find((playlist) => playlist.name === playlistName);
+
+            if (playlist && playlist.id) {
+                // Si encuentra la playlist, utiliza su ID en el path
+                const path = `http://localhost:8081/playlists/${playlist.id}/songs?token=${token}`;
+                axios
+                    .post(path, { id: song.id })
+                    .then(() => {
+                        console.log(`Canción añadida a la playlist: ${playlist.name}`);
+                    })
+                    .catch((error) => {
+                        console.error("Error al añadir la canción a la playlist:", error);
+                    });
+            } else {
+                // Si no encuentra la playlist, muestra un mensaje de error
+                console.error(`No se encontró una playlist válida con el nombre '${playlistName}' o el ID es null.`);
+            }
+        })
+        .catch((error) => {
+            console.error("Error al obtener el perfil del usuario:", error);
+        });
 }
 
 function toggleFavorite(song) {

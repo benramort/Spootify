@@ -35,12 +35,11 @@ public class UserService {
         }
         
         User user = new User(name, email, password);
-        long id = 1;
-        SongList cancionesQueMeGustan = new SongList(id, "Canciones que me gustan", user);
+        String nombre = "Canciones que me gustan de " + user.getName();
+        SongList cancionesQueMeGustan = new SongList(nombre, user); // Sin ID manual
         user.addSongList(cancionesQueMeGustan);
         userRepository.save(user);
         songListRepository.save(cancionesQueMeGustan);
-
     }
 
     public long login(String email, String password) {
