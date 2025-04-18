@@ -1,8 +1,6 @@
 package com.deusto.theComitte.Spootify.service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,7 +9,6 @@ import com.deusto.theComitte.Spootify.DAO.ArtistRepository;
 import com.deusto.theComitte.Spootify.DAO.PlayListRepository;
 import com.deusto.theComitte.Spootify.DAO.SongRepository;
 import com.deusto.theComitte.Spootify.DAO.UserRepository;
-import com.deusto.theComitte.Spootify.DTO.SongListDTO;
 import com.deusto.theComitte.Spootify.entity.Song;
 import com.deusto.theComitte.Spootify.entity.SongList;
 import com.deusto.theComitte.Spootify.entity.User;
@@ -34,26 +31,26 @@ public class PlaylistService {
     @Autowired
     private UserService userService;
 
-    public void addSongsToUser(long userId, List<Long> songIds, long songListId) {
-        User user = userService.getActiveUser(userId);
-        if (user == null) {
-            throw new RuntimeException("User does not exist");
-        }
-        for (long songId : songIds) {
-            Song song = songRepository.findById(songId);
-            if (song == null) {
-                throw new RuntimeException("Song does not exist");
-            }
+    // public void addSongsToUser(long userId, List<Long> songIds, long songListId) {
+    //     User user = userService.getActiveUser(userId);
+    //     if (user == null) {
+    //         throw new RuntimeException("User does not exist");
+    //     }
+    //     for (long songId : songIds) {
+    //         Song song = songRepository.findById(songId);
+    //         if (song == null) {
+    //             throw new RuntimeException("Song does not exist");
+    //         }
 
-            for (SongList songList : user.getSongLists()) {
-                if (songList.getId().equals(songListId)) {
-                    songList.getSongs().add(song);
-                    songList.setUser(user);
-                    return;
-                }
-            }
-        }
-    }
+    //         for (SongList songList : user.getSongLists()) {
+    //             if (songList.getId().equals(songListId)) {
+    //                 songList.getSongs().add(song);
+    //                 songList.setUser(user);
+    //                 return;
+    //             }
+    //         }
+    //     }
+    // }
 
     public void addSongToPlayList(long userId, long songId, long songListId) {
         User user = userService.getActiveUser(userId); // Obtén el usuario activo
