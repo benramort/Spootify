@@ -74,4 +74,8 @@ public class ArtistService {
         return activeArtists;
     }
 
+    public List<Artist> searchArtists(String name) {
+        return artistRepository.findByName(name);
+    }
+
 }

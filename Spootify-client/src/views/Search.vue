@@ -5,13 +5,15 @@
 
     const searchCont = ref('');
     const songsList = ref([]);
+    const artistList = ref([]);
 
     function Search(){
       
         var pathSongs = "http://localhost:8081/songs/search?title=" + searchCont.value;
-        console.log(pathSongs);
+        var pathArtists = "http://localhost:8081/artists/search?name=" + searchCont.value;
         console.log(searchCont.value);
         songsList.value = [];
+
         axios.get(pathSongs).then((response) => {
             const uniqueSongs = response.data.filter(
                 (song, index, self) =>
@@ -20,6 +22,16 @@
             songsList.value = uniqueSongs;
             console.log("Canciones buscadas:");
             console.log(songsList.value);
+        });
+
+        axios.get(pathArtists).then((response) => {
+            const uniqueArtists = response.data.filter(
+                (artist, index, self) =>
+                index === self.findIndex((a) => a.id === artist.id)
+            );
+            artistList.value = uniqueArtists;
+            console.log("Artistas buscados:");
+            console.log(artistList.value);
         });
 
         
@@ -32,7 +44,17 @@
         <button id="searchButton" @click="Search">Search</button>
     </div>
     <div id="resultDiv">
-        <div id="artistResult"></div>
+        <div id="artistResult" v-if="artistList.length > 0">
+            <div class="artist" v-for="artist in artistList" :key="artist.id">
+                        <div class="artist">
+                            <i class="fa-solid fa-user"></i>
+                            <router-link :to="`/artists/${artist.id}`">{{ artist.name }}</router-link>
+                        </div>
+                    </div>
+        </div>
+        <div id="artistResult" v-else>
+            <p>No hay artistas con ese nombre</p>
+        </div>
         <div id="albumResult"></div>
         <div id="songsResult">
             <div class="songs">
