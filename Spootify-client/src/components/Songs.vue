@@ -22,8 +22,9 @@
                     <!-- Botón de corazón -->
                     <button 
                         class="heart-button" 
-                        @click="() => { toggleFavorite(song); addToPlaylistMeGustan(song); }">
-                        <i :class="{'fa-solid fa-heart': song.isFavorite, 'fa-regular fa-heart': !song.isFavorite}"></i>
+                        :disabled="isLiked(song)" 
+                        @click="() => { toggleLiked(song); addToPlaylistMeGustan(song); }">
+                        <i :class="{'fa-solid fa-heart': isLiked(song), 'fa-regular fa-heart': !isLiked(song)}"></i>
                     </button>
                 </div>
             </div>
@@ -84,7 +85,7 @@ onMounted(() => {
         console.log(songs.value);
         songs.value.forEach((song) => {
             song.duration = printDuration(song.duration);
-            song.isFavorite = false; // Inicializa el estado de favorito
+            song.liked = song.liked || false; // Inicializa el estado de liked si no está definido
         });
     });
 
@@ -142,6 +143,8 @@ function addToPlaylistMeGustan(song) {
                     .post(path, { id: song.id })
                     .then(() => {
                         console.log(`Canción añadida a la playlist: ${playlist.name}`);
+                        // Refresca la página después de añadir la canción
+                        window.location.reload();
                     })
                     .catch((error) => {
                         console.error("Error al añadir la canción a la playlist:", error);
@@ -156,9 +159,28 @@ function addToPlaylistMeGustan(song) {
         });
 }
 
-function toggleFavorite(song) {
-    song.isFavorite = !song.isFavorite; // Cambia el estado de favorito
-    console.log(`Canción ${song.title} es favorita: ${song.isFavorite}`);
+function toggleLiked(song) {
+    song.liked = !song.liked; // Cambia el estado de liked
+    console.log(`Canción ${song.title} es liked: ${song.liked}`);
+}
+
+function isLiked(song) {
+    // Busca la playlist "Canciones que me gustan" en la lista de playlists
+    const playlist = playlists.value.find((playlist) => playlist.name.startsWith("Canciones que me gustan"));
+
+    if (playlist && playlist.songs) {
+        // Verifica si la canción está en la lista de canciones de la playlist
+        const isSongInPlaylist = playlist.songs.some((s) => s.id === song.id);
+
+        // Ajusta el estado de liked según si la canción está en la playlist
+        song.liked = isSongInPlaylist;
+        console.log(`Canción ${song.title} es liked: ${song.liked}`);
+        return song.liked;
+    } else {
+        console.error("No se encontró una playlist válida o no contiene canciones.");
+        song.liked = false;
+        return song.liked;
+    }
 }
 </script>
 
@@ -229,6 +251,11 @@ function toggleFavorite(song) {
     transition: transform 0.2s ease-in-out;
 }
 
+.heart-button:disabled {
+    color: rgb(30, 215, 96);
+    cursor: not-allowed;
+}
+
 .heart-button:hover {
     transform: scale(1.2); /* Aumenta el tamaño al pasar el cursor */
 }
@@ -250,7 +277,7 @@ function toggleFavorite(song) {
 }
 
 .modal {
-    background-color: white;
+    background-color: rgb(0, 0, 0);
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -263,17 +290,105 @@ function toggleFavorite(song) {
     margin: 10px 0;
 }
 
+.modal h3 {
+    color: rgb(30, 215, 96); /* Título del modal */
+    margin-bottom: 20px; /* Espaciado inferior */
+}
+
+.playlist-scroll {
+    max-height: 200px;
+    overflow-y: auto;
+    margin: 10px 0;
+    display: flex;
+    flex-direction: column; /* Asegura que los botones estén en una columna */
+    align-items: center; /* Centra los botones horizontalmente */
+}
+
+.playlist-scroll::-webkit-scrollbar {
+    width: 10px; /* Ancho del scroll */
+    background-color: transparent; /* Sin color de fondo */
+}
+
+.playlist-scroll::-webkit-scrollbar-thumb {
+    background-color: rgb(30, 215, 96); /* Color verde para el thumb (barra de desplazamiento) */
+    border-radius: 5px; /* Bordes redondeados */
+}
+
+.playlist-scroll::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(22, 164, 72); /* Color más oscuro al pasar el cursor */
+}
+
+.playlist-scroll::-webkit-scrollbar-button {
+    background-color: rgb(30, 215, 96); /* Color verde para las flechas */
+    height: 10px; /* Altura de las flechas */
+}
+
+.playlist-scroll::-webkit-scrollbar-button:hover {
+    background-color: rgb(22, 164, 72); /* Color más oscuro al pasar el cursor sobre las flechas */
+}
+
+/* Elimina los puntos de la lista */
+.playlist-scroll ul {
+    list-style: none; /* Elimina los puntos de la lista */
+    padding: 0; /* Elimina el padding por defecto */
+    margin: 0; /* Elimina el margen por defecto */
+    width: 100%; /* Asegura que la lista ocupe todo el ancho del modal */
+}
+
+.playlist-scroll li {
+    margin-bottom: 10px; /* Espaciado entre elementos de la lista */
+    display: flex;
+    justify-content: center; /* Centra los botones dentro de cada elemento */
+}
+
+/* Estilo para truncar títulos largos de las playlists */
+.playlist-scroll button {
+    white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+    overflow: hidden; /* Oculta el texto que no cabe */
+    text-overflow: ellipsis; /* Muestra los tres puntos (...) */
+    max-width: 100%; /* Limita el ancho del botón */
+    display: inline-block; /* Asegura que el botón respete las reglas de truncamiento */
+    background-color: rgb(30, 215, 96); /* Color de fondo del botón */
+    color: white; /* Color del texto */
+    border: none; /* Sin bordes */
+    border-radius: 5px; /* Bordes redondeados */
+    padding: 5px 10px; /* Espaciado interno */
+    cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+    margin: 5px 0; /* Espaciado entre botones */
+    transition: background-color 0.2s ease-in-out; /* Transición suave al cambiar el color */
+}
+
+.playlist-scroll button:hover {
+    background-color: rgb(22, 164, 72); /* Color de fondo al pasar el cursor */
+}
+
 .close-button {
-    margin-top: 10px;
-    background-color: red;
+    margin-top: 20px; /* Espaciado superior para separarlo de los botones de las playlists */
+    background-color: rgb(30, 215, 96);
     color: white;
     border: none;
     border-radius: 5px;
     padding: 5px 10px;
     cursor: pointer;
+    display: block; /* Asegura que el botón ocupe una línea completa */
+    margin-left: 40%; /* Centra horizontalmente */
+    margin-right: 60%; /* Centra horizontalmente */
 }
 
 .close-button:hover {
-    background-color: darkred;
+    background-color: rgb(22, 164, 72);
+}
+
+a {
+    color: black;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+i:hover {
+    color: rgb(22, 164, 72);
 }
 </style>
