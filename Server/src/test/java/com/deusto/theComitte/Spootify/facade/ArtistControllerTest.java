@@ -192,6 +192,20 @@ public class ArtistControllerTest {
     }
 
     @Test
+    @DisplayName("Login fails with general error")
+    void testLoginFailsWithGeneralError() {
+        // Arrange
+        LoginDTO loginDTO = new LoginDTO("artist@example.com", "password");
+        doThrow(new RuntimeException("General error"))
+            .when(artistService).login("artist@example.com", "password");
+        // Act
+        ResponseEntity<TokenDTO> response = artistController.login(loginDTO);
+        // Assert
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        verify(artistService).login("artist@example.com", "password");
+    }
+
+    @Test
     @DisplayName("Logout successfully")
     void testLogoutSuccess() {
         // Arrange
@@ -216,6 +230,20 @@ public class ArtistControllerTest {
 
         // Assert
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+        verify(artistService).logout(TOKEN);
+    }
+
+    @Test
+    @DisplayName("Logout fails with general error")
+    void testLogoutFailsWithGeneralError() {
+        // Arrange
+        doThrow(new RuntimeException("General error")).when(artistService).logout(TOKEN);
+
+        // Act
+        ResponseEntity<Void> response = artistController.logout(TOKEN);
+
+        // Assert
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         verify(artistService).logout(TOKEN);
     }
 
@@ -253,6 +281,21 @@ public class ArtistControllerTest {
     }
 
     @Test
+    @DisplayName("Get my songs fails with general error")
+    void testGetMySongsFailsWithGeneralError() {
+        // Arrange
+        when(songService.getArtistSongs(TOKEN))
+            .thenThrow(new RuntimeException("General error"));
+
+        // Act
+        ResponseEntity<List<SongDTO>> response = artistController.getMySongs(TOKEN);
+
+        // Assert
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        verify(songService).getArtistSongs(TOKEN);
+    }
+
+    @Test
     @DisplayName("Get my profile successfully")
     void testGetMyProfileSuccess() {
         // Arrange
@@ -281,6 +324,21 @@ public class ArtistControllerTest {
 
         // Assert
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+        verify(artistService).getActiveArtist(TOKEN);
+    }
+
+    @Test
+    @DisplayName("Get my profile fails with general error")
+    void testGetMyProfileFailsWithGeneralError() {
+        // Arrange
+        when(artistService.getActiveArtist(TOKEN))
+            .thenThrow(new RuntimeException("General error"));
+
+        // Act
+        ResponseEntity<ArtistDTO> response = artistController.getMyProfile(TOKEN);
+
+        // Assert
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         verify(artistService).getActiveArtist(TOKEN);
     }
 
@@ -363,6 +421,21 @@ public class ArtistControllerTest {
     }
 
     @Test
+    @DisplayName("Follow artist fails with general error")
+    void testFollowArtistFailsWithGeneralError() {
+        // Arrange
+        doThrow(new RuntimeException("General error"))
+            .when(userService).followArtist(TOKEN, ARTIST_ID);
+
+        // Act
+        ResponseEntity<Void> response = artistController.followArtist(TOKEN, ARTIST_ID);
+
+        // Assert
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        verify(userService).followArtist(TOKEN, ARTIST_ID);
+    }
+
+    @Test
     @DisplayName("Get artist by ID successfully")
     void testGetArtistByIdSuccess() {
         // Arrange
@@ -394,6 +467,21 @@ public class ArtistControllerTest {
 
         // Assert
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        verify(artistService).getArtist(ARTIST_ID);
+    }
+
+    @Test
+    @DisplayName("Get artist by ID fails with general error")
+    void testGetArtistByIdFailsWithGeneralError() {
+        // Arrange
+        doThrow(new RuntimeException("General error"))
+            .when(artistService).getArtist(ARTIST_ID);
+
+        // Act
+        ResponseEntity<ArtistDTO> response = artistController.getArtist(ARTIST_ID);
+
+        // Assert
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         verify(artistService).getArtist(ARTIST_ID);
     }
 }
