@@ -3,11 +3,16 @@ package com.deusto.theComitte.Spootify.service;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.mockito.Mockito.never;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -18,6 +23,7 @@ import org.mockito.MockitoAnnotations;
 
 import com.deusto.theComitte.Spootify.DAO.ArtistRepository;
 import com.deusto.theComitte.Spootify.DAO.UserRepository;
+import com.deusto.theComitte.Spootify.entity.Artist;
 import com.deusto.theComitte.Spootify.entity.User;
 
 public class UserServiceTest {
@@ -127,6 +133,89 @@ public class UserServiceTest {
         });
 
         assertEquals("User not logged in", exception.getMessage());
+    }
+
+    @Test
+    void testGetUsers() {
+        List<User> users = new ArrayList<>();
+        users.add(new User("User1", "user1@email.com", "password1"));
+        users.add(new User("User2", "user2@email.com", "password2"));
+        
+        when(userRepository.findAll()).thenReturn(users);
+
+        List<User> result = userService.getUsers();
+
+        assertEquals(2, result.size());
+        assertEquals("User1", result.get(0).getName());
+        assertEquals("User2", result.get(1).getName()); 
+    }
+
+    @Test
+    void testGetActiveUser_Success() {
+        long token = 12345L;
+        User user = new User("User1", "user1@email.com", "password1");
+
+        userService.getActiveUserMap().put(token, user);
+        User result = userService.getActiveUser(token);
+        assertEquals(user, result);
+    }
+
+    @Test
+    void testGetActiveUser_UserNotLoggedIn() {
+        long token = 12345L;
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            userService.getActiveUser(token);
+        });
+
+        assertEquals("User not logged in", exception.getMessage());
+    }
+
+    @Test
+    void testFollowArtist_Success() {
+        long token = 12345L;
+        long artistID = 1L;
+        User user = new User("User1", "user1@email.com", "password1");
+        userService.getActiveUserMap().put(token, user);
+        Artist artist = new Artist(artistID, "artist1", "artist1@email.com", "password1");
+        
+        when(artistRepository.findById(artistID)).thenReturn(artist);
+        userService.followArtist(token, artistID);
+        verify(artistRepository, times(1)).save(artist);
+        verify(userRepository, times(1)).save(user);
+        assertTrue(artist.getFollowersList().contains(user));
+        assertTrue(user.getFollowList().contains(artist));
+    }
+
+    @Test
+    void testFollowArtist_UserNotLoggedIn() {
+        long token = 12345L;
+        long artistID = 1L;
+        Artist artist = new Artist(artistID, "artist1", "artist1@email.com", "password1");
+        
+        when(artistRepository.findById(artistID)).thenReturn(artist);
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            userService.followArtist(token, artistID);
+        });
+        assertEquals("User not logged in", exception.getMessage());
+        verify(artistRepository, never()).save(any(Artist.class));
+        verify(userRepository, never()).save(any(User.class));
+    }
+
+    @Test
+    void testFollowArtist_ArtistDoesNotExist() {
+        long token = 12345L;
+        long artistID = 1L;
+        User user = new User("User1", "user1@email.com", "password1");
+        userService.getActiveUserMap().put(token, user);
+        
+        when(artistRepository.findById(artistID)).thenReturn(null);
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            userService.followArtist(token, artistID);
+        });
+        assertEquals("Artist does not exist", exception.getMessage());
+        verify(artistRepository, never()).save(any(Artist.class));
+        verify(userRepository, never()).save(any(User.class));
     }
 }
     
