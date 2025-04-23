@@ -37,6 +37,10 @@ public abstract class GenericUser implements Serializable {
 
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public long getId() {
         return id;
     }
@@ -57,7 +61,7 @@ public abstract class GenericUser implements Serializable {
         this.email = email;
     }
 
-    public void setPassowrd(String password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 
