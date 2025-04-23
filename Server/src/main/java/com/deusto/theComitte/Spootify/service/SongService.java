@@ -71,4 +71,8 @@ public class SongService {
         }
         return song;
     }
+
+    public List<Song> searchSongs(String title) {
+        return songRepository.findByName(title);
+    }
 }

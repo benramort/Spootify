@@ -66,4 +66,8 @@ public class SongDTO {
     public void setYoutubeUrl(String youtubeUrl) {
         this.youtubeUrl = youtubeUrl;
     }
+
+    public String toString() {
+        return "SongDTO [id=" + id + ", title=" + title + ", album=" + album + ", duration=" + duration + ", youtubeUrl=" + youtubeUrl + "]";
+    }
 }
