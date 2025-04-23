@@ -17,7 +17,15 @@
                 </div>
                 <div class="song-actions">
                     <p>{{ song.duration }}</p>
-                    <button v-if="globalState.isArtist.value === false" class="add-button" @click="openPlaylistModal(song)">+</button>
+                    <!-- Botón de añadir -->
+                    <button class="add-button" @click="openPlaylistModal(song)">+</button>
+                    <!-- Botón de corazón -->
+                    <button 
+                        class="heart-button" 
+                        :disabled="isLiked(song)" 
+                        @click="() => { toggleLiked(song); addToPlaylistMeGustan(song); }">
+                        <i :class="{'fa-solid fa-heart': isLiked(song), 'fa-regular fa-heart': !isLiked(song)}"></i>
+                    </button>
                 </div>
             </div>
         </div>
@@ -77,6 +85,7 @@ onMounted(() => {
         console.log(songs.value);
         songs.value.forEach((song) => {
             song.duration = printDuration(song.duration);
+            song.liked = song.liked || false; // Inicializa el estado de liked si no está definido
         });
     });
 
@@ -109,6 +118,69 @@ function addToPlaylist(playlist, song) {
     }).catch((error) => {
         console.error("Error al añadir la canción a la playlist:", error);
     });
+}
+
+function addToPlaylistMeGustan(song) {
+    // Realiza una llamada a la API para obtener el perfil del usuario
+    const token = globalState.token.value; // Asegúrate de que el token esté disponible
+    axios
+        .get(`http://localhost:8081/users/myProfile?token=${token}`)
+        .then((response) => {
+            const userName = response.data.name; // Obtiene el nombre del usuario del perfil
+            console.log("Nombre del usuario:", userName);
+
+            // Construye el nombre de la playlist
+            const playlistName = `Canciones que me gustan de ${userName}`;
+            console.log("Buscando playlist con nombre:", playlistName);
+
+            // Busca la playlist en la lista de playlists
+            const playlist = playlists.value.find((playlist) => playlist.name === playlistName);
+
+            if (playlist && playlist.id) {
+                // Si encuentra la playlist, utiliza su ID en el path
+                const path = `http://localhost:8081/playlists/${playlist.id}/songs?token=${token}`;
+                axios
+                    .post(path, { id: song.id })
+                    .then(() => {
+                        console.log(`Canción añadida a la playlist: ${playlist.name}`);
+                        // Refresca la página después de añadir la canción
+                        window.location.reload();
+                    })
+                    .catch((error) => {
+                        console.error("Error al añadir la canción a la playlist:", error);
+                    });
+            } else {
+                // Si no encuentra la playlist, muestra un mensaje de error
+                console.error(`No se encontró una playlist válida con el nombre '${playlistName}' o el ID es null.`);
+            }
+        })
+        .catch((error) => {
+            console.error("Error al obtener el perfil del usuario:", error);
+        });
+}
+
+function toggleLiked(song) {
+    song.liked = !song.liked; // Cambia el estado de liked
+    console.log(`Canción ${song.title} es liked: ${song.liked}`);
+}
+
+function isLiked(song) {
+    // Busca la playlist "Canciones que me gustan" en la lista de playlists
+    const playlist = playlists.value.find((playlist) => playlist.name.startsWith("Canciones que me gustan"));
+
+    if (playlist && playlist.songs) {
+        // Verifica si la canción está en la lista de canciones de la playlist
+        const isSongInPlaylist = playlist.songs.some((s) => s.id === song.id);
+
+        // Ajusta el estado de liked según si la canción está en la playlist
+        song.liked = isSongInPlaylist;
+        console.log(`Canción ${song.title} es liked: ${song.liked}`);
+        return song.liked;
+    } else {
+        console.error("No se encontró una playlist válida o no contiene canciones.");
+        song.liked = false;
+        return song.liked;
+    }
 }
 </script>
 
@@ -167,7 +239,31 @@ function addToPlaylist(playlist, song) {
     background-color: rgb(22, 164, 72);
 }
 
-/* Estilo de la ventana para añadir una canción a una playlist */
+.heart-button {
+    background-color: transparent;
+    color: rgb(30, 215, 96);
+    border: none;
+    font-size: 1.2em;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.2s ease-in-out;
+}
+
+.heart-button:disabled {
+    color: rgb(30, 215, 96);
+    cursor: not-allowed;
+}
+
+.heart-button:hover {
+    transform: scale(1.2); /* Aumenta el tamaño al pasar el cursor */
+}
+
+.fa-heart {
+    font-size: 1.5em;
+}
+
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -186,10 +282,12 @@ function addToPlaylist(playlist, song) {
     border-radius: 10px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
-    border: 2px solid rgb(30, 215, 96); /* Borde del modal */
-    display: flex;
-    flex-direction: column; /* Asegura que los elementos estén en una columna */
-    align-items: center; /* Centra todos los elementos horizontalmente */
+}
+
+.playlist-scroll {
+    max-height: 200px;
+    overflow-y: auto;
+    margin: 10px 0;
 }
 
 .modal h3 {
@@ -273,8 +371,8 @@ function addToPlaylist(playlist, song) {
     padding: 5px 10px;
     cursor: pointer;
     display: block; /* Asegura que el botón ocupe una línea completa */
-    margin-left: 48%; /* Centra horizontalmente */
-    margin-right: 52%; /* Centra horizontalmente */
+    margin-left: 40%; /* Centra horizontalmente */
+    margin-right: 60%; /* Centra horizontalmente */
 }
 
 .close-button:hover {
