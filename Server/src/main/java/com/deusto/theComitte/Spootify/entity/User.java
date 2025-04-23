@@ -22,9 +22,9 @@ public class User extends GenericUser {
 
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
     @JoinTable(
-        name = "ArtistUsers",
+        name = "Following",
         joinColumns = @JoinColumn(name = "user_id"),
-        inverseJoinColumns = @JoinColumn(name = "user2_id")
+        inverseJoinColumns = @JoinColumn(name = "artist_id")
     )
     private List<Artist> followList;
 
@@ -33,11 +33,12 @@ public class User extends GenericUser {
 
     public User(long id, String name, String email, String password) {
         super(id, name, email, password);
+        this.followList = new ArrayList<>();
     }
 
     public User(String name, String email, String password) {
         super(name, email, password);
-        this.friendsList = new ArrayList<>();
+        this.followList = new ArrayList<>();
     }
 
     public User() {
@@ -59,6 +60,10 @@ public class User extends GenericUser {
         }
 
         return new UserDTO(this.id, this.name, followListDTO, songListDTOList);
+    }
+
+    public UserDTO toDTOWithoutFollowing(){
+        return new UserDTO(this.id, this.name, null,null);
     }
 
  

@@ -9,20 +9,23 @@ public class AlbumDTO {
 
     private long id;
     private String name;
+    private String cover;
     private List<ArtistDTO> artists;
     private List<SongDTO> songs;
 
-    public AlbumDTO(long id, String name) {
+    public AlbumDTO(long id, String name, String cover) {
         this.id = id;
         this.name = name;
+        this.cover = cover;
         this.artists = new ArrayList<>();
         this.songs = new ArrayList<>();
     }
 
 
-    public AlbumDTO(long id, String name, List<ArtistDTO> artists, List<SongDTO> songs) {
+    public AlbumDTO(long id, String name, String cover, List<ArtistDTO> artists, List<SongDTO> songs) {
         this.id = id;
         this.name = name;
+        this.cover = cover;
         this.artists = artists;
         this.songs = songs;
     }
@@ -45,6 +48,14 @@ public class AlbumDTO {
 
     public String getName() {
         return this.name;
+    }
+
+    public void setCover(String cover) {
+        this.cover = cover;
+    }
+
+    public String getCover() {
+        return this.cover;
     }
 
     public void setArtists(List<ArtistDTO> artists) {

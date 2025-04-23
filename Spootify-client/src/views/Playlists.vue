@@ -19,7 +19,7 @@ const props = defineProps({
 const playlists = ref([]);
 
 onMounted(() => {
-    if(isNaN(globalState.token.value) || globalState.isArtist.value) {
+    if(isNaN(globalState.token.value) || globalState.isArtist.value === true || !globalState.token.value) {
         return;
     }
     let path = "http://localhost:8081/playlists";

@@ -11,8 +11,13 @@
                 <div id="campoNombre">
                     <input id="inputNombre" type="text" placeholder="Name" v-model="albumName" />
                 </div>
-                <div id="button">
-                    <button @click="handleCreateAlbum()" id="okButton">✔</button>
+                <div id="portadaYBoton">
+                    <div id="campoPortada">
+                        <input id="inputPortada" type="file" @change="(event) => { handleFileChange(event); console.log('archivo cargado'); }" />
+                    </div>
+                    <div id="button">
+                        <button @click="handleCreateAlbum()" id="okButton">✔</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -20,9 +25,14 @@
 </template>
 
 <style scoped>
+#crearAlbum {
+    color: white;
+    font-family: 'Circular', sans-serif;
+}
+
 .contFormulario {
-    width: 300px;
-    height: 120px;
+    width: 450px;
+    height: 140px;
     border: 2px solid rgb(34, 34, 34);
     margin: 0 auto;
     background-color: rgb(34, 34, 34);
@@ -49,9 +59,15 @@
 
 #campoNombre {
     margin: 0 auto;
-    margin-top: 10px;
-    margin-bottom: 20px;
-    display: inline-block;
+    margin-top: 0px;
+    margin-bottom: 10px;
+}
+
+#campoPortada {
+    margin-top: 20px;
+    margin: 0 auto;
+    margin-top: 0px;
+    margin-bottom: 0px;
 }
 
 #inputNombre {
@@ -60,18 +76,28 @@
     height: 23px;
     margin-left: 20px;
     border-radius: 5px;
-    border-color: white;
     margin: 0 auto;
     border: 0px;
+    margin-left: 0px;
+}
+
+#inputPortada {
+    background-color: white;
+    width: 320px;
+    height: 23px;
     margin-left: 20px;
+    border-radius: 5px;
+    margin: 0 auto;
+    border: 0px;
+    margin-left: 30px;
 }
 
 #button {
-    display: inline-block;
-    margin-right: 40px;
+    margin-right: 0px;
     margin-top: 0px;
     padding-top: 0px;
-    margin-top: 11px;
+    margin-top: 0px;
+    margin-left: 20px;
 }
 
 #okButton {
@@ -93,6 +119,7 @@
 
 #campos {
     display: flex;
+    flex-direction: column;
     margin-top: 0px;
     text-align: center;
     margin: 0 auto;
@@ -116,6 +143,13 @@
     margin-top: 0px;
     padding-top: 0px;
 }
+
+#portadaYBoton {
+    margin: 0 auto;
+    display: flex; 
+    align-items: center; 
+    justify-content: center;  
+}
 </style>
 
 <script setup>
@@ -127,6 +161,12 @@ const globalState = inject("globalState");
 const showModalAlbum = ref(false);
 const albumName = ref("");
 const errorMessage = ref("");
+const coverImage = ref(null);
+
+function handleFileChange(event) {
+    coverImage.value = event.target.files[0];
+    console.log("Imagen:" + coverImage.value);
+}
 
 function validateFields() {
     return albumName.value.trim() !== "";
@@ -134,7 +174,7 @@ function validateFields() {
 
 function handleCreateAlbum() {
     if (!validateFields()) {
-        errorMessage.value = "Todos los campos son obligatorios.";
+        errorMessage.value = "Todos los campos son obligatorios";
         return;
     }
     createAlbum();
@@ -142,9 +182,27 @@ function handleCreateAlbum() {
 }
 
 function createAlbum() {
+    if (!globalState.token.value || isNaN(globalState.token.value)) {
+        return;
+    }    
+
     let path = "http://localhost:8081/albums";
-    path += "?token=" + globalState.token.value;
-    axios.post(path, { "name": albumName.value }).then((response) => {
+
+    const formData = new FormData();
+    formData.append("name", albumName.value);
+    if(coverImage.value) {
+        formData.append("cover", coverImage.value);
+    }
+    formData.append("token", globalState.token.value);
+
+    axios.post(path, formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    }).then(() => {
+        for (let pair of formData.entries()) {
+            console.log(`${pair[0]}: ${pair[1]}`);
+        }
         location.reload();
     }).catch((error) => {
         console.log(error);

@@ -6,17 +6,17 @@ public class ArtistDTO {
     
     private long id;
     private String name;
-    private long followers;
     private List<AlbumDTO> albums;
+    private List<UserDTO> followersList;
 
     public ArtistDTO() {
     }
 
-    public ArtistDTO(long id, String name,long followers, List<AlbumDTO> albums) {
+    public ArtistDTO(long id, String name, List<AlbumDTO> albums,List<UserDTO> followersList) {
         this.id = id;
         this.name = name;
-        this.followers = followers;
         this.albums = albums;
+        this.followersList= followersList;
     }
 
     public long getId() {
@@ -35,20 +35,20 @@ public class ArtistDTO {
         this.name = name;
     }
 
-    public void setFollowers(long followers) {
-        this.followers = followers;
-    }
-
-    public long getFollowers() {
-        return followers;
-    }
-
     public List<AlbumDTO> getAlbums() {
         return albums;
     }
 
     public void setAlbums(List<AlbumDTO> albums) {
         this.albums = albums;
+    }
+
+    public List<UserDTO> getFollowersList() {
+        return followersList;
+    }
+    
+    public void setFollowersList(List<UserDTO> followersList) {
+        this.followersList = followersList;
     }
 
 }
