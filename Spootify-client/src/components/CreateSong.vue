@@ -21,8 +21,8 @@
                 <div class="campo" id="campoDuracion">
                     <input id="inputDuracion" type="number" placeholder="Duration" v-model="duration">
                 </div>
-                <div class="campo" id="campoUrl">
-                    <input id="inputUrl" type="text" placeholder="YouTube URL" required="true" v-model="youtubeUrl">
+                <div class="campo" id="file">
+                    <input id="file" type="file" placeholder="YouTube URL" required="true" @change="handleFileChange($event)">
                 </div>
                 <div id="button">
                     <button @click="handleCreateSong()" id="okButton">✔</button>
@@ -152,7 +152,7 @@ const albums = ref([]);
 const songName = ref("");
 const album = ref({});
 const duration = ref(0);
-const youtubeUrl = ref("");
+const file = ref();
 const errorMessage = ref("");
 
 function validateFields() {
@@ -160,8 +160,7 @@ function validateFields() {
         songName.value.trim() !== "" &&
         album.value !== undefined &&
         album.value.id !== undefined &&
-        duration.value > 0 &&
-        youtubeUrl.value.trim() !== ""
+        duration.value > 0
     );
 }
 
@@ -177,16 +176,27 @@ function handleCreateSong() {
 function createSong() {
     let path = "http://localhost:8081/songs";
     path += "?token=" + globalState.token.value;
-    axios.post(path, {
-        "title": songName.value,
-        "album":{"id": album.value.id, "name": album.value.name},
-        "duration": duration.value,
-        "youtubeUrl": youtubeUrl.value
+
+    const formData = new FormData();
+    formData.append("title", songName.value);
+    formData.append("album", album.value.id);
+    formData.append("duration", duration.value);
+    formData.append("file", file.value);
+
+    axios.post(path, formData, {
+        headers: {
+            "Content-Type": "multipart/form-data"
+        }
     }).then((response) => {
         location.reload();
     }).catch((error) => {
         console.log(error);
     });
+}
+
+function handleFileChange(event) {
+    file.value = event.target.files[0];
+    console.log("Archivo de audio:" + file.value);
 }
 
 function getAlbums() {

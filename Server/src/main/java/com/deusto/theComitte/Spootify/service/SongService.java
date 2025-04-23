@@ -1,9 +1,15 @@
 package com.deusto.theComitte.Spootify.service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.deusto.theComitte.Spootify.DAO.AlbumRepository;
 import com.deusto.theComitte.Spootify.DAO.ArtistRepository;
@@ -25,7 +31,7 @@ public class SongService {
     ArtistService artistService;
 
 
-    public void createSong(String title, int duration, String youtubeUrl, long albumId, long token) {
+    public void createSong(String title, int duration, MultipartFile audioFile, long albumId, long token) throws IOException {
         Artist artist = artistService.getActiveArtist(token);
         List<Album> albums = artist.getAlbums();
         System.out.println("Albums: " + albums);
@@ -38,7 +44,12 @@ public class SongService {
             album.getArtists().forEach(a -> System.out.println(a.getId()));
             throw new RuntimeException("Artist does not have access to this album");
         }
-        Song song = new Song(title, album, duration, youtubeUrl);
+
+        String fileName = System.currentTimeMillis() + "_" + audioFile.getOriginalFilename();
+        Path filePath = Paths.get("imagenes").resolve(fileName);
+        Files.copy(audioFile.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+        Song song = new Song(title, album, duration, filePath.toString());
         album.getSongs().add(song);
         songRepository.save(song);
     }
