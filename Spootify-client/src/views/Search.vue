@@ -15,6 +15,8 @@
         var pathAlbums = "http://localhost:8081/albums/search?name=" + searchCont.value;
         console.log(searchCont.value);
         songsList.value = [];
+        artistList.value = [];
+        albumList.value = [];
 
         axios.get(pathSongs).then((response) => {
             const uniqueSongs = response.data.filter(
@@ -69,7 +71,6 @@
         <div id="albumResult" v-if="albumList.length > 0">
             <div class="album" v-for="album in albumList" :key="album.id">
                         <div class="album">
-                            <i class="fa-solid fa-user"></i>
                             <router-link :to="`/albums/${album.id}`">{{ album.name }}</router-link>
                         </div>
                     </div>
@@ -130,4 +131,89 @@
     display: flex;
     align-items: center;
 }
+a {
+        text-decoration: none;
+        color: black;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+    .artist i {
+        font-size: 2em;
+        margin-right: 1.5em;
+    }
+
+    .artist {
+        background-color: rgb(244, 244, 244);
+        border-radius: 1.5em;
+        padding: 0em;
+        margin: 1em;
+        display: flex;
+        align-items: center;
+
+    }
+
+    .artists {
+        height: 100%;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .columns {
+        display: flex;
+        justify-content: space-between;
+        height: 100%;
+    }
+
+    .column {
+        width: 50%;
+        height: 68vh;
+        padding-right: 1em;
+    }
+
+
+
+    .botonera {
+        margin-top: 2em;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        height: 40%;
+        border: 1px solid aquamarine;
+    }
+
+
+    i {
+        font-size: 4em;
+    }
+
+    .album {
+        display: inline-flex;
+        width: 30vh;
+        height: 30vh;
+        margin: 10px;
+        background-color: red;
+        justify-content: center;
+        align-items: center;
+        border: none;
+        transition: all 0.3s ease;
+        background-color: #282828; /* Dark gray like Spotify */
+    }
+
+    .album:hover {
+        background-color: #333333; /* Slightly lighter on hover */
+        transform: translateY(-5px);
+    }
+
+    .album p {
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        margin: 10px 0 0;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 </style>
