@@ -73,4 +73,13 @@ public class SongService {
             .stream()
             .flatMap(s -> s.getSongs().stream()).toList();
     }
+
+    public Song getSong(long id) {
+        Song song = songRepository.findById(id);
+        if(song == null)
+        {
+            throw new RuntimeException("Song does not exist");
+        }
+        return song;
+    }
 }

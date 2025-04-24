@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 
 import com.deusto.theComitte.Spootify.DAO.UserRepository;
 import com.deusto.theComitte.Spootify.DAO.ArtistRepository;
+import com.deusto.theComitte.Spootify.DAO.PlayListRepository;
 import com.deusto.theComitte.Spootify.entity.Artist;
+import com.deusto.theComitte.Spootify.entity.SongList;
 import com.deusto.theComitte.Spootify.entity.User;
 
 @Service
@@ -21,6 +23,9 @@ public class UserService {
     @Autowired
     ArtistRepository artistRepository;
 
+    @Autowired
+    PlayListRepository songListRepository;
+
     private Map<Long, User> activeUsers = new HashMap<>();
 
     public void createUser(String name, String email, String password) {
@@ -30,7 +35,11 @@ public class UserService {
         }
         
         User user = new User(name, email, password);
+        String nombre = "Canciones que me gustan de " + user.getName();
+        SongList cancionesQueMeGustan = new SongList(nombre, user); // Sin ID manual
+        user.addSongList(cancionesQueMeGustan);
         userRepository.save(user);
+        songListRepository.save(cancionesQueMeGustan);
     }
 
     public long login(String email, String password) {

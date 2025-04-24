@@ -33,11 +33,12 @@ public class User extends GenericUser {
 
     public User(long id, String name, String email, String password) {
         super(id, name, email, password);
+        this.followList = new ArrayList<>();
     }
 
     public User(String name, String email, String password) {
         super(name, email, password);
-        this.friendsList = new ArrayList<>();
+        this.followList = new ArrayList<>();
     }
 
     public User() {

@@ -40,8 +40,15 @@
         }
         path = path + "token=" + globalState.token.value;
         axios.get(path).then((response) => {
-            albums.value = response.data;
+            albums.value = response.data.map((album) => {
+            if (album.cover && !album.cover.startsWith("http")) {
+                album.cover = "http://localhost:8081/" + album.cover.substring(9);
+            }
+            return album;
         });
+    }).catch((error) => {
+        console.error("Error al obtener los álbumes:", error);
+    });
     }
 
 </script>
@@ -50,7 +57,11 @@
 <template>
 
     <div class="carousel">
-        <button class="album" v-for="album in albums" :key="album.id" v-on:click="console.log('hasfd');router.push('/albums/' + album.id)">
+        <button 
+        class="album" 
+        v-for="album in albums" 
+        :key="album.id" v-on:click="router.push('/albums/' + album.id);console.log(album.cover)"
+        :style="album.cover ? { backgroundImage: 'url(' + album.cover + ')' } : { backgroundImage: 'url(http://localhost:8081/default.png)'}">
             <p>{{ album.name }}</p>
         </button>
     </div>
@@ -69,22 +80,25 @@
         width: 30vh;
         height: 30vh;
         margin: 10px;
-        background-color: red;
         justify-content: center;
         align-items: center;
         border: none;
         transition: all 0.3s ease;
-        background-color: #282828; /* Dark gray like Spotify */
+        background-size: cover;
+        background-position: center;
+        background-color: rgba(0, 0, 0, 0.3); /* Fallback color */
+        background-blend-mode: darken;
     }
 
     .album:hover {
-        background-color: #333333; /* Slightly lighter on hover */
+        background-color: rgba(127, 127, 127, 0.4); /* Slightly lighter on hover */
+        background-blend-mode: saturation;
         transform: translateY(-5px);
     }
 
     .album p {
         color: white;
-        font-size: 16px;
+        font-size: 25px;
         font-weight: bold;
         margin: 10px 0 0;
         max-width: 100%;

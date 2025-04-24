@@ -70,4 +70,8 @@ public class ArtistService {
         return artist;
     }
 
+    public Map<Long, Artist> getActiveArtistMap(){
+        return activeArtists;
+    }
+
 }
