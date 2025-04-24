@@ -22,7 +22,7 @@
                     <input id="inputDuracion" type="number" placeholder="Duration" v-model="duration">
                 </div>
                 <div class="campo" id="file">
-                    <input id="file" type="file" placeholder="YouTube URL" required="true" @change="handleFileChange($event)">
+                    <input id="file" type="file" placeholder="YouTube URL" required="true" @change="handleFileChange($event)" accept=".mp3">
                 </div>
                 <div id="button">
                     <button @click="handleCreateSong()" id="okButton">✔</button>
