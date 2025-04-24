@@ -7,6 +7,18 @@
 // import TheWelcome from './components/TheWelcome.vue'
 // import Prueba from './components/Prueba.vue'
 import Headervue from './components/Header.vue'
+import Reproductor from './components/Reproductor.vue';
+import { ref, provide } from 'vue';
+
+const reproductor = ref(null);
+
+provide('reproductor', {
+  playSong: (song) => {
+    if (reproductor.value) {
+      reproductor.value.selectSong(song);
+    }
+  }
+})
 
 </script>
 
@@ -19,7 +31,7 @@ import Headervue from './components/Header.vue'
     <router-view />
   </main>
   <footer>
-
+    <Reproductor ref="reproductor" />
   </footer>
 </template>
 
@@ -71,7 +83,7 @@ header {
 main {
   width: 100%;
   margin-top: 0;  
-  padding: 20px;
+  padding: 0px;
   box-sizing: border-box;
   /* border: 1px solid magenta; */
 }

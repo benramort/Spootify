@@ -19,21 +19,21 @@ public class Song {
     @Column(nullable = false)
     private int duration;
     @Column(nullable = false, unique = true)
-    private String youtubeUrl;
+    private String songPath;
 
-    public Song(long id, String name, Album album, int duration, String youtubeUrl) {
+    public Song(long id, String name, Album album, int duration, String songPath) {
         this.id = id;
         this.album = album;
         this.name = name;
         this.duration = duration;
-        this.youtubeUrl = youtubeUrl;
+        this.songPath = songPath;
     }
     
-    public Song(String name, Album album, int duration, String youtubeUrl) {
+    public Song(String name, Album album, int duration, String songPath) {
         this.album = album;
         this.name = name;
         this.duration = duration;
-        this.youtubeUrl = youtubeUrl;
+        this.songPath = songPath;
     }
 
     public Song() {
@@ -56,8 +56,8 @@ public class Song {
         return duration;
     }
 
-    public String getYoutubeUrl() {
-        return youtubeUrl;
+    public String getSongPath() {
+        return songPath;
     }
 
     public void setName(String name) {
@@ -72,8 +72,8 @@ public class Song {
         this.duration = duration;
     }
 
-    public void setYoutubeUrl(String youtubeUrl) {
-        this.youtubeUrl = youtubeUrl;
+    public void setSongPath(String songPath) {
+        this.songPath = songPath;
     }
 
     public void setId(long id) {
@@ -81,10 +81,10 @@ public class Song {
     }
 
     public SongDTO toDTO() {
-        return new SongDTO(this.id, this.name, this.album.toDTOWithoutSongs(), this.duration, this.youtubeUrl);
+        return new SongDTO(this.id, this.name, this.album.toDTOWithoutSongs(), this.duration, this.songPath);
     }
 
     public SongDTO toDTOWithoutAlbum() {
-        return new SongDTO(this.id, this.name, null, this.duration, this.youtubeUrl);
+        return new SongDTO(this.id, this.name, null, this.duration, this.songPath);
     }
 }

@@ -10,6 +10,7 @@ import Playlists from '@/views/Playlists.vue';
 import ArtistDetail from '../views/ArtistDetail.vue';
 import UserDashboard from '../views/UserDashboard.vue';
 import Playlist from '@/views/Playlist.vue';
+import Reproductor from '@/components/Reproductor.vue';
 
 const routes = [
   { path: '/', component: Main },
@@ -23,7 +24,8 @@ const routes = [
   { path : '/crearPlaylist', component: CreatePlayList },
   { path: '/playlists', component: Playlists},
   { path: '/playlists/:id', component: Playlist },
-  { path: '/artists/:id', component: ArtistDetail }
+  { path: '/artists/:id', component: ArtistDetail },
+  {path: '/stream', component: Reproductor}
 ];
 
 const router = createRouter({
