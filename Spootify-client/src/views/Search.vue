@@ -6,11 +6,13 @@
     const searchCont = ref('');
     const songsList = ref([]);
     const artistList = ref([]);
+    const albumList = ref([]);
 
     function Search(){
       
         var pathSongs = "http://localhost:8081/songs/search?title=" + searchCont.value;
         var pathArtists = "http://localhost:8081/artists/search?name=" + searchCont.value;
+        var pathAlbums = "http://localhost:8081/albums/search?name=" + searchCont.value;
         console.log(searchCont.value);
         songsList.value = [];
 
@@ -34,6 +36,15 @@
             console.log(artistList.value);
         });
 
+        axios.get(pathAlbums).then((response) => {
+            const uniqueAlbums = response.data.filter(
+                (album, index, self) =>
+                index === self.findIndex((a) => a.id === album.id)
+            );
+            albumList.value = uniqueAlbums;
+            console.log("Álbumes buscados:");
+            console.log(uniqueAlbums);
+        });
         
     }
 </script>
@@ -55,7 +66,21 @@
         <div id="artistResult" v-else>
             <p>No hay artistas con ese nombre</p>
         </div>
-        <div id="albumResult"></div>
+        <div id="albumResult" v-if="albumList.length > 0">
+            <div class="album" v-for="album in albumList" :key="album.id">
+                        <div class="album">
+                            <i class="fa-solid fa-user"></i>
+                            <router-link :to="`/albums/${album.id}`">{{ album.name }}</router-link>
+                        </div>
+                    </div>
+
+            </div>
+            <div id="albumResult" v-else>
+                <p>No hay álbumes con ese nombre</p>
+            </div>
+        
+       
+        
         <div id="songsResult">
             <div class="songs">
                     <!-- Verifica si la playlist tiene canciones -->
