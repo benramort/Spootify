@@ -46,7 +46,7 @@ public class SongService {
         }
 
         String fileName = System.currentTimeMillis() + "_" + audioFile.getOriginalFilename();
-        Path filePath = Paths.get("imagenes").resolve(fileName);
+        Path filePath = Paths.get("songs").resolve(fileName);
         Files.copy(audioFile.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
         Song song = new Song(title, album, duration, filePath.toString());
