@@ -1,6 +1,10 @@
 package com.deusto.theComitte.Spootify.facade;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
@@ -302,4 +306,24 @@ public class AlbumControllerTest {
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         verify(albumService).searchAlbums(searchName);
     }
+
+    @Test
+    @DisplayName("find by name successfully")
+    void testFindByNameSuccess() {
+        String searchName = "Jamon y queso";
+        Album album = new Album(ALBUM_ID, "Jamon y queso");
+        List<Album> albums = Arrays.asList(album);
+        when(albumService.searchAlbums(searchName)).thenReturn(albums);
+
+        ResponseEntity<List<AlbumDTO>> response = albumController.searchAlbums(searchName);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(1, response.getBody().size());
+        assertEquals(ALBUM_ID, response.getBody().get(0).getId());
+        assertEquals("Jamon y queso", response.getBody().get(0).getName());
+
+        verify(albumService).searchAlbums(searchName);
+    }
+
 }
