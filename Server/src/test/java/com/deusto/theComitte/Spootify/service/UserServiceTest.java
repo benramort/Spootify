@@ -22,6 +22,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.deusto.theComitte.Spootify.DAO.ArtistRepository;
+import com.deusto.theComitte.Spootify.DAO.PlayListRepository;
 import com.deusto.theComitte.Spootify.DAO.UserRepository;
 import com.deusto.theComitte.Spootify.entity.Artist;
 import com.deusto.theComitte.Spootify.entity.User;
@@ -33,6 +34,9 @@ public class UserServiceTest {
 
     @Mock
     private UserRepository userRepository;
+
+    @Mock
+    private PlayListRepository playListRepository;
 
     @InjectMocks
     private UserService userService;
