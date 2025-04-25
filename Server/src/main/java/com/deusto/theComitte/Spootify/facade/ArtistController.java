@@ -163,6 +163,19 @@ public class ArtistController {
         
     }
 
+    @GetMapping("/search")
+        public ResponseEntity<List<ArtistDTO>> searchArtists(@RequestParam String name) {
+            try {
+                List<Artist> artists = artistService.searchArtists(name);
+                List<ArtistDTO> artistDTOs = new ArrayList<>();
+                for(Artist artist : artists) {
+                    artistDTOs.add(artist.toDTO());
+                }
+                return ResponseEntity.ok(artistDTOs);
+            } catch (RuntimeException e) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+    }
 
 
 }

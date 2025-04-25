@@ -41,6 +41,7 @@ class AlbumServiceTest {
     void testCreateAlbum_Success() {
         long token = 12345L;
         String albumName = "New Album";
+        String cover = "AlbumCover.jpg";
     
         // Create an artist with an initialized albums list
         Artist artist = new Artist(1L, "Artist Name", "artist@example.com", "password") {
@@ -57,11 +58,12 @@ class AlbumServiceTest {
         when(albumRepository.save(any(Album.class))).thenAnswer(invocation -> invocation.getArgument(0));
     
         // Call the method under test
-        albumService.createAlbum(albumName, token);
+        albumService.createAlbum(albumName, cover, token);
     
         // Assertions
         assertEquals(1, artist.getAlbums().size());
         assertEquals(albumName, artist.getAlbums().get(0).getName());
+        assertEquals(cover, artist.getAlbums().get(0).getCover());
         verify(albumRepository, times(1)).save(any(Album.class));
         verify(artistRepository, times(1)).save(artist);
     }

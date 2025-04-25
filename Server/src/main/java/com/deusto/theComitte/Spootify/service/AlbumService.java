@@ -20,12 +20,12 @@ public class AlbumService {
     @Autowired
     AlbumRepository albumRepository;
 
-    public void createAlbum(String name, long token) {
+    public void createAlbum(String name, String cover, long token) {
         Artist artist = artistService.getActiveArtist(token);
         Album album = new Album(name);
+        album.setCover(cover);
         artist.getAlbums().add(album);
         album.getArtists().add(artist);
-        System.out.println(album.getArtists());
         albumRepository.save(album);
         artistRepository.save(artist);
         // System.out.println(albumRepository.findById(al));
@@ -47,5 +47,23 @@ public class AlbumService {
         return album;
     }
 
+    public List<Album> searchAlbums(String name) {
+        List<Album> albums = albumRepository.findByName(name);
+        if (albums.isEmpty()) {
+            throw new RuntimeException("No albums found with the given name");
+        }
+        return albums;
+    }
+    public List<Album> getArtistAlbums(long artistId) {
+        Artist artist = artistService.getActiveArtist(artistId);
+        if(artist == null) {
+            throw new RuntimeException("Artist not logged in");
+        }
+        return null;
+        // return albumRepository.findByArtistId(artist.getId());
+    }
 
+    public List<Album> getAllAlbums() {
+        return albumRepository.findAll();
+    }
 }

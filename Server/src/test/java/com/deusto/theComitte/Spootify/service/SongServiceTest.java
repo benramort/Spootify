@@ -13,6 +13,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.deusto.theComitte.Spootify.DAO.AlbumRepository;
 import com.deusto.theComitte.Spootify.DAO.ArtistRepository;
@@ -41,6 +43,7 @@ public class SongServiceTest {
     private Artist testArtist;
     private Album testAlbum;
     private Song testSong;
+    private MultipartFile mockFile;
     private final long TOKEN = 12345L;
     private final long ARTIST_ID = 1L;
     private final long ALBUM_ID = 2L;
@@ -69,6 +72,8 @@ public class SongServiceTest {
         List<Song> albumSongs = new ArrayList<>();
         albumSongs.add(testSong);
         testAlbum.setSongs(albumSongs);
+
+        mockFile = new MockMultipartFile("name", new byte[0]);
     }
     
     @Test
@@ -79,7 +84,11 @@ public class SongServiceTest {
         when(albumRepository.findById(ALBUM_ID)).thenReturn(testAlbum);
         
         // Act
-        songService.createSong("New Song", 240, "https://youtube.com/watch?v=new", ALBUM_ID, TOKEN);
+        try {
+            songService.createSong("New Song", 240, mockFile, ALBUM_ID, TOKEN);
+        } catch (Exception e) {
+            fail("Exception should not be thrown");
+        }
         
         // Assert
         verify(songRepository).save(any(Song.class));
@@ -95,7 +104,7 @@ public class SongServiceTest {
         
         // Act & Assert
         assertThrows(RuntimeException.class, () -> 
-            songService.createSong("New Song", 240, "https://youtube.com/watch?v=new", 99L, TOKEN)
+            songService.createSong("New Song", 240, mockFile, 99L, TOKEN)
         );
         verify(songRepository, never()).save(any(Song.class));
     }
@@ -116,7 +125,7 @@ public class SongServiceTest {
         
         // Act & Assert
         assertThrows(RuntimeException.class, () -> 
-            songService.createSong("New Song", 240, "https://youtube.com/watch?v=new", ALBUM_ID, TOKEN)
+            songService.createSong("New Song", 240, mockFile, ALBUM_ID, TOKEN)
         );
         verify(songRepository, never()).save(any(Song.class));
     }
@@ -261,7 +270,11 @@ public class SongServiceTest {
         when(albumRepository.findById(ALBUM_ID)).thenReturn(emptyAlbum);
         
         // Act
-        songService.createSong("New Song", 240, "https://youtube.com/watch?v=new", ALBUM_ID, TOKEN);
+        try {
+            songService.createSong("New Song", 240, mockFile, ALBUM_ID, TOKEN);
+        } catch (Exception e) {
+            fail("Exception should not be thrown");
+        }
         
         // Assert
         assertEquals(1, emptyAlbum.getSongs().size());
