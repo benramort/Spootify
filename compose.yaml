@@ -59,9 +59,6 @@ services:
 
 volumes:
   spootifydb:
-
-
-# Es recomendable tener otros servicios para el entorno de pruebas
   
 
 
