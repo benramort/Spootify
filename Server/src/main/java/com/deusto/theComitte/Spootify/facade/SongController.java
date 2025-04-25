@@ -71,5 +71,21 @@ public class SongController {
         }
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<SongDTO>> searchSongs(@RequestParam String title) {
+        try {
+            List<Song> songs = songService.searchSongs(title);
+            List<SongDTO> songDTOs = new ArrayList<>();
+            for (Song song : songs) {
+                songDTOs.add(song.toDTO());
+            }
+            System.out.println("Canciones sacadas por query de controller:"+ songDTOs.toString());
+
+            return ResponseEntity.ok(songDTOs);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
     
 }

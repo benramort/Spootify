@@ -98,6 +98,20 @@ public class AlbumController {
         }
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<AlbumDTO>> searchAlbums(@RequestParam String name) {
+        try {
+            List<Album> albums = albumService.searchAlbums(name);
+            List<AlbumDTO> albumDTOs = new ArrayList<>();
+            for (Album album : albums) {
+                albumDTOs.add(album.toDTO());
+            }
+            return ResponseEntity.ok(albumDTOs);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
     // @GetMapping("/covers")
     // public ResponseEntity<List<AlbumDTO>> getAlbumCovers(@RequestParam(required = false, defaultValue = "0") long artist){
     //     try {

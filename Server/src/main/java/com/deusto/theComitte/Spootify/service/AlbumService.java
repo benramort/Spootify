@@ -47,6 +47,13 @@ public class AlbumService {
         return album;
     }
 
+    public List<Album> searchAlbums(String name) {
+        List<Album> albums = albumRepository.findByName(name);
+        if (albums.isEmpty()) {
+            throw new RuntimeException("No albums found with the given name");
+        }
+        return albums;
+    }
     public List<Album> getArtistAlbums(long artistId) {
         Artist artist = artistService.getActiveArtist(artistId);
         if(artist == null) {
