@@ -15,6 +15,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.deusto.theComitte.Spootify.DTO.AlbumDTO;
 import com.deusto.theComitte.Spootify.DTO.ArtistDTO;
@@ -39,6 +41,7 @@ public class AlbumControllerTest {
     private final long ARTIST_ID = 2L;
     private Album testAlbum;
     private Artist testArtist;
+    private MockMultipartFile coverFile;
     
     @BeforeEach
     void setUp() {
@@ -47,6 +50,7 @@ public class AlbumControllerTest {
         // Create test data
         testArtist = new Artist(ARTIST_ID, "Test Artist", "artist@test.com", "password");
         testAlbum = new Album(ALBUM_ID, "Test Album");
+        testAlbum.setCover("imagenes/test_cover.jpg");
         
         // Set up relationships
         List<Artist> albumArtists = new ArrayList<>();
@@ -56,51 +60,73 @@ public class AlbumControllerTest {
         List<Album> artistAlbums = new ArrayList<>();
         artistAlbums.add(testAlbum);
         testArtist.setAlbums(artistAlbums);
+        
+        // Create a mock cover file
+        coverFile = new MockMultipartFile("cover", "test_cover.jpg", "image/jpeg", "test image content".getBytes());
     }
     
     @Test
     @DisplayName("Create album successfully")
     void testCreateAlbumSuccess() {
         // Arrange
-        Album album = new Album(0, "New Album");
-        doNothing().when(albumService).createAlbum("New Album", TOKEN);
+        String albumName = "New Album";
+        doNothing().when(albumService).createAlbum(eq(albumName), isNull(), eq(TOKEN));
         
         // Act
-        ResponseEntity<Void> response = albumController.createAlbum(album.toDTO(), TOKEN);
+        ResponseEntity<Void> response = albumController.createAlbum(albumName, null, TOKEN);
         
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        verify(albumService).createAlbum("New Album", TOKEN);
+        verify(albumService).createAlbum(albumName, null, TOKEN);
+    }
+    
+    @Test
+    @DisplayName("Create album with cover successfully")
+    void testCreateAlbumWithCoverSuccess() throws Exception {
+        // Arrange
+        String albumName = "New Album";
+        
+        // We're using any(String.class) for cover path since it's generated with timestamp
+        doNothing().when(albumService).createAlbum(eq(albumName), any(String.class), eq(TOKEN));
+        
+        // Act
+        ResponseEntity<Void> response = albumController.createAlbum(albumName, coverFile, TOKEN);
+        
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        verify(albumService).createAlbum(eq(albumName), any(String.class), eq(TOKEN));
     }
     
     @Test
     @DisplayName("Create album fails when artist not logged in")
     void testCreateAlbumFailsWhenArtistNotLoggedIn() {
         // Arrange
-        Album album = new Album(0, "New Album");
-        doThrow(new RuntimeException("Artist not logged in")).when(albumService).createAlbum("New Album", TOKEN);
+        String albumName = "New Album";
+        doThrow(new RuntimeException("Artist not logged in"))
+            .when(albumService).createAlbum(eq(albumName), isNull(), eq(TOKEN));
         
         // Act
-        ResponseEntity<Void> response = albumController.createAlbum(album.toDTO(), TOKEN);
+        ResponseEntity<Void> response = albumController.createAlbum(albumName, null, TOKEN);
         
         // Assert
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        verify(albumService).createAlbum("New Album", TOKEN);
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+        verify(albumService).createAlbum(albumName, null, TOKEN);
     }
     
     @Test
     @DisplayName("Create album fails with general error")
     void testCreateAlbumFailsWithGeneralError() {
         // Arrange
-        Album album = new Album(0, "New Album");
-        doThrow(new RuntimeException("Other error")).when(albumService).createAlbum("New Album", TOKEN);
+        String albumName = "New Album";
+        doThrow(new RuntimeException("Other error"))
+            .when(albumService).createAlbum(eq(albumName), isNull(), eq(TOKEN));
         
         // Act
-        ResponseEntity<Void> response = albumController.createAlbum(album.toDTO(), TOKEN);
+        ResponseEntity<Void> response = albumController.createAlbum(albumName, null, TOKEN);
         
         // Assert
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        verify(albumService).createAlbum("New Album", TOKEN);
+        verify(albumService).createAlbum(albumName, null, TOKEN);
     }
     
     @Test
@@ -119,6 +145,7 @@ public class AlbumControllerTest {
         assertEquals(1, response.getBody().size());
         assertEquals(ALBUM_ID, response.getBody().get(0).getId());
         assertEquals("Test Album", response.getBody().get(0).getName());
+        assertEquals("imagenes/test_cover.jpg", response.getBody().get(0).getCover());
         
         // Verify artist data in returned DTO
         assertNotNull(response.getBody().get(0).getArtists());
@@ -145,6 +172,7 @@ public class AlbumControllerTest {
         assertEquals(1, response.getBody().size());
         assertEquals(ALBUM_ID, response.getBody().get(0).getId());
         assertEquals("Test Album", response.getBody().get(0).getName());
+        assertEquals("imagenes/test_cover.jpg", response.getBody().get(0).getCover());
         
         // Verify artist data in returned DTO
         assertNotNull(response.getBody().get(0).getArtists());
@@ -183,6 +211,7 @@ public class AlbumControllerTest {
         assertNotNull(response.getBody());
         assertEquals(ALBUM_ID, response.getBody().getId());
         assertEquals("Test Album", response.getBody().getName());
+        assertEquals("http://localhost:8081/"+"imagenes/test_cover.jpg", response.getBody().getCover());
         
         // Verify artist data in returned DTO
         assertNotNull(response.getBody().getArtists());
@@ -219,5 +248,58 @@ public class AlbumControllerTest {
         // Assert
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         verify(albumService).getAlbum(ALBUM_ID);
+    }
+    
+    @Test
+    @DisplayName("Search albums by name successfully")
+    void testSearchAlbumsByNameSuccess() {
+        // Arrange
+        String searchName = "Test";
+        List<Album> albums = Arrays.asList(testAlbum);
+        when(albumService.searchAlbums(searchName)).thenReturn(albums);
+        
+        // Act
+        ResponseEntity<List<AlbumDTO>> response = albumController.searchAlbums(searchName);
+        
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(1, response.getBody().size());
+        assertEquals(ALBUM_ID, response.getBody().get(0).getId());
+        assertEquals("Test Album", response.getBody().get(0).getName());
+        
+        verify(albumService).searchAlbums(searchName);
+    }
+    
+    @Test
+    @DisplayName("Search albums fails when no albums found")
+    void testSearchAlbumsFailsWhenNoAlbumsFound() {
+        // Arrange
+        String searchName = "Nonexistent";
+        when(albumService.searchAlbums(searchName))
+            .thenThrow(new RuntimeException("No albums found with the given name"));
+        
+        // Act
+        ResponseEntity<List<AlbumDTO>> response = albumController.searchAlbums(searchName);
+        
+        // Assert
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        verify(albumService).searchAlbums(searchName);
+    }
+    
+    @Test
+    @DisplayName("Search albums fails with general error")
+    void testSearchAlbumsFailsWithGeneralError() {
+        // Arrange
+        String searchName = "Error";
+        when(albumService.searchAlbums(searchName))
+            .thenThrow(new RuntimeException("Other error"));
+        
+        // Act
+        ResponseEntity<List<AlbumDTO>> response = albumController.searchAlbums(searchName);
+        
+        // Assert
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        verify(albumService).searchAlbums(searchName);
     }
 }
