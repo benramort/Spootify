@@ -19,6 +19,8 @@ public class Album {
     private long id;
     @Column(nullable = false)
     private String name;
+    @Column(nullable = true)
+    private String cover;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable
     (
@@ -68,6 +70,14 @@ public class Album {
         return this.name;
     }
 
+    public void setCover(String cover) {
+        this.cover = cover;
+    }
+
+    public String getCover() {
+        return this.cover;
+    }
+
     public void setArtists(List<Artist> artists) {
         this.artists = artists;
     }
@@ -102,7 +112,7 @@ public class Album {
         {
             artistsDTO.add(artist.toDTOWithoutAlbums());
         }
-        return new AlbumDTO(this.id, this.name, artistsDTO, null);
+        return new AlbumDTO(this.id, this.name, this.cover, artistsDTO, null);
     }
 
     public AlbumDTO toDTOWithoutArtists() {
@@ -111,7 +121,7 @@ public class Album {
         {
             songsDTO.add(song.toDTOWithoutAlbum());
         }
-        return new AlbumDTO(this.id, this.name, null, songsDTO);
+        return new AlbumDTO(this.id, this.name, this.cover, null, songsDTO);
     }
 
     public AlbumDTO toDTO() {
@@ -125,7 +135,7 @@ public class Album {
         {
             songsDTO.add(song.toDTOWithoutAlbum());
         }
-        return new AlbumDTO(this.id, this.name, artistsDTO, songsDTO);
+        return new AlbumDTO(this.id, this.name, this.cover, artistsDTO, songsDTO);
     }
 
     @Override

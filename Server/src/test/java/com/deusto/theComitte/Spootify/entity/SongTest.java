@@ -36,7 +36,7 @@ public class SongTest {
         assertEquals(SONG_NAME, song.getName());
         assertEquals(album, song.getAlbum());
         assertEquals(SONG_DURATION, song.getDuration());
-        assertEquals(YOUTUBE_URL, song.getYoutubeUrl());
+        assertEquals(YOUTUBE_URL, song.getSongPath());
     }
     
     @Test
@@ -48,7 +48,7 @@ public class SongTest {
         assertEquals(SONG_NAME, songWithoutId.getName());
         assertEquals(album, songWithoutId.getAlbum());
         assertEquals(SONG_DURATION, songWithoutId.getDuration());
-        assertEquals(YOUTUBE_URL, songWithoutId.getYoutubeUrl());
+        assertEquals(YOUTUBE_URL, songWithoutId.getSongPath());
     }
     
     @Test
@@ -60,7 +60,7 @@ public class SongTest {
         assertNull(emptySong.getName());
         assertNull(emptySong.getAlbum());
         assertEquals(0, emptySong.getDuration());
-        assertNull(emptySong.getYoutubeUrl());
+        assertNull(emptySong.getSongPath());
     }
     
     @Test
@@ -95,8 +95,8 @@ public class SongTest {
     @Test
     @DisplayName("Test setter and getter for YouTube URL")
     void testYoutubeUrlSetterGetter() {
-        song.setYoutubeUrl("https://youtube.com/watch?v=newurl456");
-        assertEquals("https://youtube.com/watch?v=newurl456", song.getYoutubeUrl());
+        song.setSongPath("https://youtube.com/watch?v=newurl456");
+        assertEquals("https://youtube.com/watch?v=newurl456", song.getSongPath());
     }
     
     @Test

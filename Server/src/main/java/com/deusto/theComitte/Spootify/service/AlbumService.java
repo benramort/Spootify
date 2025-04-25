@@ -20,12 +20,12 @@ public class AlbumService {
     @Autowired
     AlbumRepository albumRepository;
 
-    public void createAlbum(String name, long token) {
+    public void createAlbum(String name, String cover, long token) {
         Artist artist = artistService.getActiveArtist(token);
         Album album = new Album(name);
+        album.setCover(cover);
         artist.getAlbums().add(album);
         album.getArtists().add(artist);
-        System.out.println(album.getArtists());
         albumRepository.save(album);
         artistRepository.save(artist);
         // System.out.println(albumRepository.findById(al));
@@ -54,5 +54,15 @@ public class AlbumService {
         }
         return albums;
     }
+    public List<Album> getArtistAlbums(long artistId) {
+        Artist artist = artistService.getActiveArtist(artistId);
+        if(artist == null) {
+            throw new RuntimeException("Artist not logged in");
+        }
+        return null;
+    }
 
+    public List<Album> getAllAlbums() {
+        return albumRepository.findAll();
+    }
 }

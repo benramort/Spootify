@@ -6,6 +6,7 @@ public class SongDTO {
     private AlbumDTO album;
     private int duration; // duration in seconds
     private String youtubeUrl;
+    private boolean liked;
 
     public SongDTO() {
     }
@@ -16,6 +17,7 @@ public class SongDTO {
         this.album = album;
         this.duration = duration;
         this.youtubeUrl = youtubeUrl;
+        this.liked = false;
     }  
 
     public SongDTO(long id, String title, int duration, String youtubeUrl) {
@@ -23,6 +25,7 @@ public class SongDTO {
         this.title = title;
         this.duration = duration;
         this.youtubeUrl = youtubeUrl;
+        this.liked = false;
     }
 
     
@@ -69,5 +72,12 @@ public class SongDTO {
 
     public String toString() {
         return "SongDTO [id=" + id + ", title=" + title + ", album=" + album + ", duration=" + duration + ", youtubeUrl=" + youtubeUrl + "]";
+    }
+    public boolean isLiked() {
+        return liked;
+    }
+
+    public void setLiked(boolean liked) {
+        this.liked = liked;
     }
 }
