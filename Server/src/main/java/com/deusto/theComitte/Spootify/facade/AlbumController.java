@@ -52,6 +52,9 @@ public class AlbumController {
             albumService.createAlbum(name, imagePath, token);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch(RuntimeException e ) {
+            if (e.getMessage().equals("Artist not logged in")) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } catch(IOException e) {
@@ -108,6 +111,9 @@ public class AlbumController {
             }
             return ResponseEntity.ok(albumDTOs);
         } catch (RuntimeException e) {
+            if (e.getMessage().equals("No albums found with the given name")) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

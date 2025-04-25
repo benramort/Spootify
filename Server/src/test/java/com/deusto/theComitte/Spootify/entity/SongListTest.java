@@ -125,8 +125,12 @@ class SongListTest {
     @DisplayName("Test equals method")
     void testEquals() {
         SongList songList = new SongList(1L, "Test Playlist", user, new ArrayList<>());
+        SongList songList2 = new SongList(1L, "Test Playlist", user, new ArrayList<>());
         SongList sameIdSongList = new SongList(1L, "Different Name", user, new ArrayList<>());
         SongList differentIdSongList = new SongList(2L, "Test Playlist", user, new ArrayList<>());
+
+        // Same ID, name, songs and user
+        assertTrue(songList.equals(songList2));
 
         // Same object reference
         assertTrue(songList.equals(songList));

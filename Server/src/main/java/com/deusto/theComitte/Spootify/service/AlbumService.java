@@ -60,6 +60,7 @@ public class AlbumService {
             throw new RuntimeException("Artist not logged in");
         }
         return null;
+        // return albumRepository.findByArtistId(artist.getId());
     }
 
     public List<Album> getAllAlbums() {
