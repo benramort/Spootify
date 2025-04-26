@@ -116,6 +116,12 @@
                         <goals>
                             <goal>report</goal>
                         </goals>
+						<configuration>
+							<excludes>
+                    			<!-- Excluir la carpeta dto -->
+                    			<exclude>**/DTO/**</exclude>
+               				</excludes>
+						</configuration>
                     </execution>
                     <!-- <execution>
                         <id>check</id>
