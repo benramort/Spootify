@@ -173,8 +173,11 @@ public class ArtistController {
                 }
                 return ResponseEntity.ok(artistDTOs);
             } catch (RuntimeException e) {
+                if (e.getMessage().equals("No artists found with the given name")) {
+                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                }
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            }
+        }
     }
 
 

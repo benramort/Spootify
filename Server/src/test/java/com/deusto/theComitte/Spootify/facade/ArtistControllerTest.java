@@ -484,4 +484,52 @@ public class ArtistControllerTest {
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         verify(artistService).getArtist(ARTIST_ID);
     }
+
+    @Test 
+    @DisplayName("get artist by name successfully")
+    void testSearchArtistsByNameSuccess() {
+        
+        String name = "Paco";
+        Artist pacoArtist = new Artist(ARTIST_ID, "Paco", "paco@example.com", "password");
+        List<Artist> artists = Arrays.asList(pacoArtist);
+        when(artistService.searchArtists(name)).thenReturn(artists);
+    
+
+        
+        ResponseEntity<List<ArtistDTO>> response = artistController.searchArtists(name);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(1, response.getBody().size());
+        assertEquals(ARTIST_ID, response.getBody().get(0).getId());
+        assertEquals("Paco", response.getBody().get(0).getName());
+        verify(artistService).searchArtists(name);
+    }
+
+    @Test
+    @DisplayName("get artist by name fail")
+    void testSearchArtistsByNameFail() {
+
+        String name = "Paco";
+        when(artistService.searchArtists(name)).thenThrow(new RuntimeException("No artists found with the given name"));
+
+        ResponseEntity<List<ArtistDTO>> response = artistController.searchArtists(name);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        verify(artistService).searchArtists(name);
+    }
+
+    @Test
+    @DisplayName("Search artist with invalid name")
+    void testSearchArtistsInvalidName() {
+
+        String invalidName = ""; 
+        when(artistService.searchArtists(invalidName))
+            .thenThrow(new RuntimeException("Invalid input"));
+
+        ResponseEntity<List<ArtistDTO>> response = artistController.searchArtists(invalidName);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        verify(artistService).searchArtists(invalidName);
+    }
 }
