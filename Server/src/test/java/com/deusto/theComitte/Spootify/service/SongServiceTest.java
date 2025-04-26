@@ -1,6 +1,7 @@
 package com.deusto.theComitte.Spootify.service;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
@@ -280,5 +281,16 @@ public class SongServiceTest {
         assertEquals(1, emptyAlbum.getSongs().size());
         assertEquals("New Song", emptyAlbum.getSongs().get(0).getName());
         verify(songRepository).save(any(Song.class));
+    }
+
+    @Test
+    void testSearchSong_Success() {
+        String searchTerm = "Test";
+        List<Song> expectedSongs = Arrays.asList(testSong);
+        when(songRepository.findByName(searchTerm)).thenReturn(expectedSongs);
+
+        List<Song> result = songService.searchSongs(searchTerm);
+
+        assertEquals(expectedSongs, result);
     }
 }

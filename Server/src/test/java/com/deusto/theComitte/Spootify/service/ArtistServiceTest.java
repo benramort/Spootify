@@ -1,6 +1,7 @@
 package com.deusto.theComitte.Spootify.service;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
@@ -182,4 +183,24 @@ class ArtistServiceTest {
 
         assertEquals("Artist not logged in", exception.getMessage());
     }
+
+    @Test
+    void testSearchArtist_Success() {
+        String name = "Artist Name";
+        List<Artist> artists = new ArrayList<>();
+        artists.add(new Artist(1L, "Artist Name", "artist@example.com", "password"));
+
+        when(artistRepository.findByName(name)).thenReturn(artists);
+
+        // Act
+        List<Artist> result = artistService.searchArtists(name);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        assertEquals("Artist Name", result.get(0).getName());
+        assertEquals("artist@example.com", result.get(0).getEmail());
+        verify(artistRepository).findByName(name);
+    }
+        
 }
