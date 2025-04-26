@@ -8,9 +8,12 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.aspectj.lang.annotation.Before;
+
 import org.junit.Rule;
 import org.junit.jupiter.api.Test;
 
@@ -25,18 +28,34 @@ public class PerformanceTest {
     @Rule 
 	public JUnitPerfRule perfTestRule = new JUnitPerfRule(new HtmlReportGenerator("target/junitperf/report.html"));
 
-    // @BeforeEach
-    // public void cleanDB() throws Exception {
-    //     //Clean database
-    //     HttpRequest deleteUserRequest = HttpRequest.newBuilder()
-    //             .uri(new URI("http://localhost:8081/users"))
-    //             .header("Content-Type", "application/json")
-    //             .DELETE()
-    //             .build();
-    //     HttpResponse<String> deleteUserResponse = HttpClient.newHttpClient().send(deleteUserRequest, HttpResponse.BodyHandlers.ofString());
-    //     assertEquals(200, deleteUserResponse.statusCode()); // Assuming 200 OK for user deletion
-        
-    // }
+@BeforeEach
+public void cleanDatabase() throws Exception {
+    // Database connection details
+    String jdbcUrl = "jdbc:mysql://localhost:3306/spootifydb"; // Replace with your DB URL
+    String username = "root"; // Replace with your DB username
+    String password = "root"; // Replace with your DB password
+
+    // SQL to clean the database
+    String deleteSongListsSql = "DELETE FROM song_lists"; // Adjust table name as needed
+    String deleteUsersSql = "DELETE FROM users"; // Adjust table name as needed
+    String resetAutoIncrementUsersSql = "ALTER TABLE users AUTO_INCREMENT = 1"; // Optional: Reset auto-increment
+    String resetAutoIncrementSongListsSql = "ALTER TABLE song_lists AUTO_INCREMENT = 1"; // Optional: Reset auto-increment
+
+    try (Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
+         Statement statement = connection.createStatement()) {
+        // Delete rows from child tables first
+        statement.executeUpdate(deleteSongListsSql);
+
+        // Delete rows from parent table
+        statement.executeUpdate(deleteUsersSql);
+
+        // Reset auto-increment counters (optional)
+        statement.executeUpdate(resetAutoIncrementUsersSql);
+        statement.executeUpdate(resetAutoIncrementSongListsSql);
+
+        System.out.println("Database cleaned successfully.");
+    }
+}
 
     @BeforeEach
     public void setUp() throws Exception {
