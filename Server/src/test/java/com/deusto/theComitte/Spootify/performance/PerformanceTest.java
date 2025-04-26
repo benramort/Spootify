@@ -25,18 +25,18 @@ public class PerformanceTest {
     @Rule 
 	public JUnitPerfRule perfTestRule = new JUnitPerfRule(new HtmlReportGenerator("target/junitperf/report.html"));
 
-    @BeforeEach
-    public void cleanDB() throws Exception {
-        //Clean database
-        HttpRequest deleteUserRequest = HttpRequest.newBuilder()
-                .uri(new URI("http://localhost:8081/users"))
-                .header("Content-Type", "application/json")
-                .DELETE()
-                .build();
-        HttpResponse<String> deleteUserResponse = HttpClient.newHttpClient().send(deleteUserRequest, HttpResponse.BodyHandlers.ofString());
-        assertEquals(200, deleteUserResponse.statusCode()); // Assuming 200 OK for user deletion
+    // @BeforeEach
+    // public void cleanDB() throws Exception {
+    //     //Clean database
+    //     HttpRequest deleteUserRequest = HttpRequest.newBuilder()
+    //             .uri(new URI("http://localhost:8081/users"))
+    //             .header("Content-Type", "application/json")
+    //             .DELETE()
+    //             .build();
+    //     HttpResponse<String> deleteUserResponse = HttpClient.newHttpClient().send(deleteUserRequest, HttpResponse.BodyHandlers.ofString());
+    //     assertEquals(200, deleteUserResponse.statusCode()); // Assuming 200 OK for user deletion
         
-    }
+    // }
 
     @BeforeEach
     public void setUp() throws Exception {
@@ -44,7 +44,7 @@ public class PerformanceTest {
         HttpRequest createUserRequest = HttpRequest.newBuilder()
                 .uri(new URI("http://localhost:8081/users"))
                 .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString("{\"name\":\"user2\", \"email\":\"user2@user2\", \"password\":\"password\"}"))
+                .POST(HttpRequest.BodyPublishers.ofString("{\"name\":\"user5\", \"email\":\"user5@user5\", \"password\":\"password\"}"))
                 .build();
         HttpResponse<String> createUserResponse = HttpClient.newHttpClient().send(createUserRequest, HttpResponse.BodyHandlers.ofString());
         assertEquals(200, createUserResponse.statusCode()); // Assuming 201 Created for user registration
@@ -60,7 +60,7 @@ public class PerformanceTest {
         HttpRequest loginRequest = HttpRequest.newBuilder()
                 .uri(new URI("http://localhost:8081/login"))
                 .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString("{\"name\":\"user2\", \"email\":\"user2@user2\", \"password\":\"password\"}"))
+                .POST(HttpRequest.BodyPublishers.ofString("{\"email\":\"user5@user5\", \"password\":\"password\"}"))
                 .build();
 
         HttpResponse<String> loginResponse = HttpClient.newHttpClient().send(loginRequest, HttpResponse.BodyHandlers.ofString());
