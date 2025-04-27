@@ -30,6 +30,9 @@ public class PlayListController {
     @PostMapping("")
     public ResponseEntity<Void> createPlayList(@RequestBody SongListDTO songListDTO, @RequestParam long token) {
         try {
+            if (songListDTO.getName() == null || songListDTO.getName().isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST); // Validación añadida
+            }
             playlistService.createPlayList(token, songListDTO.getName());
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (RuntimeException e) {
@@ -65,8 +68,11 @@ public class PlayListController {
             System.out.println("id: " + song.getId());
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (RuntimeException e) {
+            e.printStackTrace();
             if (e.getMessage().equals("User not logged in")) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            } else if (e.getMessage().equals("Playlist does not exist")) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND); // Cambiado a 404
             }
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

@@ -50,7 +50,7 @@ public class SongController {
         @RequestParam("title") String title,
         @RequestParam("album") long albumId,
         @RequestParam("duration") int duration,
-        @RequestParam("file") MultipartFile audioFile,
+        @RequestParam(value = "file", required = false) MultipartFile audioFile,
         @RequestParam("token") long token) {
         try {
             songService.createSong(title, duration, audioFile, albumId, token);

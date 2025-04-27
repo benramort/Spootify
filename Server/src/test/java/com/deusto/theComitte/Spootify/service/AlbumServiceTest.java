@@ -6,6 +6,7 @@ import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -131,6 +132,93 @@ void testGetAlbums_ByArtistId() {
         assertEquals("Album not found", exception.getMessage());
     }
 
+    @Test
+    void testSearchAlbum_Success() {
+        String searchTerm = "Album";
+        List<Album> albums = new ArrayList<>();
+        albums.add(new Album("Album 1"));
+        albums.add(new Album("Album 2"));
 
+        when(albumRepository.findByName(searchTerm)).thenReturn(albums);
 
+        List<Album> result = albumService.searchAlbums(searchTerm);
+
+        assertEquals(2, result.size());
+        assertEquals("Album 1", result.get(0).getName());
+        assertEquals("Album 2", result.get(1).getName());
+    }
+
+    @Test
+    void testSearchAlbum_NotFound() {
+        String searchTerm = "Nonexistent Album";
+        List<Album> albums = new ArrayList<>();
+
+        when(albumRepository.findByName(searchTerm)).thenReturn(albums);
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            albumService.searchAlbums(searchTerm);
+        });
+
+        assertEquals("No albums found with the given name", exception.getMessage());
+    }
+
+    @Test
+    void testGetArtistAlbums_Success() {
+
+        // Arrange
+        long artistId = 1L;
+
+        // Mock the Artist object
+        Artist artist = mock(Artist.class);
+
+        // Create a list of albums
+        List<Album> albums = new ArrayList<>();
+        albums.add(new Album("Album 1"));
+        albums.add(new Album("Album 2"));
+
+        // Stub the behavior of the mocked Artist
+        when(artistService.getActiveArtist(artistId)).thenReturn(artist); // Mock artistService
+        when(artist.getAlbums()).thenReturn(albums);
+
+        // Act
+        List<Album> result = albumService.getArtistAlbums(artistId);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(2, result.size());
+        assertEquals("Album 1", result.get(0).getName());
+        assertEquals("Album 2", result.get(1).getName());
+        verify(artistService).getActiveArtist(artistId);
+    }
+
+    @Test
+    void testGetArtistAlbums_ArtistNotLoggedIn() {
+        long artistId = 1L;
+    
+        when(artistService.getActiveArtist(artistId)).thenReturn(null);
+    
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            albumService.getArtistAlbums(artistId);
+        });
+    
+        assertEquals("Artist not logged in", exception.getMessage());
+    }
+
+    @Test
+    void testGetAllAlbums() {
+        List<Album> albums = new ArrayList<>();
+        albums.add(new Album("Album 1"));
+        albums.add(new Album("Album 2"));
+
+        when(albumRepository.findAll()).thenReturn(albums);
+
+        List<Album> result = albumService.getAllAlbums();
+
+        assertEquals(2, result.size());
+        assertEquals("Album 1", result.get(0).getName());
+        assertEquals("Album 2", result.get(1).getName());
+
+    }
+
+               
 }
