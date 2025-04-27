@@ -1,8 +1,8 @@
 package com.deusto.theComitte.Spootify.performance;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -14,48 +14,51 @@ import java.sql.Statement;
 
 import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
 
-
-import com.github.noconnor.junitperf.JUnitPerfRule;
+import com.github.noconnor.junitperf.JUnitPerfReportingConfig;
 import com.github.noconnor.junitperf.JUnitPerfTest;
+import com.github.noconnor.junitperf.JUnitPerfTestActiveConfig;
 import com.github.noconnor.junitperf.JUnitPerfTestRequirement;
 import com.github.noconnor.junitperf.reporting.providers.HtmlReportGenerator;
 
 public class PerformanceTest {
     
-    @Rule 
-	public JUnitPerfRule perfTestRule = new JUnitPerfRule(new HtmlReportGenerator("target/junitperf/report.html"));
+    @JUnitPerfTestActiveConfig
+    private final static JUnitPerfReportingConfig PERF_CONFIG = JUnitPerfReportingConfig.builder()
+            .reportGenerator(new HtmlReportGenerator(System.getProperty("user.dir") + "/target/reports/perf-report.html"))
+            .build();
 
-@BeforeEach
-public void cleanDatabase() throws Exception {
-    // Database connection details
-    String jdbcUrl = "jdbc:mysql://localhost:3306/spootifydb"; // Replace with your DB URL
-    String username = "root"; // Replace with your DB username
-    String password = "root"; // Replace with your DB password
 
-    // SQL to clean the database
-    String deleteSongListsSql = "DELETE FROM song_lists"; // Adjust table name as needed
-    String deleteUsersSql = "DELETE FROM users"; // Adjust table name as needed
-    String resetAutoIncrementUsersSql = "ALTER TABLE users AUTO_INCREMENT = 1"; // Optional: Reset auto-increment
-    String resetAutoIncrementSongListsSql = "ALTER TABLE song_lists AUTO_INCREMENT = 1"; // Optional: Reset auto-increment
+    @BeforeEach
+    public void cleanDatabase() throws Exception {
+        System.out.println("Ueeeee");
+        // Database connection details
+        String jdbcUrl = "jdbc:mysql://database:3306/spootifydb"; // Replace with your DB URL
+        String username = "root"; // Replace with your DB username
+        String password = "root"; // Replace with your DB password
 
-    try (Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
-         Statement statement = connection.createStatement()) {
-        // Delete rows from child tables first
-        statement.executeUpdate(deleteSongListsSql);
+        // SQL to clean the database
+        String deleteSongListsSql = "DELETE FROM song_lists"; // Adjust table name as needed
+        String deleteUsersSql = "DELETE FROM users"; // Adjust table name as needed
+        String resetAutoIncrementUsersSql = "ALTER TABLE users AUTO_INCREMENT = 1"; // Optional: Reset auto-increment
+        String resetAutoIncrementSongListsSql = "ALTER TABLE song_lists AUTO_INCREMENT = 1"; // Optional: Reset auto-increment
 
-        // Delete rows from parent table
-        statement.executeUpdate(deleteUsersSql);
+        try (Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
+             Statement statement = connection.createStatement()) {
+            // Delete rows from child tables first
+            statement.executeUpdate(deleteSongListsSql);
 
-        // Reset auto-increment counters (optional)
-        statement.executeUpdate(resetAutoIncrementUsersSql);
-        statement.executeUpdate(resetAutoIncrementSongListsSql);
+            // Delete rows from parent table
+            statement.executeUpdate(deleteUsersSql);
 
-        System.out.println("Database cleaned successfully.");
+            // Reset auto-increment counters (optional)
+            statement.executeUpdate(resetAutoIncrementUsersSql);
+            statement.executeUpdate(resetAutoIncrementSongListsSql);
+
+            System.out.println("Database cleaned successfully.");
+        }
     }
-}
 
     @BeforeEach
     public void setUp() throws Exception {
