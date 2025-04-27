@@ -42,7 +42,13 @@
       <img src="../assets/Spootify_logo.png" alt="Spotify logo"/>
       <p id="titulo">Spootify</p>
     </div>
+
     <div class="side">
+      <div class="header-box">
+      <div class="header-box">
+        <router-link to="/search">Search</router-link>
+      </div>
+    </div>
     <div class="header-box" v-if="!Number.isInteger(globalState.token.value)"><router-link to="/login">Mi perfil</router-link></div>
     <div class="header-box" v-else-if="globalState.isArtist.value === true"><router-link to="/artists/dashboard">Mi perfil</router-link></div>
     <div class="header-box" v-else-if="globalState.isArtist.value === false"><router-link to="/users/dashboard">Mi perfil</router-link></div>
@@ -59,6 +65,38 @@
 <style scoped>
 .header {
   font-family: 'Circular', sans-serif;
+}
+.side {
+  display: flex;
+  justify-content: flex-end; /* Alinea los elementos a la derecha */
+  align-items: center; /* Asegura que los elementos estén centrados verticalmente */
+  height: 60px; /* Igual altura que el div de "Mi perfil" */
+  width: auto; /* Ajusta el ancho al contenido */
+  background-color: transparent;
+}
+
+.header-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-weight: bold;
+  background-color: transparent;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  padding: 0.5em 1em; /* Ajusta el tamaño del padding */
+  margin-left: 10px; /* Espaciado entre los elementos */
+  height: 100%; /* Asegura que el div sea igual de alto que el contenedor */
+  box-sizing: border-box; /* Incluye el padding en el tamaño total */
+}
+
+.header-box:hover {
+  background-color: #1ed760; /* Lighter green on hover */
+}
+.router-link {
+  text-decoration: none;
+  color: white;
+  font-size: 1em; 
 }
 
 #titulo {
