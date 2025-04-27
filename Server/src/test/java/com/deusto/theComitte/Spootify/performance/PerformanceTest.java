@@ -112,7 +112,7 @@ public static void setupReportDirectory() {
         assertTrue(true);
     }
 
-//     @Test
+////    @Test
 //     @JUnitPerfTest(threads = 10, durationMs = 5000)
 //     @JUnitPerfTestRequirement(meanLatency = 100)
 //     public void testLogin() throws Exception {
