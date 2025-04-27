@@ -1,8 +1,15 @@
 <script setup>
-    import { onMounted, ref } from 'vue';
+    import { onMounted, ref, inject } from 'vue';
     import axios from 'axios';
     import { useRoute } from 'vue-router';
     import { printDuration } from '../main.js';
+
+    const reproductor = inject("reproductor");
+
+    function play(song) {
+        song.album = album.value;
+        reproductor.playSong(song);
+    }
 
     const route = useRoute();
 
@@ -51,7 +58,7 @@
         <div class="columnRight">
             <div v-if="album.songs && album.songs.length > 0" class="songs">
                 <div class="song" v-for="song in album.songs" :key="song.id"> <!-- Key para reaccionar bien a los cambios-->
-                    <i class="fa-solid fa-circle-play" @click="openLink(song.youtubeUrl)"></i>
+                    <i class="fa-solid fa-circle-play" @click="play(song)"></i>
                     <div class="horizontal-aling">
                         <div>
                             <p><b>{{ song.title }}</b></p>
