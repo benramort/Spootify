@@ -41,32 +41,57 @@ public class PerformanceTest {
     @BeforeEach
     public void cleanDatabase() {
         // Database connection details
-        String jdbcUrl = "jdbc:mysql://localhost:3306/spootifydb"; // Replace with your DB URL
-        String username = "root"; // Replace with your DB username
-        String password = "root"; // Replace with your DB password
-
-        // SQL to clean the database
-        String deleteSongListsSql = "DELETE FROM song_lists"; // Adjust table name as needed
-        String deleteUsersSql = "DELETE FROM users"; // Adjust table name as needed
-        String deleteArtistsSql = "DELETE FROM artists";
-        String resetAutoIncrementUsersSql = "ALTER TABLE users AUTO_INCREMENT = 1"; // Optional: Reset auto-increment
-        String resetAutoIncrementSongListsSql = "ALTER TABLE song_lists AUTO_INCREMENT = 1"; // Optional: Reset auto-increment
-        String resetAutoIncrementArtistsSql = "ALTER TABLE artists AUTO_INCREMENT = 1";
+        String jdbcUrl = "jdbc:mysql://database:3306/spootifydb";
+        String username = "root";
+        String password = "root";
 
         try (Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
-             Statement statement = connection.createStatement()) {
-            // Delete rows from child tables first
-            statement.executeUpdate(deleteSongListsSql);
-
-            // Delete rows from parent table
-            statement.executeUpdate(deleteUsersSql);
-            statement.executeUpdate(deleteArtistsSql);
-
-            // Reset auto-increment counters (optional)
-            statement.executeUpdate(resetAutoIncrementUsersSql);
-            statement.executeUpdate(resetAutoIncrementSongListsSql);
-            statement.executeUpdate(resetAutoIncrementArtistsSql);
-
+            Statement statement = connection.createStatement()) {
+            
+            // Temporarily disable foreign key checks
+            statement.executeUpdate("SET FOREIGN_KEY_CHECKS = 0");
+            
+            // Delete data from all tables in the correct order
+            String[] deleteStatements = {
+                "DELETE FROM song_list_songs",    // Junction table first
+                "DELETE FROM song_lists",         // Then parent tables
+                "DELETE FROM songs",
+                "DELETE FROM artist_followers",   // Another junction table
+                "DELETE FROM users",
+                "DELETE FROM artists",
+                "DELETE FROM albums"
+            };
+            
+            for (String sql : deleteStatements) {
+                try {
+                    statement.executeUpdate(sql);
+                    System.out.println("Executed: " + sql);
+                } catch (Exception e) {
+                    System.out.println("Warning: " + e.getMessage() + " for query: " + sql);
+                    // Continue with other statements even if one fails
+                }
+            }
+            
+            // Reset auto-increment counters for all tables
+            String[] resetAutoIncrementStatements = {
+                "ALTER TABLE song_lists AUTO_INCREMENT = 1",
+                "ALTER TABLE songs AUTO_INCREMENT = 1",
+                "ALTER TABLE users AUTO_INCREMENT = 1",
+                "ALTER TABLE artists AUTO_INCREMENT = 1",
+                "ALTER TABLE albums AUTO_INCREMENT = 1"
+            };
+            
+            for (String sql : resetAutoIncrementStatements) {
+                try {
+                    statement.executeUpdate(sql);
+                } catch (Exception e) {
+                    System.out.println("Warning: " + e.getMessage() + " for query: " + sql);
+                }
+            }
+            
+            // Re-enable foreign key checks
+            statement.executeUpdate("SET FOREIGN_KEY_CHECKS = 1");
+            
             System.out.println("Database cleaned successfully.");
         } catch (Exception e) {
             e.printStackTrace();
@@ -74,6 +99,7 @@ public class PerformanceTest {
         }
     }
 
+    @BeforeEach
     public void setUp() throws Exception {
         //Create the user before attempting login
         HttpRequest createUserRequest = HttpRequest.newBuilder()
@@ -94,14 +120,6 @@ public class PerformanceTest {
         assertEquals(200, createArtistResponse.statusCode()); // Assuming 201 Created for artist registration
     }
 
-    @Test
-    @JUnitPerfTest(threads = 10, durationMs = 5000)
-    @JUnitPerfTestRequirement(meanLatency = 100)
-    public void prueba() {
-        System.out.println("Running test");
-        assertTrue(true);
-    }
-/*
     @Test
      @JUnitPerfTest(threads = 10, durationMs = 5000)
      @JUnitPerfTestRequirement(meanLatency = 100)
@@ -128,7 +146,7 @@ public class PerformanceTest {
             fail();
         }
      }
-*/
+
      @Test@JUnitPerfTest(threads = 10, durationMs = 5000)
      @JUnitPerfTestRequirement(meanLatency = 100)
      public void testSearchArtist() {
@@ -168,7 +186,7 @@ public class PerformanceTest {
             fail();
         }
      }
-/*
+
      @Test
      @JUnitPerfTest(threads = 10, durationMs = 5000)
      @JUnitPerfTestRequirement(meanLatency = 100)
@@ -204,7 +222,7 @@ public class PerformanceTest {
             fail();
         }
      }
-        */
+
 
 }
 
