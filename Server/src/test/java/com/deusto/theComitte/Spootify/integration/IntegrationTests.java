@@ -2,14 +2,19 @@ package com.deusto.theComitte.Spootify.integration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
 import java.util.List;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,6 +29,7 @@ import com.deusto.theComitte.Spootify.DTO.SongListDTO;
 import com.deusto.theComitte.Spootify.DTO.UserDTO;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
 public class IntegrationTests {
@@ -39,11 +45,6 @@ public class IntegrationTests {
     public void setup() {
         client = HttpClient.newHttpClient();
         objectMapper = new ObjectMapper();
-    }
-    
-    @Test
-    public void pruebita() {
-        assertTrue(true);
     }
 
     @Test
@@ -192,9 +193,11 @@ public class IntegrationTests {
 
             SONG_ID = songs.get(0).getId();
             System.out.println("Song ID: " + SONG_ID);
-
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             ex.printStackTrace();
+            fail();
+            
         }
         
     }
@@ -284,6 +287,8 @@ public class IntegrationTests {
 
         } catch (Exception ex) {
             ex.printStackTrace();
+            fail();
+            
         }
     }
 
@@ -334,21 +339,28 @@ public class IntegrationTests {
             .build();
 
             response = client.send(request, BodyHandlers.ofString());
-            assertEquals(200, response.statusCode(), response.body());
-            
-            UserDTO userDTO = objectMapper.readValue(response.body(), UserDTO.class);
-            List<ArtistDTO> follows = userDTO.getUserFollows();
-            
-            assertEquals(1, follows.size());
-            assertEquals(ARTIST_ID, follows.get(0).getId());
-            assertEquals("artist1", follows.get(0).getName());
+            assertEquals(200, response.statusCode());
 
+            System.out.println("Response: " + response.body());
             
-            
-        }catch (Exception ex) {
-            System.out.println("ARTIST_ID: " + ARTIST_ID);
+            request  = HttpRequest.newBuilder()
+            .uri(URI.create("http://localhost:8081/artists/" + ARTIST_ID + "?token=" + TOKEN))
+            .GET()
+            .build();
 
+            response = client.send(request, BodyHandlers.ofString());
+            assertEquals(200, response.statusCode(), "Failed to get artist: " + response.body());
+
+            ArtistDTO artist = objectMapper.readValue(response.body(), ArtistDTO.class);
+            assertEquals(1, artist.getFollowersList().size());
+            assertEquals(USER_ID, artist.getFollowersList().get(0).getId());
+
+
+            System.out.println("Hola");
+        } catch (Exception ex) {
             ex.printStackTrace();
+            fail();
+            
         }
 
     }
