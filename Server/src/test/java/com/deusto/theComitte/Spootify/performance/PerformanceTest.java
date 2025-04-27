@@ -29,29 +29,15 @@ import com.github.noconnor.junitperf.reporting.providers.HtmlReportGenerator;
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
 public class PerformanceTest {
     
-    @JUnitPerfTestActiveConfig
-    private final static JUnitPerfReportingConfig PERF_CONFIG = JUnitPerfReportingConfig.builder()
-            .reportGenerator(new HtmlReportGenerator("./target/site/perf-report.html"))
-            .build();
-
-
-        @BeforeAll
-public static void setupReportDirectory() {
-        File dir = new File("target/site");
-    if (!dir.exists()) {
-        boolean created = dir.mkdirs();
-        System.out.println("Created report directory: " + created);
-    }else {
-        System.out.println("Directory already exists: " + dir.getAbsolutePath());
-        System.out.println("Directory is writable: " + dir.canWrite());
-    }
-}
-
+        @JUnitPerfTestActiveConfig
+        private final static JUnitPerfReportingConfig PERF_CONFIG = JUnitPerfReportingConfig.builder()
+                .reportGenerator(new HtmlReportGenerator(System.getProperty("user.dir") + "performance.html"))
+                .build();
 
     @BeforeEach
     public void cleanDatabase() {
         // Database connection details
-        String jdbcUrl = "jdbc:mysql://database:3306/spootifydb"; // Replace with your DB URL
+        String jdbcUrl = "jdbc:mysql://localhost:3306/spootifydb"; // Replace with your DB URL
         String username = "root"; // Replace with your DB username
         String password = "root"; // Replace with your DB password
 
