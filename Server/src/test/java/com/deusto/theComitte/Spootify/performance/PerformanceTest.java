@@ -186,25 +186,25 @@ public class PerformanceTest {
         }
     }
 
-    // @Test
-    // @JUnitPerfTest(threads = 10, durationMs = 5000)
-    // @JUnitPerfTestRequirement(meanLatency = 100)
-    // public void testCreateArtist(){
-    //     try{
-    //         HttpRequest createArtistRequest = HttpRequest.newBuilder()
-    //             .uri(new URI("http://localhost:8081/artists"))
-    //             .header("Content-Type", "application/json")
-    //             .POST(HttpRequest.BodyPublishers.ofString("{\"name\":\"artist2\", \"email\":\"artist2@artist\", \"password\":\"password\"}"))
-    //             .build();
+    @Test
+    @JUnitPerfTest(threads = 10, durationMs = 5000)
+    @JUnitPerfTestRequirement(meanLatency = 100)
+    public void testCreateArtist(){
+        try{
+            HttpRequest createArtistRequest = HttpRequest.newBuilder()
+                .uri(new URI("http://localhost:8081/artists"))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString("{\"name\":\"artist2\", \"email\":\"artist2@artist\", \"password\":\"password\"}"))
+                .build();
 
-    //         HttpResponse<String> artistResponse =  HttpClient.newHttpClient().send(createArtistRequest, HttpResponse.BodyHandlers.ofString());
-    //         assertEquals(200, artistResponse.statusCode());
-    //     } catch (Exception e) {
-    //         e.printStackTrace();
-    //         System.err.println("Failed to create artist: " + e.getMessage());
-    //         fail();
-    //     }
-    // }
+            HttpResponse<String> artistResponse =  HttpClient.newHttpClient().send(createArtistRequest, HttpResponse.BodyHandlers.ofString());
+            assertEquals(200, artistResponse.statusCode());
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Failed to create artist: " + e.getMessage());
+            fail();
+        }
+    }
 }
 
 
