@@ -65,8 +65,17 @@ public void cleanDatabase() throws Exception {
                 .header("Content-Type", "application/json")
                 .POST(HttpRequest.BodyPublishers.ofString("{\"name\":\"user5\", \"email\":\"user5@user5\", \"password\":\"password\"}"))
                 .build();
+
+        HttpRequest createArtistRequest = HttpRequest.newBuilder()
+                .uri(new URI("http://localhost:8081/artists"))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString("{\"name\":\"artist\", \"email\":\"artist@artist\", \"password\":\"password\"}"))
+                .build();
+
         HttpResponse<String> createUserResponse = HttpClient.newHttpClient().send(createUserRequest, HttpResponse.BodyHandlers.ofString());
         assertEquals(200, createUserResponse.statusCode()); // Assuming 201 Created for user registration
+        HttpResponse<String> createArtistResponse = HttpClient.newHttpClient().send(createArtistRequest, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200, createArtistResponse.statusCode()); // Assuming 201 Created for artist registration
     }
 
     @Test
@@ -86,6 +95,53 @@ public void cleanDatabase() throws Exception {
         assertEquals(200, loginResponse.statusCode());
         assertNotNull(loginResponse.body());
         assertTrue(loginResponse.body().contains("token"));
+    }
+
+    @Test@JUnitPerfTest(threads = 10, durationMs = 5000)
+    @JUnitPerfTestRequirement(meanLatency = 100)
+    public void testSearchArtist() throws Exception {
+        System.out.println("Running testSearchArtist");
+
+        HttpRequest searchRequest = HttpRequest.newBuilder()
+                .uri(new URI("http://localhost:8081/artists/search?name=artist"))
+                .header("Content-Type", "application/json")
+                .GET()
+                .build();
+
+        HttpResponse<String> searchResponse = HttpClient.newHttpClient().send(searchRequest, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200, searchResponse.statusCode());
+        assertNotNull(searchResponse.body());
+        assertTrue(searchResponse.body().contains("artist"));
+
+    }
+
+    @Test
+    @JUnitPerfTest(threads = 10, durationMs = 5000)
+    @JUnitPerfTestRequirement(meanLatency = 100)
+    public void testFollowArtist() throws Exception {
+        System.out.println("Running testFollowArtist");
+
+        // Perform login to get the token
+        HttpRequest loginRequest = HttpRequest.newBuilder()
+                .uri(new URI("http://localhost:8081/login"))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString("{\"email\":\"user5@user5\", \"password\":\"password\"}"))
+                .build();
+
+        HttpResponse<String> loginResponse = HttpClient.newHttpClient().send(loginRequest, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200, loginResponse.statusCode());
+        String token = loginResponse.body().split(":")[1].replace("\"", "").replace("}", "").trim(); 
+
+        // Follow artist
+        HttpRequest followRequest = HttpRequest.newBuilder()
+                .uri(new URI("http://localhost:8081/artists/follow/1")) 
+                .header("Authorization", "Bearer " + token)
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString("{}"))
+                .build();
+
+        HttpResponse<String> followResponse = HttpClient.newHttpClient().send(followRequest, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200, followResponse.statusCode());
     }
 
 }
