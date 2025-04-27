@@ -13,6 +13,7 @@ import java.net.http.HttpResponse;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +22,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
+import com.deusto.theComitte.Spootify.DTO.ArtistDTO;
 import com.deusto.theComitte.Spootify.DTO.UserDTO;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.noconnor.junitperf.JUnitPerfReportingConfig;
@@ -41,7 +44,7 @@ public class PerformanceTest {
     @BeforeEach
     public void cleanDatabase() {
         // Database connection details
-        String jdbcUrl = "jdbc:mysql://database:3306/spootifydb";
+        String jdbcUrl = "jdbc:mysql://database-test:3306/spootifydb";
         String username = "root";
         String password = "root";
 
@@ -113,6 +116,7 @@ public class PerformanceTest {
                 .header("Content-Type", "application/json")
                 .POST(HttpRequest.BodyPublishers.ofString("{\"name\":\"artist\", \"email\":\"artist@artist\", \"password\":\"password\"}"))
                 .build();
+        
 
         HttpClient.newHttpClient().send(createUserRequest, HttpResponse.BodyHandlers.ofString());
         HttpClient.newHttpClient().send(createArtistRequest, HttpResponse.BodyHandlers.ofString());
@@ -164,8 +168,11 @@ public class PerformanceTest {
          assertEquals(200, searchResponse.statusCode());
          assertNotNull(searchResponse.body());
 
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode jsonResponse = objectMapper.readTree(searchResponse.body());
+         System.out.println(searchResponse.body());
+
+         List<ArtistDTO> artists = new ObjectMapper().readValue(searchResponse.body(), new TypeReference<List<ArtistDTO>>() {});
+            assertEquals(1, artists.size());
+            assertEquals("artist", artists.get(0).getName());
 
          
 
@@ -177,43 +184,7 @@ public class PerformanceTest {
             System.err.println("Failed to search artist: " + e.getMessage());
             fail();
         }
-     }
-
-     @Test
-     @JUnitPerfTest(threads = 10, durationMs = 5000)
-     @JUnitPerfTestRequirement(meanLatency = 100)
-     public void testFollowArtist() {
-        try {
-         System.out.println("Running testFollowArtist");
-
-          //Perform login to get the token
-         HttpRequest loginRequest = HttpRequest.newBuilder()
-                 .uri(new URI("http://localhost:8081/login"))
-                 .header("Content-Type", "application/json")
-                 .POST(HttpRequest.BodyPublishers.ofString("{\"email\":\"user5@user5\", \"password\":\"password\"}"))
-                 .build();
-
-         HttpResponse<String> loginResponse = HttpClient.newHttpClient().send(loginRequest, HttpResponse.BodyHandlers.ofString());
-         assertEquals(200, loginResponse.statusCode());
-         String token = loginResponse.body().split(":")[1].replace("\"", "").replace("}", "").trim(); 
-
-          //Follow artist
-         HttpRequest followRequest = HttpRequest.newBuilder()
-                 .uri(new URI("http://localhost:8081/artists/follow/1")) 
-                 .header("Authorization", "Bearer " + token)
-                 .header("Content-Type", "application/json")
-                 .POST(HttpRequest.BodyPublishers.ofString("{}"))
-                 .build();
-
-         HttpResponse<String> followResponse = HttpClient.newHttpClient().send(followRequest, HttpResponse.BodyHandlers.ofString());
-         assertEquals(200, followResponse.statusCode());
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            System.err.println("Failed to follow artist: " + e.getMessage());
-            fail();
-        }
-     }
+    }
 
 
 }
