@@ -15,6 +15,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.http.StreamingHttpOutputMessage.Body;
 
 import com.deusto.theComitte.Spootify.DTO.AlbumDTO;
@@ -34,7 +35,7 @@ public class prueba {
 
     private long ARTIST_ID;
     private long ALBUM_ID;
-    private long SONG_ID;
+    private static long SONG_ID;
 
     @BeforeEach
     public void setup() {
@@ -259,6 +260,7 @@ public class prueba {
             // Añadir canción a la playlist
             SongDTO song = new SongDTO();
             song.setId(SONG_ID);
+            System.out.println("Song ID: " + SONG_ID);
 
             request = HttpRequest.newBuilder()
             .uri(URI.create("http://localhost:8081/playlists/" + PLAYLIST_ID + "/songs?token=" + TOKEN))
