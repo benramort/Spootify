@@ -19,11 +19,14 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.http.StreamingHttpOutputMessage.Body;
 
 import com.deusto.theComitte.Spootify.DTO.AlbumDTO;
+import com.deusto.theComitte.Spootify.DTO.ArtistDTO;
 import com.deusto.theComitte.Spootify.DTO.CreateUserDTO;
 import com.deusto.theComitte.Spootify.DTO.LoginDTO;
 import com.deusto.theComitte.Spootify.DTO.SongDTO;
 import com.deusto.theComitte.Spootify.DTO.SongListDTO;
+import com.deusto.theComitte.Spootify.DTO.UserDTO;
 import com.deusto.theComitte.Spootify.entity.Album;
+import com.deusto.theComitte.Spootify.entity.Artist;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -33,7 +36,7 @@ public class prueba {
     private HttpClient client;
     private ObjectMapper objectMapper;
 
-    private long ARTIST_ID;
+    private static long ARTIST_ID;
     private long ALBUM_ID;
     private static long SONG_ID;
 
@@ -289,6 +292,70 @@ public class prueba {
         }
     }
 
-    //Crear usuario --> Iniciar sesión --> Dar like a canción --> Seguir artista
+    //Crear usuario --> Iniciar sesión --> Seguir artista
+    @Test
+    public void integrationTest3(){
+        try{
+
+            
+
+
+
+            String NAME = "user2";
+            String EMAIL = "user2@user2";
+            String PASSWORD = "user2";
+
+            // Crear usuario
+            CreateUserDTO user = new CreateUserDTO(NAME, EMAIL, PASSWORD);
+            HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create("http://localhost:8081/users"))
+            .POST(HttpRequest.BodyPublishers.ofString(objectMapper.writeValueAsString(user)))
+            .header("Content-Type", "application/json")
+            .build();
+
+            HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
+            assertEquals(200, response.statusCode());
+
+            // Iniciar sesión
+            LoginDTO login = new LoginDTO(EMAIL, PASSWORD);
+            request = HttpRequest.newBuilder()
+            .uri(URI.create("http://localhost:8081/login"))
+            .POST(HttpRequest.BodyPublishers.ofString(objectMapper.writeValueAsString(login)))
+            .header("Content-Type", "application/json")
+            .build();
+
+            response = client.send(request, BodyHandlers.ofString());
+            assertEquals(200, response.statusCode());
+            long TOKEN = objectMapper.readTree(response.body()).get("token").asLong();
+            long USER_ID = objectMapper.readTree(response.body()).get("id").asLong();
+
+            // Seguir artista
+            System.out.println("ARTIST_ID: " + ARTIST_ID);
+
+            request = HttpRequest.newBuilder()
+            .uri(URI.create("http://localhost:8081/artists/" + ARTIST_ID + "/followers?token=" + TOKEN))
+            .POST(HttpRequest.BodyPublishers.ofString(""))
+            .header("Content-Type", "application/json")
+            .build();
+
+            response = client.send(request, BodyHandlers.ofString());
+            assertEquals(200, response.statusCode(), response.body());
+            
+            UserDTO userDTO = objectMapper.readValue(response.body(), UserDTO.class);
+            List<ArtistDTO> follows = userDTO.getUserFollows();
+            
+            assertEquals(1, follows.size());
+            assertEquals(ARTIST_ID, follows.get(0).getId());
+            assertEquals("artist1", follows.get(0).getName());
+
+            
+            
+        }catch (Exception ex) {
+            System.out.println("ARTIST_ID: " + ARTIST_ID);
+
+            ex.printStackTrace();
+        }
+
+    }
     
 }
