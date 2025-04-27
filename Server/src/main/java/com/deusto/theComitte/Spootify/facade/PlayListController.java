@@ -68,6 +68,7 @@ public class PlayListController {
             System.out.println("id: " + song.getId());
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (RuntimeException e) {
+            e.printStackTrace();
             if (e.getMessage().equals("User not logged in")) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             } else if (e.getMessage().equals("Playlist does not exist")) {
