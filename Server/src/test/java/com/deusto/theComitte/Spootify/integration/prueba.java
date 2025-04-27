@@ -6,7 +6,6 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.net.http.HttpResponse.BodyHandler;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.util.List;
 
@@ -14,7 +13,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.http.StreamingHttpOutputMessage.Body;
 
 import com.deusto.theComitte.Spootify.DTO.SongDTO;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -37,7 +35,7 @@ public class prueba {
         assertTrue(true);
     }
 
-    @Test
+
     public void integrationTest1() {
         HttpRequest request = HttpRequest.newBuilder()
             .uri(URI.create("http://localhost:8081/songs"))
