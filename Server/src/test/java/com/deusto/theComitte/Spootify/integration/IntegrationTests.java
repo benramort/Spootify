@@ -17,6 +17,8 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
@@ -30,8 +32,10 @@ import com.deusto.theComitte.Spootify.DTO.UserDTO;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
+import com.github.noconnor.junitperf.JUnitPerfInterceptor;
 
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class IntegrationTests {
 
     private HttpClient client;
@@ -40,6 +44,68 @@ public class IntegrationTests {
     private static long ARTIST_ID;
     private long ALBUM_ID;
     private static long SONG_ID;
+
+    @BeforeAll
+    public static void cleanDatabase() {
+
+        // Database connection details
+        String jdbcUrl = "jdbc:mysql://database-test:3306/spootifydb";
+        String username = "root";
+        String password = "root";
+
+        try (Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
+            Statement statement = connection.createStatement()) {
+            
+            // Temporarily disable foreign key checks
+            statement.executeUpdate("SET FOREIGN_KEY_CHECKS = 0");
+            
+            // Delete data from all tables in the correct order
+            String[] deleteStatements = {
+                "DELETE FROM song_list_songs",    // Junction table first
+                "DELETE FROM song_lists",         // Then parent tables
+                "DELETE FROM songs",
+                "DELETE FROM artist_followers",   // Another junction table
+                "DELETE FROM users",
+                "DELETE FROM artists",
+                "DELETE FROM albums"
+            };
+            
+            for (String sql : deleteStatements) {
+                try {
+                    statement.executeUpdate(sql);
+                    System.out.println("Executed: " + sql);
+                } catch (Exception e) {
+                    System.out.println("Warning: " + e.getMessage() + " for query: " + sql);
+                    // Continue with other statements even if one fails
+                }
+            }
+            
+            // Reset auto-increment counters for all tables
+            String[] resetAutoIncrementStatements = {
+                "ALTER TABLE song_lists AUTO_INCREMENT = 1",
+                "ALTER TABLE songs AUTO_INCREMENT = 1",
+                "ALTER TABLE users AUTO_INCREMENT = 1",
+                "ALTER TABLE artists AUTO_INCREMENT = 1",
+                "ALTER TABLE albums AUTO_INCREMENT = 1"
+            };
+            
+            for (String sql : resetAutoIncrementStatements) {
+                try {
+                    statement.executeUpdate(sql);
+                } catch (Exception e) {
+                    System.out.println("Warning: " + e.getMessage() + " for query: " + sql);
+                }
+            }
+            
+            // Re-enable foreign key checks
+            statement.executeUpdate("SET FOREIGN_KEY_CHECKS = 1");
+            
+            System.out.println("Database cleaned successfully.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Failed to clean the database: " + e.getMessage());
+        }
+    }
 
     @BeforeEach
     public void setup() {

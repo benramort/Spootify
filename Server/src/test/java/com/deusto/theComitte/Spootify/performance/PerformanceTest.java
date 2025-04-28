@@ -16,17 +16,16 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.parallel.Execution;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
 import com.deusto.theComitte.Spootify.DTO.ArtistDTO;
-import com.deusto.theComitte.Spootify.DTO.UserDTO;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.noconnor.junitperf.JUnitPerfInterceptor;
 import com.github.noconnor.junitperf.JUnitPerfReportingConfig;
@@ -35,19 +34,23 @@ import com.github.noconnor.junitperf.JUnitPerfTestActiveConfig;
 import com.github.noconnor.junitperf.JUnitPerfTestRequirement;
 import com.github.noconnor.junitperf.reporting.providers.HtmlReportGenerator;
 
+
 @ExtendWith(JUnitPerfInterceptor.class)
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@Execution(org.junit.jupiter.api.parallel.ExecutionMode.CONCURRENT)
 public class PerformanceTest {
 
     private static AtomicInteger counter = new AtomicInteger(2);
     
         @JUnitPerfTestActiveConfig
         private final static JUnitPerfReportingConfig PERF_CONFIG = JUnitPerfReportingConfig.builder()
-                .reportGenerator(new HtmlReportGenerator( "target/reports/performance.html"))
+                .reportGenerator(new HtmlReportGenerator( "target/site/performance.html"))
                 .build();
 
     @BeforeAll
-    public void cleanDatabase() {
+    public static void cleanDatabase() {
+
         // Database connection details
         String jdbcUrl = "jdbc:mysql://database-test:3306/spootifydb";
         String username = "root";
@@ -108,23 +111,16 @@ public class PerformanceTest {
     }
 
     @BeforeAll
-    public void setUp() throws Exception {
+    public static void setUp() throws Exception {
         //Create the user before attempting login
         HttpRequest createUserRequest = HttpRequest.newBuilder()
                 .uri(new URI("http://localhost:8081/users"))
                 .header("Content-Type", "application/json")
                 .POST(HttpRequest.BodyPublishers.ofString("{\"name\":\"user5\", \"email\":\"user5@user5\", \"password\":\"password\"}"))
                 .build();
-
-        HttpRequest createArtistRequest = HttpRequest.newBuilder()
-                .uri(new URI("http://localhost:8081/artists"))
-                .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString("{\"name\":\"artist\", \"email\":\"artist@artist\", \"password\":\"password\"}"))
-                .build();
         
 
         HttpClient.newHttpClient().send(createUserRequest, HttpResponse.BodyHandlers.ofString());
-        HttpClient.newHttpClient().send(createArtistRequest, HttpResponse.BodyHandlers.ofString());
 
     }
 
