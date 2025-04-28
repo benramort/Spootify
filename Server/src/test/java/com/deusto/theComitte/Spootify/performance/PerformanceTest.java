@@ -13,7 +13,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 
 import org.junit.jupiter.api.Test;
@@ -33,13 +35,15 @@ import com.github.noconnor.junitperf.reporting.providers.HtmlReportGenerator;
 
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
 public class PerformanceTest {
+
+    private static AtomicInteger counter = new AtomicInteger(2);
     
         @JUnitPerfTestActiveConfig
         private final static JUnitPerfReportingConfig PERF_CONFIG = JUnitPerfReportingConfig.builder()
                 .reportGenerator(new HtmlReportGenerator(System.getProperty("user.dir") + "performance.html"))
                 .build();
 
-    @BeforeEach
+    @BeforeAll
     public void cleanDatabase() {
         // Database connection details
         String jdbcUrl = "jdbc:mysql://database-test:3306/spootifydb";
@@ -100,7 +104,7 @@ public class PerformanceTest {
         }
     }
 
-    @BeforeEach
+    @BeforeAll
     public void setUp() throws Exception {
         //Create the user before attempting login
         HttpRequest createUserRequest = HttpRequest.newBuilder()
@@ -192,7 +196,7 @@ public class PerformanceTest {
             HttpRequest createArtistRequest = HttpRequest.newBuilder()
                 .uri(new URI("http://localhost:8081/artists"))
                 .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString("{\"name\":\"artist2\", \"email\":\"artist2@artist\", \"password\":\"password\"}"))
+                .POST(HttpRequest.BodyPublishers.ofString("{\"name\":\"artist2\", \"email\":\"artist" + counter.getAndIncrement() + "@artist\", \"password\":\"password\"}"))
                 .build();
 
             HttpResponse<String> artistResponse =  HttpClient.newHttpClient().send(createArtistRequest, HttpResponse.BodyHandlers.ofString());
