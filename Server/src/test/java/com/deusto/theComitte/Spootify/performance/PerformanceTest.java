@@ -122,6 +122,15 @@ public class PerformanceTest {
 
         HttpClient.newHttpClient().send(createUserRequest, HttpResponse.BodyHandlers.ofString());
 
+        HttpRequest createArtistRequest = HttpRequest.newBuilder()
+                .uri(new URI("http://localhost:8081/artists"))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString("{\"name\":\"artist\", \"email\":\"artist1@artist1\", \"password\":\"password\"}"))
+                .build();
+        
+
+        HttpClient.newHttpClient().send(createArtistRequest, HttpResponse.BodyHandlers.ofString());
+
     }
 
     @Test
@@ -143,6 +152,10 @@ public class PerformanceTest {
          assertEquals(200, loginResponse.statusCode());
          assertNotNull(loginResponse.body());
          assertTrue(loginResponse.body().contains("token"));
+        
+
+        } catch (InterruptedException e) {
+
         }catch (Exception e) {
             
             e.printStackTrace();
@@ -178,7 +191,7 @@ public class PerformanceTest {
          
 
          
-
+        } catch (InterruptedException e) {
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -200,6 +213,8 @@ public class PerformanceTest {
 
             HttpResponse<String> artistResponse =  HttpClient.newHttpClient().send(createArtistRequest, HttpResponse.BodyHandlers.ofString());
             assertEquals(200, artistResponse.statusCode());
+        } catch (InterruptedException e) {
+
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Failed to create artist: " + e.getMessage());
