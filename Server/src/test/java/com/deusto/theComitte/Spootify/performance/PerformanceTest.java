@@ -19,6 +19,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
@@ -27,18 +28,20 @@ import com.deusto.theComitte.Spootify.DTO.UserDTO;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.noconnor.junitperf.JUnitPerfInterceptor;
 import com.github.noconnor.junitperf.JUnitPerfReportingConfig;
 import com.github.noconnor.junitperf.JUnitPerfTest;
 import com.github.noconnor.junitperf.JUnitPerfTestActiveConfig;
 import com.github.noconnor.junitperf.JUnitPerfTestRequirement;
 import com.github.noconnor.junitperf.reporting.providers.HtmlReportGenerator;
 
+@ExtendWith(JUnitPerfInterceptor.class)
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
 public class PerformanceTest {
     
         @JUnitPerfTestActiveConfig
         private final static JUnitPerfReportingConfig PERF_CONFIG = JUnitPerfReportingConfig.builder()
-                .reportGenerator(new HtmlReportGenerator(System.getProperty("user.dir") + "performance.html"))
+                .reportGenerator(new HtmlReportGenerator( "target/reports/performance.html"))
                 .build();
 
     @BeforeEach
