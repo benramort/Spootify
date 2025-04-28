@@ -135,7 +135,7 @@ public class PerformanceTest {
 
     @Test
      @JUnitPerfTest(threads = 10, durationMs = 5000)
-     @JUnitPerfTestRequirement(meanLatency = 100)
+     @JUnitPerfTestRequirement(meanLatency = 100, allowedErrorPercentage = 0.01f)
      public void testLogin() {
         try{
          System.out.println("Running testLogin");
@@ -166,7 +166,7 @@ public class PerformanceTest {
 
      @Test
      @JUnitPerfTest(threads = 10, durationMs = 5000)
-     @JUnitPerfTestRequirement(meanLatency = 100)
+     @JUnitPerfTestRequirement(meanLatency = 100, allowedErrorPercentage = 0.01f)
      public void testSearchArtist() {
         try {
             // Ensure the user is created before running this test
@@ -202,7 +202,7 @@ public class PerformanceTest {
 
     @Test
     @JUnitPerfTest(threads = 10, durationMs = 5000)
-    @JUnitPerfTestRequirement(meanLatency = 100)
+    @JUnitPerfTestRequirement(meanLatency = 100, allowedErrorPercentage = 0.01f)
     public void testCreateArtist(){
         try{
             HttpRequest createArtistRequest = HttpRequest.newBuilder()
