@@ -17,6 +17,7 @@
 
     onMounted(() => {
         fetchAlbumDetails();
+        console.log('Al cargar ' + album.value.cover);
     });
 
     function fetchAlbumDetails() {
@@ -25,8 +26,9 @@
         console.log('Cover ' + album.cover);
         axios.get(path).then((response) => {
             album.value = response.data;
+            album.value.cover = album.value.cover.substring(22);
             console.log('Portada antes ' + album.value.cover);
-            album.value.cover = "http://localhost:8081/" + album.value.cover.substring(31);
+            album.value.cover = "http://localhost:8081/" + album.value.cover.substring(9);
             console.log('Portada despues ' + album.value.cover);
             album.value.songs.forEach((song) => {
                 song.duration = printDuration(song.duration);

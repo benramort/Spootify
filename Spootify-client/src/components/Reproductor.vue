@@ -26,7 +26,13 @@ const song = ref(null);
 
 function selectSong(songParam) {
   song.value = songParam;
-  songInfo.value.albumCover = "http://localhost:8081/" + song.value.album.cover.substring(9);
+  console.log("Portada before: " + songParam.album.cover);
+  if(song.value.album.cover.startsWith("http")) {
+    songInfo.value.albumCover = song.value.album.cover;
+  } else {
+    songInfo.value.albumCover = "http://localhost:8081/" + song.value.album.cover.substring(9);
+  }
+  console.log('Portada after:' + songInfo.value.albumCover);
   
   setTimeout(
   () => {
