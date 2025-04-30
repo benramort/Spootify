@@ -71,6 +71,10 @@ public class AlbumController {
             for(Album album : albums) {
                 AlbumDTO albumDTO = album.toDTO();
                 if(album.getCover() != null) {
+                    if(album.getCover().startsWith("http")) {
+                        album.setCover(album.getCover().substring(22));
+                    }
+                    System.out.println("Album cover: " + album.getCover());
                     String coverUrl = "http://localhost:8081/" + album.getCover();
                     albumDTO.setCover(coverUrl);
                 }
