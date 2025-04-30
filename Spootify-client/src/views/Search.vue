@@ -38,8 +38,10 @@
           <h2>Albums</h2>
           <div class="album-results">
             <div class="album-card" v-for="album in albumList" :key="album.id">
-              <div class="album-cover" 
-                   :style="album.cover ? { backgroundImage: `url(http://localhost:8081/${album.cover})` } : {}">
+              <div>
+                <router-link :to="`/albums/${album.id}`">
+                  <img class="album-cover" v-if="album.cover" :src="`http://localhost:8081/${album.cover.substring(9)}`" alt="Album Cover" />
+                </router-link>
                 <i v-if="!album.cover" class="fa fa-music album-fallback"></i>
               </div>
               <div class="album-info">
@@ -117,6 +119,7 @@
   const artistList = ref([]);
   const albumList = ref([]);
   const isLoading = ref(false);
+
   let searchTimeout = null;
   
   // Check if there are any results
@@ -133,10 +136,11 @@
   }
   
   // Function to play a song (you can inject your reproductor here)
+  const reproductor = inject("reproductor");
+
   function playSong(song) {
-    console.log('Playing song:', song);
-    // If you have a reproductor component:
-    // reproductor.selectSong(song);
+      console.log('Playing song:', song);
+      reproductor.playSong(song);
   }
 
   function debounceSearch(event) {
