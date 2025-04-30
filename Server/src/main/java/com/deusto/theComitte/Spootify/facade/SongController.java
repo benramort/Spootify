@@ -73,6 +73,7 @@ public class SongController {
     @GetMapping("/search")
     public ResponseEntity<List<SongDTO>> searchSongs(@RequestParam String title) {
         try {
+            System.out.println("Title received in controller: " + title);
             List<Song> songs = songService.searchSongs(title);
             List<SongDTO> songDTOs = new ArrayList<>();
             for (Song song : songs) {
