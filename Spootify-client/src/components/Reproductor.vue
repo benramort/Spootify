@@ -20,14 +20,14 @@ const songInfo = ref({
   title: "Song Title",
   artist: "Artist Name",
   album: "Album Name",
-  albumCover: "https://i.scdn.co/image/ab67616d0000b273593d6762cc88b82c37ef55ad"
+  albumCover: "http://localhost:8081/",
 });
-
 const song = ref(null);
 
 function selectSong(songParam) {
-  console.log(songParam);
   song.value = songParam;
+  console.log(song.value.album.cover);
+  songInfo.value.albumCover = "http://localhost:8081/" + song.value.album.cover.substring(9);
   
   setTimeout(
   () => {
@@ -247,8 +247,8 @@ defineExpose({
 }
 
 .album-cover {
-  width: 56px;
-  height: 56px;
+  width: 10%;
+  height: 10%;
   margin-right: 14px;
   flex-shrink: 0;
 }

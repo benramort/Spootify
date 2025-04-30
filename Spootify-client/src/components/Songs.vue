@@ -98,6 +98,7 @@ onMounted(() => {
 });
 
 function play(song) {
+    console.log("Reproduciendo canción, portada: " + song);
     reproductor.playSong(song);
 }
 
