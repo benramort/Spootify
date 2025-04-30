@@ -26,7 +26,6 @@ const song = ref(null);
 
 function selectSong(songParam) {
   song.value = songParam;
-  console.log(song.value.album.cover);
   songInfo.value.albumCover = "http://localhost:8081/" + song.value.album.cover.substring(9);
   
   setTimeout(

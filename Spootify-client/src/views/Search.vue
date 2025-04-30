@@ -39,7 +39,7 @@
           <div class="album-results">
             <div class="album-card" v-for="album in albumList" :key="album.id">
               <div class="album-cover" 
-                   :style="album.cover ? { backgroundImage: `url(http://localhost:8081/${album.cover})` } : {}">
+                   :style="album.cover ? { backgroundImage: `url(http://localhost:8081/${album.cover.substring(9)})` } : {}">
                 <i v-if="!album.cover" class="fa fa-music album-fallback"></i>
               </div>
               <div class="album-info">
