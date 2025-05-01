@@ -19,8 +19,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.core.env.Environment;
 import org.springframework.test.annotation.DirtiesContext;
 
 import com.deusto.theComitte.Spootify.DTO.AlbumDTO;
@@ -46,11 +49,20 @@ public class IntegrationTests {
     private long ALBUM_ID;
     private static long SONG_ID;
 
+    private static String jdbcUrl;
+
+    @Autowired
+    public void setEnvironment(Environment env) {
+        jdbcUrl = env.getProperty("spring.datasource.url");
+        System.out.println("Initialized JDBC URL: " + jdbcUrl);
+    }
+
     @BeforeAll
     public static void cleanDatabase() {
 
+        System.out.println("JDBC url: " + jdbcUrl);
+
         // Database connection details
-        String jdbcUrl = "jdbc:mysql://database-test:3306/spootifydb";
         String username = "root";
         String password = "root";
 

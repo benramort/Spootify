@@ -21,8 +21,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.parallel.Execution;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.core.env.Environment;
 
 import com.deusto.theComitte.Spootify.DTO.ArtistDTO;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -43,16 +46,24 @@ public class PerformanceTest {
 
     private static AtomicInteger counter = new AtomicInteger(2);
     
-        @JUnitPerfTestActiveConfig
-        private final static JUnitPerfReportingConfig PERF_CONFIG = JUnitPerfReportingConfig.builder()
-                .reportGenerator(new HtmlReportGenerator( "target/site/performance.html"))
-                .build();
+    @JUnitPerfTestActiveConfig
+    private final static JUnitPerfReportingConfig PERF_CONFIG = JUnitPerfReportingConfig.builder()
+            .reportGenerator(new HtmlReportGenerator( "target/site/performance.html"))
+            .build();
+
+    
+    private static String jdbcUrl;
+
+    @Autowired
+    public void setEnvironment(Environment env) {
+        jdbcUrl = env.getProperty("spring.datasource.url");
+        System.out.println("Initialized JDBC URL: " + jdbcUrl);
+    }
 
     @BeforeAll
     public static void cleanDatabase() {
 
         // Database connection details
-        String jdbcUrl = "jdbc:mysql://database-test:3306/spootifydb";
         String username = "root";
         String password = "root";
 
