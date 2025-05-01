@@ -52,6 +52,7 @@ jobs:
 
     - name: Copy site doxygen output to docs folder
       run: |
+        ls
         mkdir -p docs
         rm -rf docs/site
         mkdir -p docs/site
