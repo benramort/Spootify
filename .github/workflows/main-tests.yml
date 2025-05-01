@@ -27,3 +27,26 @@ jobs:
       with:
         name: test-report
         path: Server/target/site
+
+  generate-documentation:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Build and run documentation container
+      run: |
+        docker compose --profile=docs up --build --abort-on-container-exit --exit-code-from server-docs
+
+    - name: Upload pages
+      uses: actions/upload-pages-artifact
+      with:
+        path: Server/target/site
+
+
+    - name: Deploy pages
+      uses: actions/deploy-pages
