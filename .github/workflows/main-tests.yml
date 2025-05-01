@@ -55,11 +55,11 @@ jobs:
         mkdir -p docs
         rm -rf docs/site
         mkdir -p docs/site
-        cp -r target/site/* docs/site/
-        cp -r target/reports/* docs/site/reports/
+        cp -r Server/target/site/* docs/site/
+        cp -r Server/target/reports/* docs/site/reports/
         rm -rf docs/doxygen
         mkdir -p docs/doxygen
-        cp -r target/doxygen/html/* docs/doxygen/
+        cp -r Server/target/doxygen/html/* docs/doxygen/
     
     - name: Commit and push docs
       run: |
