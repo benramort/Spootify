@@ -52,7 +52,7 @@ jobs:
 
     - name: Upload pages
       uses: actions/upload-pages-artifact@v3
-      id: deployment
+      id: upload
       with:
         path: Server/target/doxygen/html
 
