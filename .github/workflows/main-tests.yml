@@ -50,12 +50,23 @@ jobs:
       run: |
         docker compose --profile=docs up --build --abort-on-container-exit --exit-code-from server-docs
 
-    - name: Upload pages
-      uses: actions/upload-pages-artifact@v3
-      id: upload
-      with:
-        path: Server/target/doxygen/html
-
-    - name: Deploy pages
-      id: deployment
-      uses: actions/deploy-pages@v3
+    - name: Copy site doxygen output to docs folder
+      run: |
+        mkdir -p docs
+        rm -rf docs/site
+        mkdir -p docs/site
+        cp -r target/site/* docs/site/
+        cp -r target/reports/* docs/site/reports/
+        rm -rf docs/doxygen
+        mkdir -p docs/doxygen
+        cp -r target/doxygen/html/* docs/doxygen/
+    
+    - name: Commit and push docs
+      run: |
+        git config --global user.name "github-actions"
+        git config --global user.email "github-actions@github.com"
+        git add -f docs
+        git commit -m "Update Maven site [CI skip]" || echo "No changes to commit"
+        git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
