@@ -13,12 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.deusto.theComitte.Spootify.DTO.ArtistDTO;
 import com.deusto.theComitte.Spootify.DTO.CreateUserDTO;
 import com.deusto.theComitte.Spootify.DTO.LoginDTO;
 import com.deusto.theComitte.Spootify.DTO.TokenDTO;
 import com.deusto.theComitte.Spootify.DTO.UserDTO;
-import com.deusto.theComitte.Spootify.entity.Artist;
 import com.deusto.theComitte.Spootify.entity.User;
 import com.deusto.theComitte.Spootify.service.UserService;
 

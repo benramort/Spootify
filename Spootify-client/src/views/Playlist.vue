@@ -12,6 +12,12 @@ const playlist = ref({
     songs: [],
 });
 
+const reproductor = inject("reproductor");
+
+function play(song) {
+    reproductor.playSong(song);
+}
+
 onMounted(() => {
     fetchPlaylistDetails();
 });
@@ -56,7 +62,7 @@ function openLink(link) {
                     <!-- Verifica si la playlist tiene canciones -->
                     <div v-if="playlist.songs.length > 0">
                         <div class="song" v-for="song in playlist.songs" :key="song.id">
-                            <i class="fa-solid fa-circle-play" @click="openLink(song.youtubeUrl)"></i>
+                            <i class="fa-solid fa-circle-play" @click="play(song)"></i>
                             <div class="horizontal-aling">
                                 <div>
                                     <p><b>{{ song.title }}</b></p>

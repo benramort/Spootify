@@ -43,6 +43,7 @@
       <p id="titulo">Spootify</p>
     </div>
     <div class="side">
+    <div class="header-box"><router-link to="/search">Buscar</router-link></div>
     <div class="header-box" v-if="!Number.isInteger(globalState.token.value)"><router-link to="/login">Mi perfil</router-link></div>
     <div class="header-box" v-else-if="globalState.isArtist.value === true"><router-link to="/artists/dashboard">Mi perfil</router-link></div>
     <div class="header-box" v-else-if="globalState.isArtist.value === false"><router-link to="/users/dashboard">Mi perfil</router-link></div>

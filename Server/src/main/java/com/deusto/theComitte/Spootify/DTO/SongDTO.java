@@ -70,6 +70,9 @@ public class SongDTO {
         this.youtubeUrl = youtubeUrl;
     }
 
+    public String toString() {
+        return "SongDTO [id=" + id + ", title=" + title + ", album=" + album + ", duration=" + duration + ", youtubeUrl=" + youtubeUrl + "]";
+    }
     public boolean isLiked() {
         return liked;
     }

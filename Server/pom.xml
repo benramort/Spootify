@@ -28,6 +28,7 @@
 	</scm>
 	<properties>
 		<java.version>21</java.version>
+		<doxygen.config.file>${basedir}/src/main/resources/Doxyfile</doxygen.config.file>
 	</properties>
 	<dependencies>
 
@@ -86,8 +87,13 @@
             <scope>test</scope>
         </dependency>
 
-
-
+		<!-- JUnitPerf -->
+		<dependency>
+			<groupId>com.github.noconnor</groupId>
+			<artifactId>junitperf-junit5</artifactId>
+			<version>1.37.0</version>
+			<scope>test</scope>
+		</dependency>
 
 	</dependencies>
 
@@ -116,6 +122,12 @@
                         <goals>
                             <goal>report</goal>
                         </goals>
+						<configuration>
+							<excludes>
+                    			<!-- Excluir la carpeta dto -->
+                    			<exclude>**/DTO/**</exclude>
+               				</excludes>
+						</configuration>
                     </execution>
                     <!-- <execution>
                         <id>check</id>
@@ -158,11 +170,31 @@
 				<configuration>
 					<includes>
 						<include>**/integration/**</include>
+						<include>**/performance/**</include>
 					</includes>
 				</configuration>
 			</plugin>
 
+			<plugin>
+				<groupId>com.soebes.maven.plugins</groupId>
+				<artifactId>doxygen-maven-plugin</artifactId>
+				<version>1.1.0</version>
+				<executions>
+					<execution>
+						<id>generate-doxygen-site</id>
+						<phase>site</phase> <!-- important: run during site phase -->
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<configurationFile>${doxygen.config.file}</configurationFile>
+				</configuration>
+			</plugin>
+
 		</plugins>
+
 	</build>
 
 </project>
