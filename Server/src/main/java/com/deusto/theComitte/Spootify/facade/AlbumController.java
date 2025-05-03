@@ -43,6 +43,13 @@ public class AlbumController {
         try {
             String imagePath = null;
             if(cover != null && !cover.isEmpty()){
+
+                Path imageDir = Paths.get("imagenes");
+                if (!Files.exists(imageDir)) {
+                    Files.createDirectories(imageDir);
+                    System.out.println("Created directory: " + imageDir.toAbsolutePath());
+                }
+
                 String fileName = System.currentTimeMillis() + "_" + cover.getOriginalFilename();
                 Path coverPath = Paths.get("imagenes").resolve(fileName);
                 Files.copy(cover.getInputStream(), coverPath, StandardCopyOption.REPLACE_EXISTING);
@@ -52,6 +59,9 @@ public class AlbumController {
             albumService.createAlbum(name, imagePath, token);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch(RuntimeException e ) {
+            if (e.getMessage().equals("Artist not logged in")) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } catch(IOException e) {
@@ -98,6 +108,23 @@ public class AlbumController {
         }
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<AlbumDTO>> searchAlbums(@RequestParam String name) {
+        try {
+            List<Album> albums = albumService.searchAlbums(name);
+            List<AlbumDTO> albumDTOs = new ArrayList<>();
+            for (Album album : albums) {
+                albumDTOs.add(album.toDTO());
+            }
+            return ResponseEntity.ok(albumDTOs);
+        } catch (RuntimeException e) {
+            if (e.getMessage().equals("No albums found with the given name")) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
     // @GetMapping("/covers")
     // public ResponseEntity<List<AlbumDTO>> getAlbumCovers(@RequestParam(required = false, defaultValue = "0") long artist){
     //     try {

@@ -89,7 +89,7 @@ public class MusicStreamingController {
             return new ResponseEntity<>(chunk, headers, HttpStatus.PARTIAL_CONTENT);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 

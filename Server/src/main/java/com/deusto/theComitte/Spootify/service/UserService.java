@@ -73,6 +73,10 @@ public class UserService {
         }
         return user;
     }
+
+    public Map<Long, User> getActiveUserMap() {
+        return this.activeUsers;
+    }
     
     public void followArtist(long token, long artistID) {
         User user = activeUsers.get(token);

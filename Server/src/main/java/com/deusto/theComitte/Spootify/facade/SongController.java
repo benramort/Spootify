@@ -14,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,7 +50,7 @@ public class SongController {
         @RequestParam("title") String title,
         @RequestParam("album") long albumId,
         @RequestParam("duration") int duration,
-        @RequestParam("file") MultipartFile audioFile,
+        @RequestParam(value = "file", required = false) MultipartFile audioFile,
         @RequestParam("token") long token) {
         try {
             songService.createSong(title, duration, audioFile, albumId, token);
@@ -67,6 +66,23 @@ public class SongController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } catch (IOException e) {
             e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<SongDTO>> searchSongs(@RequestParam String title) {
+        try {
+            System.out.println("Title received in controller: " + title);
+            List<Song> songs = songService.searchSongs(title);
+            List<SongDTO> songDTOs = new ArrayList<>();
+            for (Song song : songs) {
+                songDTOs.add(song.toDTO());
+            }
+            System.out.println("Canciones sacadas por query de controller:"+ songDTOs.toString());
+
+            return ResponseEntity.ok(songDTOs);
+        } catch (RuntimeException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }

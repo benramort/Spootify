@@ -45,6 +45,13 @@ public class SongService {
             throw new RuntimeException("Artist does not have access to this album");
         }
 
+        if (audioFile == null) {
+            Song song = new Song(title, album, duration, "");
+            album.getSongs().add(song);
+            songRepository.save(song);
+            return;
+        }
+
         String fileName = System.currentTimeMillis() + "_" + audioFile.getOriginalFilename();
         Path filePath = Paths.get("songs").resolve(fileName);
         Files.copy(audioFile.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
@@ -81,5 +88,9 @@ public class SongService {
             throw new RuntimeException("Song does not exist");
         }
         return song;
+    }
+
+    public List<Song> searchSongs(String title) {
+        return songRepository.findByName(title);
     }
 }

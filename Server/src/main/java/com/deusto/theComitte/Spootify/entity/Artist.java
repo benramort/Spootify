@@ -23,11 +23,13 @@ public class Artist extends GenericUser {
     public Artist(long id, String name, String email, String password) {
         super(id, name, email, password);
         followersList = new ArrayList<User>();
+        albums = new ArrayList<Album>();
     }
 
     public Artist(String name, String email, String password) {
         super(name, email, password);
         followersList = new ArrayList<User>();
+        albums = new ArrayList<Album>();
 
     }
 
@@ -72,6 +74,10 @@ public class Artist extends GenericUser {
 
     public List<User> getFollowersList() {
         return followersList;
+    }
+
+    public void setFollowersList(List<User> followersLists) {
+        this.followersList = followersLists;
     }
 
     public void followArtist(User user) {

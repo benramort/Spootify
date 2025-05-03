@@ -15,9 +15,16 @@ año 2025.
 2. En la carpeta ráiz del proyecto, ejecuta el siguiente comando:
 
    ```
-   docker compose up -d
+   docker compose profile=prod up -d
    ```
-4. El cliente estará disponible en el puerto 8080
+3. El cliente estará disponible en el puerto 8080
+
+### Ejecutar los tests:
+1. En la carpeta ráiz del proyecto, ejecuta el siguiente comando:
+
+   ```
+   docker compose profile=test up -d
+   ```
 
 ### Creadores:
 - Adei Laka

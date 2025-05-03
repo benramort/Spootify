@@ -2,6 +2,8 @@ package com.deusto.theComitte.Spootify.DTO;
 
 import java.util.List;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 public class UserDTO {
     private long id;
     private String name;
@@ -55,4 +57,16 @@ public class UserDTO {
     public void setPlaylists(List<SongListDTO> playlists) {
         this.playlists = playlists;
     }
+
+
+    public static UserDTO fromJson(String json) {
+    try {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.readValue(json, UserDTO.class);
+    } catch (Exception e) {
+        e.printStackTrace();
+        throw new RuntimeException("Error parsing JSON to UserDTO: " + e.getMessage());
+    }
+}
+
 }

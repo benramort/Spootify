@@ -20,14 +20,19 @@ const songInfo = ref({
   title: "Song Title",
   artist: "Artist Name",
   album: "Album Name",
-  albumCover: "https://i.scdn.co/image/ab67616d0000b273593d6762cc88b82c37ef55ad"
+  albumCover: "http://localhost:8081/",
 });
-
 const song = ref(null);
 
 function selectSong(songParam) {
-  console.log(songParam);
   song.value = songParam;
+  console.log("Portada before: " + songParam.album.cover);
+  if(song.value.album.cover.startsWith("http")) {
+    songInfo.value.albumCover = song.value.album.cover;
+  } else {
+    songInfo.value.albumCover = "http://localhost:8081/" + song.value.album.cover.substring(9);
+  }
+  console.log('Portada after:' + songInfo.value.albumCover);
   
   setTimeout(
   () => {
@@ -247,8 +252,13 @@ defineExpose({
 }
 
 .album-cover {
+<<<<<<< HEAD
   width: 56px;
   height: 56px;
+=======
+  width: 10%;
+  height: 10%;
+>>>>>>> main
   margin-right: 14px;
   flex-shrink: 0;
 }
