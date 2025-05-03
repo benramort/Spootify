@@ -1,6 +1,7 @@
 package com.deusto.theComitte.Spootify.service;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -78,4 +79,53 @@ public class ArtistService {
         return artistRepository.findByName(name);
     }
 
+    public Map<String, Integer> getMostFollowedArtists() {
+        // Recuperar todos los artistas de la base de datos
+        List<Artist> artists = artistRepository.findAll();
+    
+        // Crear un mapa donde la clave es el nombre del artista y el valor es el número de seguidores
+        Map<String, Integer> artistFollowerCountMap = new HashMap<>();
+    
+        // Recorrer los artistas y contar el tamaño de su lista de seguidores
+        for (Artist artist : artists) {
+            artistFollowerCountMap.put(artist.getName(), artist.getFollowersList().size());
+        }
+    
+        // Ordenar el mapa de mayor a menor según el número de seguidores
+        Map<String, Integer> sortedArtistFollowerCountMap = artistFollowerCountMap.entrySet()
+                .stream()
+                .sorted((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue()))
+                .collect(
+                        LinkedHashMap::new, // Usar LinkedHashMap para mantener el orden
+                        (map, entry) -> map.put(entry.getKey(), entry.getValue()),
+                        Map::putAll
+                );
+    
+        return sortedArtistFollowerCountMap;
+    }
+
+    // public Map<Artist, Integer> getMostFollowedArtists2() {
+    //     // Recuperar todos los artistas de la base de datos
+    //     List<Artist> artists = artistRepository.findAll();
+    
+    //     // Crear un mapa donde la clave es el artista y el valor es el número de seguidores
+    //     Map<Artist, Integer> artistFollowerCountMap = new HashMap<>();
+    
+    //     // Recorrer los artistas y contar el tamaño de su lista de seguidores
+    //     for (Artist artist : artists) {
+    //         artistFollowerCountMap.put(artist, artist.getFollowersList().size());
+    //     }
+    
+    //     // Ordenar el mapa de mayor a menor según el número de seguidores
+    //     Map<Artist, Integer> sortedArtistFollowerCountMap = artistFollowerCountMap.entrySet()
+    //             .stream()
+    //             .sorted((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue()))
+    //             .collect(
+    //                     LinkedHashMap::new, // Usar LinkedHashMap para mantener el orden
+    //                     (map, entry) -> map.put(entry.getKey(), entry.getValue()),
+    //                     Map::putAll
+    //             );
+    
+    //     return sortedArtistFollowerCountMap;
+    // }
 }

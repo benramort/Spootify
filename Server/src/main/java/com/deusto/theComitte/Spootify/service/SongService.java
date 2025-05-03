@@ -5,7 +5,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,10 +16,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.deusto.theComitte.Spootify.DAO.AlbumRepository;
 import com.deusto.theComitte.Spootify.DAO.ArtistRepository;
+import com.deusto.theComitte.Spootify.DAO.PlayListRepository;
 import com.deusto.theComitte.Spootify.DAO.SongRepository;
 import com.deusto.theComitte.Spootify.entity.Album;
 import com.deusto.theComitte.Spootify.entity.Artist;
 import com.deusto.theComitte.Spootify.entity.Song;
+import com.deusto.theComitte.Spootify.entity.SongList;
 
 @Service
 public class SongService {
@@ -29,6 +34,8 @@ public class SongService {
     ArtistRepository artistRepository;
     @Autowired
     ArtistService artistService;
+    @Autowired
+    PlayListRepository playListRepository;
 
 
     public void createSong(String title, int duration, MultipartFile audioFile, long albumId, long token) throws IOException {
@@ -93,4 +100,71 @@ public class SongService {
     public List<Song> searchSongs(String title) {
         return songRepository.findByName(title);
     }
+
+    public Map<String, Integer> getMostLikedSongs() {
+        String nombre = "Canciones que me gustan de";
+        // Recuperar todas las playlists de la base de datos
+        List<SongList> playlists = playListRepository.findAll();
+    
+        // Filtrar las playlists cuyo nombre empieza por el texto proporcionado
+        List<SongList> matchingPlaylists = playlists.stream()
+                .filter(playlist -> playlist.getName().startsWith(nombre))
+                .toList();
+    
+        // Crear un mapa donde la clave es el nombre de la canción y el valor es un contador
+        Map<String, Integer> songCountMap = new HashMap<>();
+    
+        // Recorrer las playlists coincidentes y contar las canciones
+        for (SongList playlist : matchingPlaylists) {
+            for (Song song : playlist.getSongs()) {
+                songCountMap.put(song.getName(), songCountMap.getOrDefault(song.getName(), 0) + 1);
+            }
+        }
+    
+        // Ordenar el mapa de mayor a menor según el valor
+        Map<String, Integer> sortedSongCountMap = songCountMap.entrySet()
+                .stream()
+                .sorted((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue()))
+                .collect(
+                        LinkedHashMap::new, // Usar LinkedHashMap para mantener el orden
+                        (map, entry) -> map.put(entry.getKey(), entry.getValue()),
+                        Map::putAll
+                );
+    
+        return sortedSongCountMap;
+    }
+
+    // public Map<Song, Integer> getMostLikedSongs() {
+    //     String nombre = "Canciones que me gustan de";
+    //     // Recuperar todas las playlists de la base de datos
+    //     List<SongList> playlists = playListRepository.findAll();
+    
+    //     // Filtrar las playlists cuyo nombre empieza por el texto proporcionado
+    //     List<SongList> matchingPlaylists = playlists.stream()
+    //             .filter(playlist -> playlist.getName().startsWith(nombre))
+    //             .toList();
+    
+    //     // Crear un mapa donde la clave es la canción y el valor es un contador
+    //     Map<Song, Integer> songCountMap = new HashMap<>();
+    
+    //     // Recorrer las playlists coincidentes y contar las canciones
+    //     for (SongList playlist : matchingPlaylists) {
+    //         for (Song song : playlist.getSongs()) {
+    //             songCountMap.put(song, songCountMap.getOrDefault(song, 0) + 1);
+    //         }
+    //     }
+    
+    //     // Ordenar el mapa de mayor a menor según el valor
+    //     Map<Song, Integer> sortedSongCountMap = songCountMap.entrySet()
+    //             .stream()
+    //             .sorted((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue()))
+    //             .collect(
+    //                     LinkedHashMap::new, // Usar LinkedHashMap para mantener el orden
+    //                     (map, entry) -> map.put(entry.getKey(), entry.getValue()),
+    //                     Map::putAll
+    //             );
+    
+    //     return sortedSongCountMap;
+    // }
+
 }
