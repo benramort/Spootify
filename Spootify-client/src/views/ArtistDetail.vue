@@ -18,6 +18,11 @@
          axios.get(path).then((response) => {
             console.log(response.data);
             artist.value = response.data;
+            artist.value.albums.forEach((album) => {
+                if (album.cover && !album.cover.startsWith("http")) {
+                    album.cover = "http://localhost:8081/" + album.cover.substring(9);
+                }
+            });
             isLoaded.value = true;
             chechFollow();
          }).catch((error) => {

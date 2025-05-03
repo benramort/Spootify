@@ -43,6 +43,13 @@ public class AlbumController {
         try {
             String imagePath = null;
             if(cover != null && !cover.isEmpty()){
+
+                Path imageDir = Paths.get("imagenes");
+                if (!Files.exists(imageDir)) {
+                    Files.createDirectories(imageDir);
+                    System.out.println("Created directory: " + imageDir.toAbsolutePath());
+                }
+
                 String fileName = System.currentTimeMillis() + "_" + cover.getOriginalFilename();
                 Path coverPath = Paths.get("imagenes").resolve(fileName);
                 Files.copy(cover.getInputStream(), coverPath, StandardCopyOption.REPLACE_EXISTING);

@@ -29,7 +29,6 @@ services:
   database:
     profiles:
       - prod
-      - test
     image: mysql:latest
     ports:
       - "3300:3306"
@@ -52,10 +51,36 @@ services:
       - ./Server:/app
     working_dir: /app
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/spootifydb
+      - SPRING_DATASOURCE_URL=jdbc:mysql://database-test:3306/spootifydb
     command: mvn verify
     depends_on:
-      - database
+      - database-test
+
+  database-test:
+    profiles:
+      - test
+    image: mysql:latest
+    ports:
+      - "3300:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=spootifydb
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=user
+
+  server-docs:
+      build: Server/.
+      profiles:
+        - docs
+      ports:
+        - "8081:8081"
+      volumes:
+        - ./Server:/app
+      working_dir: /app
+      environment:
+        - SPRING_DATASOURCE_URL=jdbc:mysql://database-test:3306/spootifydb
+      command: mvn site
+    
 
 volumes:
   spootifydb:
