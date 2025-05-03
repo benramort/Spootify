@@ -15,7 +15,7 @@ const playlist = ref({
 const reproductor = inject("reproductor");
 
 function play(song) {
-    reproductor.playSong(song);
+    reproductor.selectSong(song);
 }
 
 onMounted(() => {

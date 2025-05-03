@@ -8,7 +8,7 @@
 
     function play(song) {
         song.album = album.value;
-        reproductor.playSong(song);
+        reproductor.selectSong(song);
     }
 
     const route = useRoute();
@@ -37,10 +37,6 @@
         }).catch((error) => {
             console.log(error);
         });
-    }
-
-    function openLink(link) {
-        window.open(link, "_blank");
     }
 
 

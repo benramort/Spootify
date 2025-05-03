@@ -26,6 +26,10 @@
                         @click="() => { toggleLiked(song); addToPlaylistMeGustan(song); }">
                         <i :class="{'fa-solid fa-heart': isLiked(song), 'fa-regular fa-heart': !isLiked(song)}"></i>
                     </button>
+                    <button @click="reproductor.addToQueue([song])">
+                        <img id="queue" src="../assets/queue.png">
+                    </button>
+                    
                 </div>
             </div>
         </div>
@@ -99,7 +103,7 @@ onMounted(() => {
 
 function play(song) {
     console.log("Reproduciendo canción, portada: " + song);
-    reproductor.playSong(song);
+    reproductor.selectSong(song);
 }
 
 function openPlaylistModal(song) {
@@ -187,6 +191,15 @@ function isLiked(song) {
 </script>
 
 <style scoped>
+
+button {
+    background-color: transparent;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    /* border: 1px solid black; */
+}
+
 .songs {
     height: 100%;
     overflow-y: auto;
@@ -393,4 +406,10 @@ a:hover {
 i:hover {
     color: rgb(22, 164, 72);
 }
+
+#queue {
+    height: 3em;
+    width: 3em;
+}
+
 </style>
