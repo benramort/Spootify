@@ -36,7 +36,7 @@ public class UserService {
         
         User user = new User(name, email, password);
         String nombre = "Canciones que me gustan de " + user.getName();
-        SongList cancionesQueMeGustan = new SongList(nombre, user); // Sin ID manual
+        SongList cancionesQueMeGustan = new SongList(nombre, false, user); // Sin ID manual
         user.addSongList(cancionesQueMeGustan);
         userRepository.save(user);
         songListRepository.save(cancionesQueMeGustan);

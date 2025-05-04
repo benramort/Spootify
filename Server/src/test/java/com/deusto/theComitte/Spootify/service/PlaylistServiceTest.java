@@ -62,7 +62,7 @@ public class PlaylistServiceTest {
         testSong = new Song(SONG_ID, "Test Song", testAlbum, 180, "https://youtube.com/test");
         
         // Create test playlist
-        testPlaylist = new SongList(PLAYLIST_ID, "Test Playlist", testUser);
+        testPlaylist = new SongList(PLAYLIST_ID, "Test Playlist", true, testUser);
         
         // Set up user with playlist
         List<SongList> userPlaylists = new ArrayList<>();
@@ -142,13 +142,14 @@ public class PlaylistServiceTest {
         when(userService.getActiveUser(USER_ID)).thenReturn(testUser);
         
         // Act
-        playlistService.createPlayList(USER_ID, "New Playlist");
+        playlistService.createPlayList(USER_ID, "New Playlist", true);
         
         // Assert
         verify(userRepository).save(testUser);
         verify(songListRepository).save(any(SongList.class));
         assertEquals(2, testUser.getSongLists().size());
         assertEquals("New Playlist", testUser.getSongLists().get(1).getName());
+        assertEquals(true, testUser.getSongLists().get(1).getIsPublic());
     }
     
     @Test
@@ -159,7 +160,7 @@ public class PlaylistServiceTest {
         
         // Act & Assert
         RuntimeException exception = assertThrows(RuntimeException.class, () -> 
-            playlistService.createPlayList(USER_ID, "New Playlist")
+            playlistService.createPlayList(USER_ID, "New Playlist", true)
         );
         assertEquals("User not logged in", exception.getMessage());
         verify(userRepository, never()).save(any());
@@ -243,7 +244,7 @@ public class PlaylistServiceTest {
     void testGetPlaylistByIdFailsWhenUserDoesNotHaveAccess() {
         // Arrange
         User otherUser = new User(2L, "otheruser", "other@example.com", "password");
-        SongList otherPlaylist = new SongList(PLAYLIST_ID, "Other Playlist", otherUser);
+        SongList otherPlaylist = new SongList(PLAYLIST_ID, "Other Playlist", true, otherUser);
         otherPlaylist.setUser(otherUser);
         
         when(userService.getActiveUser(USER_ID)).thenReturn(testUser);

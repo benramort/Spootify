@@ -50,7 +50,7 @@ public class UserControllerTest {
         followedArtists.add(testArtist);
         
         List<SongList> playlists = new ArrayList<>();
-        SongList testPlaylist = new SongList(1L, "Test Playlist", testUser);
+        SongList testPlaylist = new SongList(1L, "Test Playlist", true, testUser);
         playlists.add(testPlaylist);
         testUser.setSongLists(playlists);
     }

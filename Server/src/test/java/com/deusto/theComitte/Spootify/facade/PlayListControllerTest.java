@@ -40,7 +40,7 @@ public class PlayListControllerTest {
         MockitoAnnotations.openMocks(this);
 
         // Create test playlist
-        testPlaylist = new SongList(PLAYLIST_ID, PLAYLIST_NAME, null);
+        testPlaylist = new SongList(PLAYLIST_ID, PLAYLIST_NAME, true, null);
     }
 
     @Test
@@ -50,14 +50,14 @@ public class PlayListControllerTest {
         SongListDTO songListDTO = new SongListDTO();
         songListDTO.setName(PLAYLIST_NAME);
 
-        doNothing().when(playlistService).createPlayList(TOKEN, PLAYLIST_NAME);
+        doNothing().when(playlistService).createPlayList(TOKEN, PLAYLIST_NAME, true);
 
         // Act
         ResponseEntity<Void> response = playListController.createPlayList(songListDTO, TOKEN);
 
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        verify(playlistService).createPlayList(TOKEN, PLAYLIST_NAME);
+        verify(playlistService).createPlayList(TOKEN, PLAYLIST_NAME, true);
     }
 
     @Test
@@ -68,14 +68,14 @@ public class PlayListControllerTest {
         songListDTO.setName(PLAYLIST_NAME);
 
         doThrow(new RuntimeException("User not logged in"))
-            .when(playlistService).createPlayList(TOKEN, PLAYLIST_NAME);
+            .when(playlistService).createPlayList(TOKEN, PLAYLIST_NAME, true);
 
         // Act
         ResponseEntity<Void> response = playListController.createPlayList(songListDTO, TOKEN);
 
         // Assert
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
-        verify(playlistService).createPlayList(TOKEN, PLAYLIST_NAME);
+        verify(playlistService).createPlayList(TOKEN, PLAYLIST_NAME, true);
     }
 
     // Removed duplicate method
@@ -227,7 +227,7 @@ public class PlayListControllerTest {
 
         // Assert
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        verify(playlistService, never()).createPlayList(anyLong(), anyString());
+        verify(playlistService, never()).createPlayList(anyLong(), anyString(), true);
     }
 
     @Test
@@ -242,7 +242,7 @@ public class PlayListControllerTest {
 
         // Assert
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        verify(playlistService, never()).createPlayList(anyLong(), anyString());
+        verify(playlistService, never()).createPlayList(anyLong(), anyString(), true);
     }
 
     @Test

@@ -94,6 +94,14 @@ public class SongList {
         this.user = user;
     }
 
+    public boolean getIsPublic() {
+        return this.isPublic;
+    }
+
+    public void setPublic(boolean isPublic) {
+        this.isPublic = isPublic;
+    }
+
     public SongListDTO toDTO() {
         List<SongDTO> songs = new ArrayList<>();
         for (Song song : this.songs) {
