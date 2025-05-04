@@ -12,22 +12,23 @@ public class SongListDTO {
 
     public SongListDTO() {}
 
-    public SongListDTO(String name) {
+    public SongListDTO(String name, boolean isPublic) {
         this.name = name;
+        this.isPublic = isPublic;
         this.songs = new ArrayList<>();
     }
 
-    public SongListDTO(Long id, String name) {
-        this.id = id;
-        this.name = name;
-        this.songs = new ArrayList<>();
-    }
-
-    public SongListDTO(Long id, String name, boolean isPublic, String shareLink, List<SongDTO> songs) {
+    public SongListDTO(Long id, boolean isPublic, String name) {
         this.id = id;
         this.name = name;
         this.isPublic = isPublic;
-        this.shareLink = shareLink;
+        this.songs = new ArrayList<>();
+    }
+
+    public SongListDTO(Long id, String name, boolean isPublic, List<SongDTO> songs) {
+        this.id = id;
+        this.name = name;
+        this.isPublic = isPublic;
         this.songs = songs;
     }
 

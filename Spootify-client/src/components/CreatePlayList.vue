@@ -14,7 +14,7 @@
                 </div>
                 <div id="campoPrivacidadYBoton">
                     <div id="campoPrivacidad">
-                        <input type="checkbox" id="privacidad" />
+                        <input type="checkbox" id="privacidad" v-model="isPublic"/>
                         <label id="labelPrivacidad" for="privacidad">Pública</label>
                     </div>
                     <div id="button">
@@ -171,6 +171,7 @@ const globalState = inject("globalState");
 const showModalPlayList = ref(false);
 const playListName = ref("");
 const errorMessage = ref(""); // Variable para almacenar el mensaje de error
+const isPublic = ref(false); // Variable para almacenar la privacidad de la playlist
 
 function handleCreatePlayList() {
     if (!playListName.value.trim()) {
@@ -185,7 +186,7 @@ function createPlayList() {
     let path = "http://localhost:8081/playlists";
     path += "?token=" + globalState.token.value;
 
-    axios.post(path, { "name": playListName.value })
+    axios.post(path, { "name": playListName.value , "isPublic": isPublic.value })
         .then((response) => {
             console.log(response);
             console.log("Playlist created");
