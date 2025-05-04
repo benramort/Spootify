@@ -16,6 +16,7 @@ const isShuffle = ref(false);
 const isRepeat = ref(false);
 const previousEnabled = ref(false);
 const nextEnabled = ref(false);
+const visible = ref(true);
 
 const song = ref(null);
 let queue = [];
@@ -200,7 +201,7 @@ defineExpose({
     </audio>
     
     <!-- Player UI -->
-    <div class="player">
+    <div class="player" v-if="visible">
       <!-- Left section: Album & Song info -->
       <div class="player-left">
         <div class="album-cover">
@@ -244,9 +245,9 @@ defineExpose({
         </div>
       </div>
       
-      <!-- Right section: Volume control -->
-      <div class="player-right" @mouseenter="showVolumeControl = true" @mouseleave="showVolumeControl = false">
-        <button class="volume-button" @click="toggleMute">
+      <!-- Right section: Volume control, hide -->
+      <div class="player-right">
+        <button class="volume-button" @click="toggleMute" @mouseenter="showVolumeControl = true" @mouseleave="showVolumeControl = false">
           <i :class="['fa', isMuted ? 'fa-volume-off' : volume.value < 50 ? 'fa-volume-down' : 'fa-volume-up']"></i>
         </button>
         <div class="volume-control" v-show="showVolumeControl">
@@ -254,7 +255,16 @@ defineExpose({
             <div class="volume-level" :style="volumeStyle"></div>
           </div>
         </div>
+        <button class="down-button">
+          <i class="fa fa-angle-down" @click="visible = false"></i>
+        </button>
       </div>
+    </div>
+
+    <div v-if="!visible"> 
+      <button class="down-button-floating" @click="visible = true">
+        <i class="fa fa-angle-up"></i>
+      </button>
     </div>
   </div>
 </template>
@@ -474,7 +484,7 @@ defineExpose({
 .volume-control {
   width: 100px;
   position: absolute;
-  right: 30px;
+  right: 60px;
   top: 50%;
   transform: translateY(-50%);
 }
@@ -498,6 +508,44 @@ defineExpose({
 
 .volume-bar:hover .volume-level {
   background-color: #1ed760;
+}
+
+.down-button {
+  background: none;
+  border: none;
+  color: #b3b3b3;
+  font-size: 27px;
+  cursor: pointer;
+  margin-left: 8px;
+  padding-bottom: 2px;
+}
+
+.down-button:hover {
+  color: #fff;
+}
+
+.down-button-floating {
+  position: fixed;
+  bottom: 25px;
+  right: 10px;
+  background-color: #181818;
+  color: #b3b3b3;
+  border: none;
+  font-size: 27px;
+  padding-bottom: 2px;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.down-button-floating:hover {
+  color: #fff;
+  transform: scale(1.1);
+  transition: 0.2s;
 }
 
 /* Media queries for responsive design */
