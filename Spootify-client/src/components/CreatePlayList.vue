@@ -8,10 +8,6 @@
             <div v-if="errorMessage" id="mensajeError">
                 <p id="errorMessage">{{ errorMessage }}</p>
             </div>
-            <!-- Mensaje de error entre el título y el cuadro de texto -->
-            <div v-if="errorMessage" id="errorMessage">
-                <p>{{ errorMessage }}</p>
-            </div>
             <div id="campos">
                 <div id="campoNombre">
                     <input id="inputNombre" type="text" placeholder="Name" v-model="playListName" />
@@ -32,12 +28,16 @@
 
 .contFormulario {
     width: 300px;
-    height: 150px; /* Ajusta la altura para incluir el mensaje de error */
+    height: 120px; /* Ajusta la altura para incluir el mensaje de error */
     border: 2px solid rgb(34, 34, 34);
     margin: 0 auto;
     background-color: rgb(34, 34, 34);
     box-shadow: 5px 10px 20px black;
     border-radius: 10px;
+}
+
+.contFormularioError {
+    height: 140px; /* Ajusta la altura para incluir el mensaje de error */
 }
 
 #errorMessage {

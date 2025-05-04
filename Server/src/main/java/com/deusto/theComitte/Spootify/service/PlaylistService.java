@@ -76,13 +76,13 @@ public class PlaylistService {
         userRepository.save(user); // Guarda el usuario en la base de datos
     }
 
-    public void createPlayList(long token, String name) {
+    public void createPlayList(long token, String name, boolean isPublic) {
         User user = userService.getActiveUser(token);
         if (user == null) {
             System.out.println("aaaaaaaaaaaaa");
             throw new RuntimeException("User not logged in");
         }
-        SongList songList = new SongList(name, user);
+        SongList songList = new SongList(name, isPublic, user);
         user.addSongList(songList);
         userRepository.save(user);
         songListRepository.save(songList);

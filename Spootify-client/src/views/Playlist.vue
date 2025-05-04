@@ -55,7 +55,10 @@ function openLink(link) {
     <div v-if="playlist.name">
         <div class="columns">
             <div class="columnLeft">
-                <h2>{{ playlist.name }}</h2>
+                <div id="nameAndShare">
+                    <h2 id="playlistName">{{ playlist.name }}</h2>
+                    <img id="shareImg" src="../assets/Share_button.png" alt="Compartir Playlist">
+                </div>
             </div>
             <div class="columnRight">
                 <div class="songs">
@@ -85,6 +88,24 @@ function openLink(link) {
 </template>
 
 <style scoped>
+#shareImg {
+    width: 1.5em;
+    height: 1.5em;
+    rotate: 15deg;
+    cursor: pointer;
+    margin-left: 7px;
+}
+
+#shareImg:hover {
+    transform: translateY(-5px);
+    transition: 0.3s ease;
+}
+
+#nameAndShare {
+    display: flex;
+    align-items: center;
+}
+
 .columns {
     display: flex;
     justify-content: space-between;

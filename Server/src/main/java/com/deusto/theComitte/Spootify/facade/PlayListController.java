@@ -33,7 +33,7 @@ public class PlayListController {
             if (songListDTO.getName() == null || songListDTO.getName().isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST); // Validación añadida
             }
-            playlistService.createPlayList(token, songListDTO.getName());
+            playlistService.createPlayList(token, songListDTO.getName(), songListDTO.getIsPublic());
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (RuntimeException e) {
             if (e.getMessage().equals("User not logged in")) {
