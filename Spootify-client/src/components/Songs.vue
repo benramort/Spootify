@@ -26,7 +26,7 @@
                         @click="() => { toggleLiked(song); addToPlaylistMeGustan(song); }">
                         <i :class="{'fa-solid fa-heart': isLiked(song), 'fa-regular fa-heart': !isLiked(song)}"></i>
                     </button>
-                    <button @click="reproductor.addToQueue([song])">
+                    <button class="queue-button" @click="reproductor.addToQueue([song])">
                         <img id="queue" src="../assets/queue.png">
                     </button>
                     
@@ -408,8 +408,14 @@ i:hover {
 }
 
 #queue {
-    height: 3em;
-    width: 3em;
+    height: 2.7em;
+    width: 2.7em;
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+}
+
+#queue:hover {
+    transform: scale(1.2); /* Aumenta el tamaño al pasar el cursor */
 }
 
 </style>

@@ -1,6 +1,5 @@
 <script setup>
 import { ref, onMounted, computed, watch } from 'vue';
-import { useRoute } from 'vue-router';
 
 // Reactive state
 const audioPlayer = ref(null);
@@ -540,12 +539,13 @@ defineExpose({
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  transition: 0.2s;
 }
 
 .down-button-floating:hover {
   color: #fff;
   transform: scale(1.1);
-  transition: 0.2s;
+  
 }
 
 /* Media queries for responsive design */
