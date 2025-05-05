@@ -25,6 +25,7 @@ import com.deusto.theComitte.Spootify.DAO.ArtistRepository;
 import com.deusto.theComitte.Spootify.DAO.PlayListRepository;
 import com.deusto.theComitte.Spootify.DAO.UserRepository;
 import com.deusto.theComitte.Spootify.entity.Artist;
+import com.deusto.theComitte.Spootify.entity.SongList;
 import com.deusto.theComitte.Spootify.entity.User;
 
 public class UserServiceTest {
@@ -73,13 +74,33 @@ public class UserServiceTest {
         verify(userRepository, never()).save(any(User.class));
     }
 
+    // @Test
+    // void testLogin_Success() {
+    //     String email = "user@example.com";
+    //     String password = "password";
+    //     User user = new User(1L, "User Name", email, password);
+
+    //     when(userRepository.findByEmail(email)).thenReturn(user);
+
+    //     long token = userService.login(email, password);
+
+    //     assertNotNull(token);
+    // }
+
     @Test
     void testLogin_Success() {
         String email = "user@example.com";
         String password = "password";
         User user = new User(1L, "User Name", email, password);
 
+        // Crear un mock de SongList
+        SongList mockSongList = new SongList();
+        mockSongList.setId(1L); // Asignar un ID válido
+        mockSongList.setName("Canciones que me gustan de User Name");
+
+        // Configurar el comportamiento de los mocks
         when(userRepository.findByEmail(email)).thenReturn(user);
+        when(playListRepository.findByName("Canciones que me gustan de User Name")).thenReturn(mockSongList);
 
         long token = userService.login(email, password);
 
