@@ -52,6 +52,8 @@ public class UserService {
         }
         long token = System.currentTimeMillis();
         activeUsers.put(token, user);
+        String nombre = "Canciones que me gustan de " + user.getName();
+        user.setCancionesMeGustanID(songListRepository.findByName(nombre).getId());
         return token;
     }
 

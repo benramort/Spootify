@@ -128,23 +128,16 @@ function addToPlaylistMeGustan(song) {
     axios
         .get(`http://localhost:8081/users/myProfile?token=${token}`)
         .then((response) => {
-            const userName = response.data.name; // Obtiene el nombre del usuario del perfil
-            console.log("Nombre del usuario:", userName);
+            const cancionesMeGustanID = response.data.cancionesMeGustanID; // Obtiene el ID de la playlist "Canciones que me gustan"
+            console.log("ID de la playlist 'Canciones que me gustan':", cancionesMeGustanID);
 
-            // Construye el nombre de la playlist
-            const playlistName = `Canciones que me gustan de ${userName}`;
-            console.log("Buscando playlist con nombre:", playlistName);
-
-            // Busca la playlist en la lista de playlists
-            const playlist = playlists.value.find((playlist) => playlist.name === playlistName);
-
-            if (playlist && playlist.id) {
-                // Si encuentra la playlist, utiliza su ID en el path
-                const path = `http://localhost:8081/playlists/${playlist.id}/songs?token=${token}`;
+            if (cancionesMeGustanID) {
+                // Construye el path con el ID de la playlist
+                const path = `http://localhost:8081/playlists/${cancionesMeGustanID}/songs?token=${token}`;
                 axios
                     .post(path, { id: song.id })
                     .then(() => {
-                        console.log(`Canción añadida a la playlist: ${playlist.name}`);
+                        console.log(`Canción añadida a la playlist con ID: ${cancionesMeGustanID}`);
                         // Refresca la página después de añadir la canción
                         window.location.reload();
                     })
@@ -152,8 +145,8 @@ function addToPlaylistMeGustan(song) {
                         console.error("Error al añadir la canción a la playlist:", error);
                     });
             } else {
-                // Si no encuentra la playlist, muestra un mensaje de error
-                console.error(`No se encontró una playlist válida con el nombre '${playlistName}' o el ID es null.`);
+                // Si no se encuentra el ID, muestra un mensaje de error
+                console.error("No se encontró un ID válido para la playlist 'Canciones que me gustan'.");
             }
         })
         .catch((error) => {
