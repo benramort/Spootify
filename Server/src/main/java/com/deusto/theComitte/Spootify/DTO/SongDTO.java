@@ -6,26 +6,26 @@ public class SongDTO {
     private AlbumDTO album;
     private int duration; // duration in seconds
     private String youtubeUrl;
-    private boolean liked;
+    private int numeroLikes;
 
     public SongDTO() {
     }
 
-    public SongDTO(long id, String title, AlbumDTO album, int duration, String youtubeUrl) {
+    public SongDTO(long id, String title, AlbumDTO album, int duration, String youtubeUrl, int numeroLikes) {
         this.id = id;
         this.title = title;
         this.album = album;
         this.duration = duration;
         this.youtubeUrl = youtubeUrl;
-        this.liked = false;
+        this.numeroLikes = numeroLikes;
     }  
 
-    public SongDTO(long id, String title, int duration, String youtubeUrl) {
+    public SongDTO(long id, String title, int duration, String youtubeUrl, int numeroLikes) {
         this.id = id;
         this.title = title;
         this.duration = duration;
         this.youtubeUrl = youtubeUrl;
-        this.liked = false;
+        this.numeroLikes = numeroLikes;
     }
 
     
@@ -73,11 +73,12 @@ public class SongDTO {
     public String toString() {
         return "SongDTO [id=" + id + ", title=" + title + ", album=" + album + ", duration=" + duration + ", youtubeUrl=" + youtubeUrl + "]";
     }
-    public boolean isLiked() {
-        return liked;
+    
+    public int getNumeroLikes() {
+        return numeroLikes;
     }
 
-    public void setLiked(boolean liked) {
-        this.liked = liked;
+    public void setNumeroLikes(int numeroLikes) {
+        this.numeroLikes = numeroLikes;
     }
 }

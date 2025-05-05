@@ -101,28 +101,31 @@ public class SongService {
         return songRepository.findByName(title);
     }
 
+    public void darLike(long songId) {
+        Song song = songRepository.findById(songId);
+        if (song == null) {
+            throw new RuntimeException("Song does not exist");
+        }
+        song.setNumeroLikes(song.getNumeroLikes() + 1);
+        songRepository.save(song);
+    }
+
     public Map<String, Integer> getMostLikedSongs() {
-        String nombre = "Canciones que me gustan de";
-        // Recuperar todas las playlists de la base de datos
-        List<SongList> playlists = playListRepository.findAll();
+        // Recuperar todas las canciones de la base de datos
+        List<Song> songs = songRepository.findAll();
     
-        // Filtrar las playlists cuyo nombre empieza por el texto proporcionado
-        List<SongList> matchingPlaylists = playlists.stream()
-                .filter(playlist -> playlist.getName().startsWith(nombre))
-                .toList();
+        // Crear un mapa donde la clave es el nombre de la canción y el valor es el número de likes
+        Map<String, Integer> songLikesMap = new HashMap<>();
     
-        // Crear un mapa donde la clave es el nombre de la canción y el valor es un contador
-        Map<String, Integer> songCountMap = new HashMap<>();
-    
-        // Recorrer las playlists coincidentes y contar las canciones
-        for (SongList playlist : matchingPlaylists) {
-            for (Song song : playlist.getSongs()) {
-                songCountMap.put(song.getName(), songCountMap.getOrDefault(song.getName(), 0) + 1);
+        // Recorrer las canciones y añadirlas al mapa si tienen más de 0 likes
+        for (Song song : songs) {
+            if (song.getNumeroLikes() > 0) {
+                songLikesMap.put(song.getName(), song.getNumeroLikes());
             }
         }
     
-        // Ordenar el mapa de mayor a menor según el valor
-        Map<String, Integer> sortedSongCountMap = songCountMap.entrySet()
+        // Ordenar el mapa de mayor a menor según el número de likes
+        Map<String, Integer> sortedSongLikesMap = songLikesMap.entrySet()
                 .stream()
                 .sorted((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue()))
                 .collect(
@@ -131,8 +134,41 @@ public class SongService {
                         Map::putAll
                 );
     
-        return sortedSongCountMap;
+        return sortedSongLikesMap;
     }
+
+    // public Map<String, Integer> getMostLikedSongs() {
+    //     String nombre = "Canciones que me gustan de";
+    //     // Recuperar todas las playlists de la base de datos
+    //     List<SongList> playlists = playListRepository.findAll();
+    
+    //     // Filtrar las playlists cuyo nombre empieza por el texto proporcionado
+    //     List<SongList> matchingPlaylists = playlists.stream()
+    //             .filter(playlist -> playlist.getName().startsWith(nombre))
+    //             .toList();
+    
+    //     // Crear un mapa donde la clave es el nombre de la canción y el valor es un contador
+    //     Map<String, Integer> songCountMap = new HashMap<>();
+    
+    //     // Recorrer las playlists coincidentes y contar las canciones
+    //     for (SongList playlist : matchingPlaylists) {
+    //         for (Song song : playlist.getSongs()) {
+    //             songCountMap.put(song.getName(), songCountMap.getOrDefault(song.getName(), 0) + 1);
+    //         }
+    //     }
+    
+    //     // Ordenar el mapa de mayor a menor según el valor
+    //     Map<String, Integer> sortedSongCountMap = songCountMap.entrySet()
+    //             .stream()
+    //             .sorted((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue()))
+    //             .collect(
+    //                     LinkedHashMap::new, // Usar LinkedHashMap para mantener el orden
+    //                     (map, entry) -> map.put(entry.getKey(), entry.getValue()),
+    //                     Map::putAll
+    //             );
+    
+    //     return sortedSongCountMap;
+    // }
 
     // public Map<Song, Integer> getMostLikedSongs() {
     //     String nombre = "Canciones que me gustan de";

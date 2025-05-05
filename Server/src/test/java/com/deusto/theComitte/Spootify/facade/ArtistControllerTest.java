@@ -89,7 +89,7 @@ public class ArtistControllerTest {
         
         // Create DTOs - we'll use real methods instead of mocking them
         testArtistDTO = new Artist(ARTIST_ID, "Test Artist", "artist@example.com", "password").toDTO();
-        testSongDTO = new SongDTO(1L, "Test Song", 180, "https://youtube.com/watch?v=test");
+        testSongDTO = new SongDTO(1L, "Test Song", 180, "https://youtube.com/watch?v=test",0);
     }
 
     @Test

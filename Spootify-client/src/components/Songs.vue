@@ -123,8 +123,9 @@ function addToPlaylist(playlist, song) {
 }
 
 function addToPlaylistMeGustan(song) {
-    // Realiza una llamada a la API para obtener el perfil del usuario
     const token = globalState.token.value; // Asegúrate de que el token esté disponible
+
+    // Realiza una llamada a la API para obtener el perfil del usuario
     axios
         .get(`http://localhost:8081/users/myProfile?token=${token}`)
         .then((response) => {
@@ -138,8 +139,19 @@ function addToPlaylistMeGustan(song) {
                     .post(path, { id: song.id })
                     .then(() => {
                         console.log(`Canción añadida a la playlist con ID: ${cancionesMeGustanID}`);
-                        // Refresca la página después de añadir la canción
-                        window.location.reload();
+
+                        // Llamar al endpoint para dar like a la canción
+                        const likePath = `http://localhost:8081/songs/like?songId=${song.id}`;
+                        axios
+                            .post(likePath)
+                            .then(() => {
+                                console.log(`Like añadido a la canción con ID: ${song.id}`);
+                                // Refresca la página después de añadir la canción y dar like
+                                window.location.reload();
+                            })
+                            .catch((error) => {
+                                console.error("Error al dar like a la canción:", error);
+                            });
                     })
                     .catch((error) => {
                         console.error("Error al añadir la canción a la playlist:", error);

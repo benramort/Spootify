@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.query.sqm.CastType;
 
 import com.deusto.theComitte.Spootify.DTO.SongDTO;
 import com.deusto.theComitte.Spootify.DTO.SongListDTO;
@@ -89,7 +88,7 @@ public class SongList {
     public SongListDTO toDTO() {
         List<SongDTO> songs = new ArrayList<>();
         for (Song song : this.songs) {
-            songs.add(new SongDTO(song.getId(), song.getName(), song.getAlbum().toDTOWithoutSongs(), song.getDuration(), song.getSongPath()));
+            songs.add(new SongDTO(song.getId(), song.getName(), song.getAlbum().toDTOWithoutSongs(), song.getDuration(), song.getSongPath(), song.getNumeroLikes()));
         }
         return new SongListDTO(this.id, this.name, songs);
     }

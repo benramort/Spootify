@@ -89,6 +89,21 @@ public class SongController {
         }
     }
 
+    @PostMapping("/like")
+    public ResponseEntity<Void> likeSong(@RequestParam long songId) {
+        try {
+            songService.darLike(songId);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (RuntimeException e) {
+            if (e.getMessage().equals("User not logged in")) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            } else if (e.getMessage().equals("Song does not exist")) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @GetMapping("/mostlikedsongs")
     public ResponseEntity<Map<String, Integer>> getMostLikedSongs() {
         try {
