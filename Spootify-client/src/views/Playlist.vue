@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted, ref, inject } from "vue";
 import { useRoute } from "vue-router";
+import Songs from "../components/Songs.vue";
 import axios from "axios";
 
 const globalState = inject("globalState");
@@ -46,8 +47,15 @@ function fetchPlaylistDetails() {
         });
 }
 
-function openLink(link) {
-    window.open(link, "_blank");
+function playAll() {
+    try {
+        let albumWithoutFirst = playlist.value.songs.slice(1, playlist.value.songs.length);
+        console.log(albumWithoutFirst);
+        reproductor.addToQueue(albumWithoutFirst);
+        reproductor.selectSong(playlist.value.songs[0]);
+    } catch (error) {
+        console.log(error);
+    }
 }
 </script>
 
@@ -56,23 +64,16 @@ function openLink(link) {
         <div class="columns">
             <div class="columnLeft">
                 <h2>{{ playlist.name }}</h2>
+                <button>
+                    <i class="fa-solid fa-circle-play" @click="playAll()"></i>
+                </button>
             </div>
             <div class="columnRight">
                 <div class="songs">
                     <!-- Verifica si la playlist tiene canciones -->
-                    <div v-if="playlist.songs.length > 0">
-                        <div class="song" v-for="song in playlist.songs" :key="song.id">
-                            <i class="fa-solid fa-circle-play" @click="play(song)"></i>
-                            <div class="horizontal-aling">
-                                <div>
-                                    <p><b>{{ song.title }}</b></p>
-                                </div>
-                                <p>{{ song.duration }}</p>
-                            </div>
-                        </div>
-                    </div>
+                    <Songs v-if="playlist.songs.length > 0" :songs="playlist.songs" />
                     <!-- Mensaje si no hay canciones -->
-                    <div v-else>
+                    <div v-if="playlist.songs.length === 0">
                         <p>Esta playlist no tiene canciones.</p>
                     </div>
                 </div>
@@ -85,6 +86,12 @@ function openLink(link) {
 </template>
 
 <style scoped>
+button {
+    background-color: transparent;
+    border: none;
+}
+
+
 .columns {
     display: flex;
     justify-content: space-between;

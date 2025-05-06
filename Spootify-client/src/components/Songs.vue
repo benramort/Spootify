@@ -65,6 +65,10 @@ const props = defineProps({
         type: String,
         default: "songs",
     },
+    songs: {
+        type: Array,
+        default: null,
+    }
 });
 
 let songs = ref([]);
@@ -73,6 +77,14 @@ let showModal = ref(false); // Controla la visibilidad del modal
 let selectedSong = ref(null); // Canción seleccionada para añadir a una playlist
 
 onMounted(() => {
+    if (props.songs == null) {
+        getSongs();
+    } else {
+        songs.value = props.songs;
+    }
+});
+
+function getSongs() {
     console.log(globalState);
     let actualPath = useRoute().path;
     let path = "http://localhost:8081/songs?";
@@ -99,7 +111,7 @@ onMounted(() => {
     axios.get(playlistPath).then((response) => {
         playlists.value = response.data;
     });
-});
+}
 
 function play(song) {
     console.log("Reproduciendo canción, portada: " + song);

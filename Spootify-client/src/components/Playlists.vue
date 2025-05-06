@@ -16,20 +16,6 @@ const props = defineProps({
 
 const playlists = ref([]);
 
-// Recupera el token del almacenamiento local al cargar el componente
-if (!globalState.token.value) {
-    const savedToken = localStorage.getItem("authToken");
-    if (savedToken) {
-        globalState.token.value = savedToken;
-    }
-}
-
-// Guarda el token en el almacenamiento local al iniciar sesión
-function saveToken(token) {
-    globalState.token.value = token;
-    localStorage.setItem("authToken", token);
-}
-
 onMounted(() => {
     if(globalState.isArtist.value == true) {
         return;
