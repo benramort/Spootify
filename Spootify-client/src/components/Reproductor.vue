@@ -35,7 +35,6 @@ function playSong(songParam) {
       if (audioPlayer.value && songParam) {
       audioPlayer.value.src = `http://localhost:8081/stream?song=${songParam.id}`;
       audioPlayer.value.load(); // Important: reload the audio element
-      // Auto-play if desired 
       }
 
       audioPlayer.value.play()
@@ -53,6 +52,11 @@ function selectSong(song) {
 
 function nextSong() {
   if (!isRepeat.value) {
+    if (isShuffle.value) {
+      queueIndex = Math.floor(Math.random() * queue.length);
+    } else {
+      queueIndex++;
+    }
     queueIndex++;
   }
   if (queueIndex < queue.length) {
