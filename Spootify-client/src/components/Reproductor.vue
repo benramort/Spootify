@@ -57,21 +57,23 @@ function nextSong() {
     } else {
       queueIndex++;
     }
-    queueIndex++;
   }
+  console.log("Next song. Queue index: ", queueIndex, "Queue length:", queue.length, "Shuffle: ", isShuffle.value, "Repeat: ", isRepeat.value);
   if (queueIndex < queue.length) {
     playSong(queue[queueIndex]);
   }
   if (queueIndex >= 1) {
     previousEnabled.value = true;
   }
-  if (queueIndex >= queue.length - 1) {
+  if (queueIndex >= queue.length - 1 && !isShuffle.value) {
+    console.log("Queue finished");
     nextEnabled.value = false;
   }
 }
 
 function previousSong() {
   queueIndex--;
+  nextEnabled.value = true;
   if (queueIndex >= 0) {
     playSong(queue[queueIndex]);
   }
