@@ -54,19 +54,11 @@ jobs:
       run: |
         ls
         mkdir -p docs
-        rm -rf docs/site
-        mkdir -p docs/site
-        cp -r Server/target/site/* docs/site/
-        rm -rf docs/doxygen
-        mkdir -p docs/doxygen
-        cp -r Server/target/doxygen/html/* docs/doxygen/
+        cp -r Server/target/doxygen/html/* docs/
     
-    - name: Commit and push docs
-      run: |
-        git config --global user.name "github-actions"
-        git config --global user.email "github-actions@github.com"
-        git add -f docs
-        git commit -m "Update Maven site [CI skip]" || echo "No changes to commit"
-        git push
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Deploy 🚀
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        folder: docs
+        branch: gh-pages
+        token: ${{ secrets.GITHUB_TOKEN }}
