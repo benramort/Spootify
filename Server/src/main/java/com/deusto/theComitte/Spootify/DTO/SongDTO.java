@@ -71,7 +71,7 @@ public class SongDTO {
     }
 
     public String toString() {
-        return "SongDTO [id=" + id + ", title=" + title + ", album=" + album + ", duration=" + duration + ", youtubeUrl=" + youtubeUrl + "]";
+        return "SongDTO [id=" + id + ", title=" + title + ", album=" + album + ", duration=" + duration + ", youtubeUrl=" + youtubeUrl  + ", numeroLikes=" + numeroLikes + "]";
     }
     
     public int getNumeroLikes() {

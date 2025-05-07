@@ -104,27 +104,31 @@ public class SongController {
         }
     }
 
-    @GetMapping("/mostlikedsongs")
-    public ResponseEntity<Map<String, Integer>> getMostLikedSongs() {
-        try {
-            Map<String, Integer> mostLikedSongs = songService.getMostLikedSongs();
-            return ResponseEntity.ok(mostLikedSongs);
-        } catch (RuntimeException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
-
     // @GetMapping("/mostlikedsongs")
-    // public ResponseEntity<Map<SongDTO, Integer>> getMostLikedSongs() {
+    // public ResponseEntity<Map<String, Integer>> getMostLikedSongs() {
     //     try {
-    //         Map<Song, Integer> mostLikedSongs = songService.getMostLikedSongs();
-    //         Map<SongDTO, Integer> mostLikedSongsDTO = new HashMap<>();
-    //         for (Map.Entry<Song, Integer> entry : mostLikedSongs.entrySet()) {
-    //             mostLikedSongsDTO.put(entry.getKey().toDTO(), entry.getValue());
-    //         }
-    //         return ResponseEntity.ok(mostLikedSongsDTO);
+    //         Map<String, Integer> mostLikedSongs = songService.getMostLikedSongs();
+    //         return ResponseEntity.ok(mostLikedSongs);
     //     } catch (RuntimeException e) {
     //         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     //     }
     // }
+
+    @GetMapping("/mostlikedsongs")
+    public ResponseEntity<List<SongDTO>> getMostLikedSongs() {
+        try {
+            // Obtener la lista de canciones más gustadas
+            List<Song> mostLikedSongs = songService.getMostLikedSongs();
+
+            // Convertir la lista de canciones a una lista de SongDTO
+            List<SongDTO> mostLikedSongsDTO = new ArrayList<>();
+            for (Song song : mostLikedSongs) {
+                mostLikedSongsDTO.add(song.toDTO());
+            }
+
+            return ResponseEntity.ok(mostLikedSongsDTO);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 }

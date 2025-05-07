@@ -21,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.deusto.theComitte.Spootify.DTO.AlbumDTO;
 import com.deusto.theComitte.Spootify.DTO.SongDTO;
 import com.deusto.theComitte.Spootify.entity.Album;
 import com.deusto.theComitte.Spootify.entity.Artist;
@@ -205,5 +206,144 @@ public class SongControllerTest {
         // Assert
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         verify(songService, never()).createSong(anyString(), anyInt(), any(MultipartFile.class), anyLong(), anyLong());
+    }
+
+    @Test
+    @DisplayName("Like a song successfully")
+    void testLikeSongSuccess() {
+        // Arrange
+        long songId = 1L;
+
+        doNothing().when(songService).darLike(songId);
+
+        // Act
+        ResponseEntity<Void> response = songController.likeSong(songId);
+
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        verify(songService).darLike(songId);
+    }
+
+    @Test
+    @DisplayName("Like a song fails when song does not exist")
+    void testLikeSongFailsWhenSongDoesNotExist() {
+        // Arrange
+        long songId = 999L;
+
+        doThrow(new RuntimeException("Song does not exist")).when(songService).darLike(songId);
+
+        // Act
+        ResponseEntity<Void> response = songController.likeSong(songId);
+
+        // Assert
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        verify(songService).darLike(songId);
+    }
+
+    @Test
+    @DisplayName("Like a song fails when user not logged in")
+    void testLikeSongFailsWhenUserNotLoggedIn() {
+        // Arrange
+        long songId = 1L;
+
+        doThrow(new RuntimeException("User not logged in")).when(songService).darLike(songId);
+
+        // Act
+        ResponseEntity<Void> response = songController.likeSong(songId);
+
+        // Assert
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+        verify(songService).darLike(songId);
+    }
+
+    // @Test
+    // @DisplayName("Get most liked songs successfully")
+    // void testGetMostLikedSongsSuccess() {
+    //     // Arrange
+    //     Album album = new Album();
+    //     album.setName("Album 1");
+
+    //     Song song1 = new Song();
+    //     song1.setName("Song 1");
+    //     song1.setNumeroLikes(10);
+    //     song1.setAlbum(album); // Asignar un álbum válido
+
+    //     Song song2 = new Song();
+    //     song2.setName("Song 2");
+    //     song2.setNumeroLikes(5);
+    //     song2.setAlbum(album); // Asignar un álbum válido
+
+    //     List<Song> songs = new ArrayList<>();
+    //     songs.add(song1);
+    //     songs.add(song2);
+
+    //     when(songService.getMostLikedSongs()).thenReturn(songs);
+
+    //     // Act
+    //     ResponseEntity<List<SongDTO>> response = songController.getMostLikedSongs();
+
+    //     // Assert
+    //     assertEquals(HttpStatus.OK, response.getStatusCode());
+    //     assertNotNull(response.getBody());
+    //     assertEquals(2, response.getBody().size());
+    //     assertEquals("Song 1", response.getBody().get(0).getTitle());
+    //     assertEquals("Song 2", response.getBody().get(1).getTitle());
+    //     verify(songService).getMostLikedSongs();
+    // }
+
+    @Test
+    @DisplayName("Get most liked songs successfully")
+    void testGetMostLikedSongsSuccess() {
+        // Arrange
+        Album album = mock(Album.class);
+        when(album.toDTOWithoutSongs()).thenReturn(new AlbumDTO(1L, "Album 1", null));
+
+        Song song1 = new Song(1L, "Song 1", album, 180, "path/to/song1");
+        song1.setNumeroLikes(10);
+
+        Song song2 = new Song(2L, "Song 2", album, 200, "path/to/song2");
+        song2.setNumeroLikes(5);
+
+        List<Song> songs = new ArrayList<>();
+        songs.add(song1);
+        songs.add(song2);
+
+        when(songService.getMostLikedSongs()).thenReturn(songs);
+
+        // Act
+        ResponseEntity<List<SongDTO>> response = songController.getMostLikedSongs();
+
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(2, response.getBody().size());
+
+        SongDTO songDTO1 = response.getBody().get(0);
+        assertEquals("Song 1", songDTO1.getTitle());
+        assertEquals(10, songDTO1.getNumeroLikes());
+        assertEquals(180, songDTO1.getDuration());
+        assertNotNull(songDTO1.getAlbum());
+
+        SongDTO songDTO2 = response.getBody().get(1);
+        assertEquals("Song 2", songDTO2.getTitle());
+        assertEquals(5, songDTO2.getNumeroLikes());
+        assertEquals(200, songDTO2.getDuration());
+        assertNotNull(songDTO2.getAlbum());
+
+        verify(songService).getMostLikedSongs();
+    }
+
+    @Test
+    @DisplayName("Get most liked songs fails with general error")
+    void testGetMostLikedSongsFailsWithGeneralError() {
+        // Arrange
+        doThrow(new RuntimeException("General error")).when(songService).getMostLikedSongs();
+
+        // Act
+        ResponseEntity<List<SongDTO>> response = songController.getMostLikedSongs();
+
+        // Assert
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        verify(songService).getMostLikedSongs();
     }
 }

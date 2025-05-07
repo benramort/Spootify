@@ -182,27 +182,31 @@ public class ArtistController {
         }
     }
 
-    @GetMapping("/mostfollowedartists")
-    public ResponseEntity<Map<String, Integer>> getMostFollowedArtists() {
-        try {
-            Map<String, Integer> mostFollowedArtists = artistService.getMostFollowedArtists();
-            return ResponseEntity.ok(mostFollowedArtists);
-        } catch (RuntimeException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    // @GetMapping("/mostfollowedartists2")
-    // public ResponseEntity<Map<ArtistDTO, Integer>> getMostFollowedArtists2() {
+    // @GetMapping("/mostfollowedartists")
+    // public ResponseEntity<Map<String, Integer>> getMostFollowedArtists() {
     //     try {
-    //         Map<Artist, Integer> mostFollowedArtists = artistService.getMostFollowedArtists2();
-    //         Map<ArtistDTO, Integer> mostFollowedArtistsDTO = new HashMap<>();
-    //         for (Map.Entry<Artist, Integer> entry : mostFollowedArtists.entrySet()) {
-    //             mostFollowedArtistsDTO.put(entry.getKey().toDTO(), entry.getValue());
-    //         }
-    //         return ResponseEntity.ok(mostFollowedArtistsDTO);
+    //         Map<String, Integer> mostFollowedArtists = artistService.getMostFollowedArtists();
+    //         return ResponseEntity.ok(mostFollowedArtists);
     //     } catch (RuntimeException e) {
     //         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     //     }
     // }
+
+    @GetMapping("/mostfollowedartists")
+    public ResponseEntity<List<ArtistDTO>> getMostFollowedArtists() {
+        try {
+            // Obtener la lista de artistas más seguidos
+            List<Artist> mostFollowedArtists = artistService.getMostFollowedArtists();
+
+            // Convertir la lista de artistas a una lista de ArtistDTO
+            List<ArtistDTO> mostFollowedArtistsDTO = new ArrayList<>();
+            for (Artist artist : mostFollowedArtists) {
+                mostFollowedArtistsDTO.add(artist.toDTO());
+            }
+
+            return ResponseEntity.ok(mostFollowedArtistsDTO);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 }

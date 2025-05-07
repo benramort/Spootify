@@ -57,6 +57,8 @@
         axios.post(path).then((response) => {
             console.log(response.data);
             isFollowing.value = true;
+            // Refrescar la página después de seguir al artista
+            window.location.reload();
         }).catch((error) => {
             console.log(error);
         });
