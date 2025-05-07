@@ -26,6 +26,10 @@
                         @click="() => { toggleLiked(song); addToPlaylistMeGustan(song); }">
                         <i :class="{'fa-solid fa-heart': isLiked(song), 'fa-regular fa-heart': !isLiked(song)}"></i>
                     </button>
+                    <button class="queue-button" @click="reproductor.addToQueue([song])">
+                        <img id="queue" src="../assets/queue.png">
+                    </button>
+                    
                 </div>
             </div>
         </div>
@@ -61,6 +65,10 @@ const props = defineProps({
         type: String,
         default: "songs",
     },
+    songs: {
+        type: Array,
+        default: null,
+    }
 });
 
 let songs = ref([]);
@@ -69,6 +77,14 @@ let showModal = ref(false); // Controla la visibilidad del modal
 let selectedSong = ref(null); // Canción seleccionada para añadir a una playlist
 
 onMounted(() => {
+    if (props.songs == null) {
+        getSongs();
+    } else {
+        songs.value = props.songs;
+    }
+});
+
+function getSongs() {
     console.log(globalState);
     let actualPath = useRoute().path;
     let path = "http://localhost:8081/songs?";
@@ -95,11 +111,11 @@ onMounted(() => {
     axios.get(playlistPath).then((response) => {
         playlists.value = response.data;
     });
-});
+}
 
 function play(song) {
     console.log("Reproduciendo canción, portada: " + song);
-    reproductor.playSong(song);
+    reproductor.selectSong(song);
 }
 
 function openPlaylistModal(song) {
@@ -187,6 +203,15 @@ function isLiked(song) {
 </script>
 
 <style scoped>
+
+button {
+    background-color: transparent;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    /* border: 1px solid black; */
+}
+
 .songs {
     height: 100%;
     overflow-y: auto;
@@ -393,4 +418,16 @@ a:hover {
 i:hover {
     color: rgb(22, 164, 72);
 }
+
+#queue {
+    height: 2.7em;
+    width: 2.7em;
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+}
+
+#queue:hover {
+    transform: scale(1.2); /* Aumenta el tamaño al pasar el cursor */
+}
+
 </style>
