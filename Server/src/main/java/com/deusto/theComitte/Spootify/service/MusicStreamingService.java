@@ -18,12 +18,15 @@ public class MusicStreamingService {
     @Autowired
     SongRepository songRepository;
 
+    /**
+     * Devuelve un fragmento del archivo especificado en el path.
+     * @param path Ruta de la canción
+     * @param start Inicio del fragmento
+     * @param end Fin del fragmento
+     * @return Resource con el fragmento de la canción
+     * @throws IOException si ocurre un error al leer el archivo
+     */
     public Resource getChunk(String path, long start, long end) {
-
-        // Song song = songRepository.findById(songId);
-        // if (song == null) {
-        //     throw new RuntimeException("Song not found");
-        // }
 
         try {
             InputStream inputStream = new FileInputStream(path);
@@ -37,12 +40,24 @@ public class MusicStreamingService {
         
     }
 
+
+    /**
+     * Devuelve el recurso completo del archivo especificado en el path.
+     * @param path Ruta de la canción
+     * @return Resource con el recurso completo de la canción
+     * @throws IOException si ocurre un error al leer el archivo
+     */
     public Resource getFullResource(String path) throws IOException {
         InputStream inputStream = new FileInputStream(path);
         InputStreamResource resource = new InputStreamResource(inputStream);
         return resource;
     }
 
+    /**
+     * Devuelve la ruta de la canción especificada por su ID.
+     * @param songId ID de la canción
+     * @return Ruta de la canción
+     */
     public String getSongPath(long songId) {
         Song song = songRepository.findById(songId);
         if (song == null) {

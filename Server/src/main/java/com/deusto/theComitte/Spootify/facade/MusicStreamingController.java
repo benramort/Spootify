@@ -14,17 +14,27 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.http.HttpHeaders;
 
 import com.deusto.theComitte.Spootify.service.MusicStreamingService;
-
+/**
+ * Esta clase se encarga de gestionar el streaming de música.
+ */
 @Controller
 @RequestMapping("/stream")
 public class MusicStreamingController {
 
+    /** Tamaño máximo de chuck */
     private static final long MAX_CHUNK_SIZE = 1024 * 1024; // 2MB Cambiar por property
     
     @Autowired
     private MusicStreamingService musicStreamingService;
 
-
+    /**
+     * A la función se le puede pedir un rango de bytes de una canción especifiacado en el header Range. 
+     * Devuelve el fragmento establecido. Si el rango es mayor al permitido, se devuelve el máximo permitido.
+     * Si no se especifica el rango, se devuelve desde el principio hasta el máximo permitido.
+     *  @param rangeHeader Rango de bytes a devolver.
+     *  @param songId ID de la canción a devolver.
+     *  @return Respuesta de HTML con código de "Partial Content" y un Resource con el fragmento de la canción.
+     */
     @GetMapping()
     public ResponseEntity<Resource> streamMusic(
         @RequestHeader(value = "Range", required = false) String rangeHeader,
