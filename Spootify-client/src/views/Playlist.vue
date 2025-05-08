@@ -39,11 +39,13 @@ function fetchPlaylistDetails() {
         .then((response) => {
             console.log(response.data);
             playlist.value = response.data;
+            console.log("Publica: " + playlist.value.isPublic);
         })
         .catch((error) => {
             console.error("Error al cargar la playlist:", error);
             playlist.value = null; // Maneja el error asignando null
         });
+
 }
 
 function generateShareLink() {
@@ -52,12 +54,12 @@ function generateShareLink() {
     let link = `http://localhost:8080/playlists/${playlist.value.id}`;
     
     window.navigator.clipboard.writeText(link).then(() => {
-        alert("Enlace copiado al portapapeles: " + link);
+        alert("Enlace copiado al portapapeles");
     }).catch(err => {
         console.error('Error al copiar el enlace: ', err);
     });
     
-    axios.post(path)
+    axios.post(path, {id: playlist.value.id})
         .then((response) => {
             console.log("La playlist pasa a ser pública", response.data);
         })
@@ -65,7 +67,6 @@ function generateShareLink() {
             console.error("Error al hacer pública la playlist:", error);
         });
 
-    console.log("IsPublic: " + playlist.value.isPublic);
 }
 
 function openLink(link) {
@@ -111,11 +112,10 @@ function openLink(link) {
 
 <style scoped>
 #shareImg {
-    width: 1.5em;
-    height: 1.5em;
-    rotate: 15deg;
+    width: 1.2em;
+    height: 1.2em;
     cursor: pointer;
-    margin-left: 7px;
+    margin-left: 10px;
 }
 
 #shareImg:hover {

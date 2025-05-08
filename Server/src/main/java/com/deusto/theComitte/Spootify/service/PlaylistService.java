@@ -121,7 +121,9 @@ public class PlaylistService {
         if (songList == null) {
             throw new RuntimeException("Playlist does not exist");
         }
-        songList.setPublic(true);
-        songListRepository.save(songList);
+        if(songList.getIsPublic() == false){
+            songList.setPublic(true);
+            songListRepository.save(songList);
+        }
     }
 }

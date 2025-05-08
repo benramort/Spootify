@@ -89,7 +89,6 @@ public class PlayListController {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
             }
         } catch (RuntimeException e) {
-            e.printStackTrace();
             if (e.getMessage().equals("User not logged in")) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             } else if (e.getMessage().equals("SongList does not exist")) {
@@ -97,6 +96,7 @@ public class PlayListController {
             } else if (e.getMessage().equals("User does not have access to this playlist")) {
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
