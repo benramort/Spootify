@@ -46,6 +46,28 @@ function fetchPlaylistDetails() {
         });
 }
 
+function generateShareLink() {
+
+    let path = `http://localhost:8081/playlists/${playlist.value.id}/share?token=${globalState.token.value}`;
+    let link = `http://localhost:8080/playlists/${playlist.value.id}`;
+    
+    window.navigator.clipboard.writeText(link).then(() => {
+        alert("Enlace copiado al portapapeles: " + link);
+    }).catch(err => {
+        console.error('Error al copiar el enlace: ', err);
+    });
+    
+    axios.post(path)
+        .then((response) => {
+            console.log("La playlist pasa a ser pública", response.data);
+        })
+        .catch((error) => {
+            console.error("Error al hacer pública la playlist:", error);
+        });
+
+    console.log("IsPublic: " + playlist.value.isPublic);
+}
+
 function openLink(link) {
     window.open(link, "_blank");
 }
@@ -57,7 +79,7 @@ function openLink(link) {
             <div class="columnLeft">
                 <div id="nameAndShare">
                     <h2 id="playlistName">{{ playlist.name }}</h2>
-                    <img id="shareImg" src="../assets/Share_button.png" alt="Compartir Playlist">
+                    <img @click="generateShareLink()" id="shareImg" src="../assets/Share_button.png" alt="Compartir Playlist">
                 </div>
             </div>
             <div class="columnRight">

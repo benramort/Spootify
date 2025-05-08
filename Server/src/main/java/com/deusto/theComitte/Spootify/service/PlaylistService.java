@@ -111,4 +111,17 @@ public class PlaylistService {
         }
         return songList;
     }
+
+    public void sharePlaylist(long id, long token) {
+        User user = userService.getActiveUser(token);
+        if (user == null) {
+            throw new RuntimeException("User not logged in");
+        }
+        SongList songList = songListRepository.findById(id);
+        if (songList == null) {
+            throw new RuntimeException("Playlist does not exist");
+        }
+        songList.setPublic(true);
+        songListRepository.save(songList);
+    }
 }
