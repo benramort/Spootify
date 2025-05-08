@@ -26,13 +26,10 @@
                         @click="() => { toggleLiked(song); addToPlaylistMeGustan(song); }">
                         <i :class="{'fa-solid fa-heart': isLiked(song), 'fa-regular fa-heart': !isLiked(song)}"></i>
                     </button>
-<<<<<<< HEAD
-=======
                     <button class="queue-button" @click="reproductor.addToQueue([song])">
                         <img id="queue" src="../assets/queue.png">
                     </button>
                     
->>>>>>> main
                 </div>
             </div>
         </div>
@@ -118,11 +115,7 @@ function getSongs() {
 
 function play(song) {
     console.log("Reproduciendo canción, portada: " + song);
-<<<<<<< HEAD
-    reproductor.playSong(song);
-=======
     reproductor.selectSong(song);
->>>>>>> main
 }
 
 function openPlaylistModal(song) {
@@ -146,7 +139,6 @@ function addToPlaylist(playlist, song) {
 }
 
 function addToPlaylistMeGustan(song) {
-<<<<<<< HEAD
     const token = globalState.token.value; // Asegúrate de que el token esté disponible
 
     // Realiza una llamada a la API para obtener el perfil del usuario
@@ -176,44 +168,13 @@ function addToPlaylistMeGustan(song) {
                             .catch((error) => {
                                 console.error("Error al dar like a la canción:", error);
                             });
-=======
-    // Realiza una llamada a la API para obtener el perfil del usuario
-    const token = globalState.token.value; // Asegúrate de que el token esté disponible
-    axios
-        .get(`http://localhost:8081/users/myProfile?token=${token}`)
-        .then((response) => {
-            const userName = response.data.name; // Obtiene el nombre del usuario del perfil
-            console.log("Nombre del usuario:", userName);
-
-            // Construye el nombre de la playlist
-            const playlistName = `Canciones que me gustan de ${userName}`;
-            console.log("Buscando playlist con nombre:", playlistName);
-
-            // Busca la playlist en la lista de playlists
-            const playlist = playlists.value.find((playlist) => playlist.name === playlistName);
-
-            if (playlist && playlist.id) {
-                // Si encuentra la playlist, utiliza su ID en el path
-                const path = `http://localhost:8081/playlists/${playlist.id}/songs?token=${token}`;
-                axios
-                    .post(path, { id: song.id })
-                    .then(() => {
-                        console.log(`Canción añadida a la playlist: ${playlist.name}`);
-                        // Refresca la página después de añadir la canción
-                        window.location.reload();
->>>>>>> main
                     })
                     .catch((error) => {
                         console.error("Error al añadir la canción a la playlist:", error);
                     });
             } else {
-<<<<<<< HEAD
                 // Si no se encuentra el ID, muestra un mensaje de error
                 console.error("No se encontró un ID válido para la playlist 'Canciones que me gustan'.");
-=======
-                // Si no encuentra la playlist, muestra un mensaje de error
-                console.error(`No se encontró una playlist válida con el nombre '${playlistName}' o el ID es null.`);
->>>>>>> main
             }
         })
         .catch((error) => {

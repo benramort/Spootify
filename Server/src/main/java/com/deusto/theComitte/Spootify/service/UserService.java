@@ -35,8 +35,9 @@ public class UserService {
         }
         
         User user = new User(name, email, password);
-        String nombre = "Canciones que me gustan de " + user.getName();
-        SongList cancionesQueMeGustan = new SongList(nombre, user); // Sin ID manual
+        String nombre = "Canciones que me gustan";
+        SongList cancionesQueMeGustan = new SongList(nombre, user);
+        user.setCancionesMeGustanID(cancionesQueMeGustan.getId());
         user.addSongList(cancionesQueMeGustan);
         userRepository.save(user);
         songListRepository.save(cancionesQueMeGustan);
@@ -52,8 +53,6 @@ public class UserService {
         }
         long token = System.currentTimeMillis();
         activeUsers.put(token, user);
-        String nombre = "Canciones que me gustan de " + user.getName();
-        user.setCancionesMeGustanID(songListRepository.findByName(nombre).getId());
         return token;
     }
 

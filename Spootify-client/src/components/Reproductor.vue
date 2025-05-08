@@ -17,27 +17,6 @@ const showVolumeControl = ref(false);
 const isLiked = ref(false);
 const isShuffle = ref(false);
 const isRepeat = ref(false);
-<<<<<<< HEAD
-
-// Song info (replace with your API data)
-const songInfo = ref({
-  title: "Song Title",
-  artist: "Artist Name",
-  album: "Album Name",
-  albumCover: "http://localhost:8081/",
-});
-const song = ref(null);
-
-function selectSong(songParam) {
-  song.value = songParam;
-  console.log("Portada before: " + songParam.album.cover);
-  if(song.value.album.cover.startsWith("http")) {
-    songInfo.value.albumCover = song.value.album.cover;
-  } else {
-    songInfo.value.albumCover = "http://localhost:8081/" + song.value.album.cover.substring(9);
-  }
-  console.log('Portada after:' + songInfo.value.albumCover);
-=======
 const previousEnabled = ref(false);
 const nextEnabled = ref(false);
 const visible = ref(true);
@@ -54,17 +33,12 @@ function playSong(songParam) {
   } else {
     song.value.albumCover = "http://localhost:8081/" + song.value.album.cover.substring(9);
   }
->>>>>>> main
   
   setTimeout(
   () => {
       if (audioPlayer.value && songParam) {
       audioPlayer.value.src = `http://localhost:8081/stream?song=${songParam.id}`;
       audioPlayer.value.load(); // Important: reload the audio element
-<<<<<<< HEAD
-      // Auto-play if desired 
-=======
->>>>>>> main
       }
 
       audioPlayer.value.play()
@@ -74,8 +48,6 @@ function playSong(songParam) {
 
 }
 
-<<<<<<< HEAD
-=======
 function selectSong(song) {
   queueIndex++;
   queue.splice(queueIndex, 0, song);
@@ -124,7 +96,6 @@ function addToQueue(songs) {
   console.log("Queue: ", queue);
 }
 
->>>>>>> main
 // Format time functions
 const formatTime = (seconds) => {
   const mins = Math.floor(seconds / 60);
@@ -219,20 +190,13 @@ watch(() => audioPlayer.value, (newPlayer) => {
   if (newPlayer) {
     newPlayer.addEventListener('timeupdate', updateProgress);
     newPlayer.addEventListener('loadedmetadata', updateProgress);
-<<<<<<< HEAD
-=======
     newPlayer.addEventListener('ended', nextSong)
->>>>>>> main
   }
 }, { immediate: true });
 
 defineExpose({
-<<<<<<< HEAD
-  selectSong
-=======
   selectSong: selectSong,
   addToQueue: addToQueue
->>>>>>> main
 });
 </script>
 
@@ -246,19 +210,11 @@ defineExpose({
     </audio>
     
     <!-- Player UI -->
-<<<<<<< HEAD
-    <div class="player">
-      <!-- Left section: Album & Song info -->
-      <div class="player-left">
-        <div class="album-cover">
-          <img :src="songInfo.albumCover" alt="Album Cover" />
-=======
     <div class="player" v-if="visible">
       <!-- Left section: Album & Song info -->
       <div class="player-left">
         <div class="album-cover">
           <img :src="song.albumCover" alt="Album Cover" />
->>>>>>> main
         </div>
         <div class="song-info">
           <div class="song-title">{{ song.title }}</div>
@@ -275,21 +231,13 @@ defineExpose({
           <button class="control-button shuffle" @click="toggleShuffle" :class="{ active: isShuffle }">
             <i class="fa fa-random"></i>
           </button>
-<<<<<<< HEAD
-          <button class="control-button prev">
-=======
           <button class="control-button prev" :disabled="!previousEnabled" @click="previousSong">
->>>>>>> main
             <i class="fa fa-step-backward"></i>
           </button>
           <button class="control-button play-pause" @click="togglePlay">
             <i :class="['fa', isPlaying ? 'fa-pause' : 'fa-play']"></i>
           </button>
-<<<<<<< HEAD
-          <button class="control-button next">
-=======
           <button class="control-button next" :disabled="!nextEnabled" @click="nextSong">
->>>>>>> main
             <i class="fa fa-step-forward"></i>
           </button>
           <button class="control-button repeat" @click="toggleRepeat" :class="{ active: isRepeat }">
@@ -306,15 +254,9 @@ defineExpose({
         </div>
       </div>
       
-<<<<<<< HEAD
-      <!-- Right section: Volume control -->
-      <div class="player-right" @mouseenter="showVolumeControl = true" @mouseleave="showVolumeControl = false">
-        <button class="volume-button" @click="toggleMute">
-=======
       <!-- Right section: Volume control, hide -->
       <div class="player-right">
         <button class="volume-button" @click="toggleMute" @mouseenter="showVolumeControl = true" @mouseleave="showVolumeControl = false">
->>>>>>> main
           <i :class="['fa', isMuted ? 'fa-volume-off' : volume.value < 50 ? 'fa-volume-down' : 'fa-volume-up']"></i>
         </button>
         <div class="volume-control" v-show="showVolumeControl">
@@ -322,10 +264,6 @@ defineExpose({
             <div class="volume-level" :style="volumeStyle"></div>
           </div>
         </div>
-<<<<<<< HEAD
-      </div>
-    </div>
-=======
         <button class="down-button">
           <i class="fa fa-angle-down" @click="visible = false"></i>
         </button>
@@ -337,7 +275,6 @@ defineExpose({
         <i class="fa fa-angle-up"></i>
       </button>
     </div>
->>>>>>> main
   </div>
 </template>
 
@@ -449,8 +386,6 @@ defineExpose({
   transform: scale(1.05);
 }
 
-<<<<<<< HEAD
-=======
 .control-button:disabled {
   color: #535353;
 }
@@ -459,7 +394,6 @@ defineExpose({
   transform: none;
 }
 
->>>>>>> main
 .shuffle, .repeat {
   font-size: 12px;
 }
@@ -559,11 +493,7 @@ defineExpose({
 .volume-control {
   width: 100px;
   position: absolute;
-<<<<<<< HEAD
-  right: 30px;
-=======
   right: 60px;
->>>>>>> main
   top: 50%;
   transform: translateY(-50%);
 }
@@ -589,8 +519,6 @@ defineExpose({
   background-color: #1ed760;
 }
 
-<<<<<<< HEAD
-=======
 .down-button {
   background: none;
   border: none;
@@ -630,7 +558,6 @@ defineExpose({
   
 }
 
->>>>>>> main
 /* Media queries for responsive design */
 @media (max-width: 768px) {
   .player {
