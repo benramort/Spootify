@@ -6,10 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +19,7 @@ import com.deusto.theComitte.Spootify.DAO.SongRepository;
 import com.deusto.theComitte.Spootify.entity.Album;
 import com.deusto.theComitte.Spootify.entity.Artist;
 import com.deusto.theComitte.Spootify.entity.Song;
-import com.deusto.theComitte.Spootify.entity.SongList;
+import com.deusto.theComitte.Spootify.entity.User;
 
 @Service
 public class SongService {
@@ -35,6 +32,10 @@ public class SongService {
     ArtistRepository artistRepository;
     @Autowired
     ArtistService artistService;
+    @Autowired
+    PlaylistService playlistService;
+    @Autowired
+    UserService userService;
     @Autowired
     PlayListRepository playListRepository;
 
@@ -102,7 +103,12 @@ public class SongService {
         return songRepository.findByName(title);
     }
 
-    public void darLike(long songId) {
+    public void darLike(long songId, long token) {
+        // System.out.println("Song ID: " + songId);
+        System.out.println("Token: " + token);
+        System.out.println("Hola");
+        User user = userService.getActiveUser(token);
+        playlistService.addSongToPlayList(token, songId, user.getCancionesMeGustanID());
         Song song = songRepository.findById(songId);
         if (song == null) {
             throw new RuntimeException("Song does not exist");

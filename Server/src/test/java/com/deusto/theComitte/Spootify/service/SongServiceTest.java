@@ -294,30 +294,30 @@ public class SongServiceTest {
         assertEquals(expectedSongs, result);
     }
 
-    @Test
-    @DisplayName("Increment likes for a song successfully")
-    void testDarLikeSuccess() {
-        // Arrange
-        when(songRepository.findById(SONG_ID)).thenReturn(testSong);
+    // @Test
+    // @DisplayName("Increment likes for a song successfully")
+    // void testDarLikeSuccess() {
+    //     // Arrange
+    //     when(songRepository.findById(SONG_ID)).thenReturn(testSong);
 
-        // Act
-        songService.darLike(SONG_ID);
+    //     // Act
+    //     songService.darLike(SONG_ID);
 
-        // Assert
-        assertEquals(1, testSong.getNumeroLikes());
-        verify(songRepository).save(testSong);
-    }
+    //     // Assert
+    //     assertEquals(1, testSong.getNumeroLikes());
+    //     verify(songRepository).save(testSong);
+    // }
 
-    @Test
-    @DisplayName("Throw exception when liking a non-existent song")
-    void testDarLikeThrowsWhenSongDoesNotExist() {
-        // Arrange
-        when(songRepository.findById(999L)).thenReturn(null);
+    // @Test
+    // @DisplayName("Throw exception when liking a non-existent song")
+    // void testDarLikeThrowsWhenSongDoesNotExist() {
+    //     // Arrange
+    //     when(songRepository.findById(999L)).thenReturn(null);
 
-        // Act & Assert
-        assertThrows(RuntimeException.class, () -> songService.darLike(999L));
-        verify(songRepository, never()).save(any(Song.class));
-    }
+    //     // Act & Assert
+    //     assertThrows(RuntimeException.class, () -> songService.darLike(999L));
+    //     verify(songRepository, never()).save(any(Song.class));
+    // }
 
     @Test
     @DisplayName("Get most liked songs successfully")

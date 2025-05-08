@@ -141,45 +141,15 @@ function addToPlaylist(playlist, song) {
 function addToPlaylistMeGustan(song) {
     const token = globalState.token.value; // Asegúrate de que el token esté disponible
 
-    // Realiza una llamada a la API para obtener el perfil del usuario
-    axios
-        .get(`http://localhost:8081/users/myProfile?token=${token}`)
-        .then((response) => {
-            const cancionesMeGustanID = response.data.cancionesMeGustanID; // Obtiene el ID de la playlist "Canciones que me gustan"
-            console.log("ID de la playlist 'Canciones que me gustan':", cancionesMeGustanID);
+    const path = `http://localhost:8081/songs/like?token=${token}&songId=${song.id}`;
+    axios.post(path).then(() => {playlists
+        console.log("Canción añadida a la playlist 'Canciones que me gustan'");
+        location.reload(); // Recarga la página para reflejar los cambios
+    }).catch((error) => {
+        console.error("Error al añadir la canción a la playlist 'Canciones que me gustan':", error);
+    });
 
-            if (cancionesMeGustanID) {
-                // Construye el path con el ID de la playlist
-                const path = `http://localhost:8081/playlists/${cancionesMeGustanID}/songs?token=${token}`;
-                axios
-                    .post(path, { id: song.id })
-                    .then(() => {
-                        console.log(`Canción añadida a la playlist con ID: ${cancionesMeGustanID}`);
-
-                        // Llamar al endpoint para dar like a la canción
-                        const likePath = `http://localhost:8081/songs/like?songId=${song.id}`;
-                        axios
-                            .post(likePath)
-                            .then(() => {
-                                console.log(`Like añadido a la canción con ID: ${song.id}`);
-                                // Refresca la página después de añadir la canción y dar like
-                                window.location.reload();
-                            })
-                            .catch((error) => {
-                                console.error("Error al dar like a la canción:", error);
-                            });
-                    })
-                    .catch((error) => {
-                        console.error("Error al añadir la canción a la playlist:", error);
-                    });
-            } else {
-                // Si no se encuentra el ID, muestra un mensaje de error
-                console.error("No se encontró un ID válido para la playlist 'Canciones que me gustan'.");
-            }
-        })
-        .catch((error) => {
-            console.error("Error al obtener el perfil del usuario:", error);
-        });
+    
 }
 
 function toggleLiked(song) {

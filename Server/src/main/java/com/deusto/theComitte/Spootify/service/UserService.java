@@ -74,7 +74,10 @@ public class UserService {
     }
 
     public User getActiveUser(long token) {
+        System.out.println("Token: " + token);
+        // System.out.println("Active users: " + activeUsers);
         User user = activeUsers.get(token);
+        // System.out.println("User: " + user);
         if (user == null) {
             throw new RuntimeException("User not logged in");
         }
@@ -97,6 +100,18 @@ public class UserService {
         artist.followArtist(user);
         userRepository.save(user);
         artistRepository.save(artist);
+    }
+
+    public SongList getLikedSongs(long token) {
+        User user = activeUsers.get(token);
+        if (user == null) {
+            throw new RuntimeException("User not logged in");
+        }
+        SongList songList = songListRepository.findById(user.getCancionesMeGustanID());
+        if (songList == null) {
+            throw new RuntimeException("Song list does not exist");
+        }
+        return songList;
     }	
      
 

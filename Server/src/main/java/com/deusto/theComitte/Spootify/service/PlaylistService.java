@@ -52,8 +52,8 @@ public class PlaylistService {
     //     }
     // }
 
-    public void addSongToPlayList(long userId, long songId, long songListId) {
-        User user = userService.getActiveUser(userId); // Obtén el usuario activo
+    public void addSongToPlayList(long token, long songId, long songListId) {
+        User user = userService.getActiveUser(token); // Obtén el usuario activo
         if (user == null) {
             throw new RuntimeException("User does not exist");
         }
@@ -79,7 +79,6 @@ public class PlaylistService {
     public void createPlayList(long token, String name) {
         User user = userService.getActiveUser(token);
         if (user == null) {
-            System.out.println("aaaaaaaaaaaaa");
             throw new RuntimeException("User not logged in");
         }
         SongList songList = new SongList(name, user);

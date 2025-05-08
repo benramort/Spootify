@@ -40,9 +40,7 @@
 
 
     function chechFollow(){
-        console.log("chechFollow");
         console.log(artist.value);
-        console.log("ueadafds");
         console.log(artist.value.followersList.length);
         artist.value.followersList.forEach((follower) => {
             if (follower.id == globalState.userId.value) {

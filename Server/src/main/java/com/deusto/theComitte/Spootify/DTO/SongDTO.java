@@ -87,8 +87,4 @@ public class SongDTO {
     public int getNumeroLikes() {
         return numeroLikes;
     }
-
-    public void setNumeroLikes(int numeroLikes) {
-        this.numeroLikes = numeroLikes;
-    }
 }

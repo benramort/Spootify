@@ -90,11 +90,12 @@ public class SongController {
     }
 
     @PostMapping("/like")
-    public ResponseEntity<Void> likeSong(@RequestParam long songId) {
+    public ResponseEntity<Void> likeSong(@RequestParam long songId, @RequestParam long token) {
         try {
-            songService.darLike(songId);
+            songService.darLike(songId, token);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (RuntimeException e) {
+            e.printStackTrace();
             if (e.getMessage().equals("User not logged in")) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             } else if (e.getMessage().equals("Song does not exist")) {

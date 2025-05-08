@@ -17,6 +17,7 @@ import com.deusto.theComitte.Spootify.DTO.CreateUserDTO;
 import com.deusto.theComitte.Spootify.DTO.LoginDTO;
 import com.deusto.theComitte.Spootify.DTO.TokenDTO;
 import com.deusto.theComitte.Spootify.DTO.UserDTO;
+import com.deusto.theComitte.Spootify.entity.SongList;
 import com.deusto.theComitte.Spootify.entity.User;
 import com.deusto.theComitte.Spootify.service.UserService;
 
@@ -95,6 +96,22 @@ public class UserController {
             e.printStackTrace();
             if(e.getMessage().equals("User not logged in")) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/users/liked")
+    public ResponseEntity<SongList> getLikedSongs(@RequestParam long token) {
+        try {
+            SongList likedSongPlaylist = userService.getLikedSongs(token);
+            return ResponseEntity.ok(likedSongPlaylist);
+        } catch (Exception e) {
+            e.printStackTrace();
+            if(e.getMessage().equals("User not logged in")) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            } else if (e.getMessage().equals("Song list does not exist")) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

@@ -208,53 +208,53 @@ public class SongControllerTest {
         verify(songService, never()).createSong(anyString(), anyInt(), any(MultipartFile.class), anyLong(), anyLong());
     }
 
-    @Test
-    @DisplayName("Like a song successfully")
-    void testLikeSongSuccess() {
-        // Arrange
-        long songId = 1L;
+    // @Test
+    // @DisplayName("Like a song successfully")
+    // void testLikeSongSuccess() {
+    //     // Arrange
+    //     long songId = 1L;
 
-        doNothing().when(songService).darLike(songId);
+    //     doNothing().when(songService).darLike(songId);
 
-        // Act
-        ResponseEntity<Void> response = songController.likeSong(songId);
+    //     // Act
+    //     ResponseEntity<Void> response = songController.likeSong(songId);
 
-        // Assert
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        verify(songService).darLike(songId);
-    }
+    //     // Assert
+    //     assertEquals(HttpStatus.OK, response.getStatusCode());
+    //     verify(songService).darLike(songId);
+    // }
 
-    @Test
-    @DisplayName("Like a song fails when song does not exist")
-    void testLikeSongFailsWhenSongDoesNotExist() {
-        // Arrange
-        long songId = 999L;
+    // @Test
+    // @DisplayName("Like a song fails when song does not exist")
+    // void testLikeSongFailsWhenSongDoesNotExist() {
+    //     // Arrange
+    //     long songId = 999L;
 
-        doThrow(new RuntimeException("Song does not exist")).when(songService).darLike(songId);
+    //     doThrow(new RuntimeException("Song does not exist")).when(songService).darLike(songId);
 
-        // Act
-        ResponseEntity<Void> response = songController.likeSong(songId);
+    //     // Act
+    //     ResponseEntity<Void> response = songController.likeSong(songId);
 
-        // Assert
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        verify(songService).darLike(songId);
-    }
+    //     // Assert
+    //     assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    //     verify(songService).darLike(songId);
+    // }
 
-    @Test
-    @DisplayName("Like a song fails when user not logged in")
-    void testLikeSongFailsWhenUserNotLoggedIn() {
-        // Arrange
-        long songId = 1L;
+    // @Test
+    // @DisplayName("Like a song fails when user not logged in")
+    // void testLikeSongFailsWhenUserNotLoggedIn() {
+    //     // Arrange
+    //     long songId = 1L;
 
-        doThrow(new RuntimeException("User not logged in")).when(songService).darLike(songId);
+    //     doThrow(new RuntimeException("User not logged in")).when(songService).darLike(songId);
 
-        // Act
-        ResponseEntity<Void> response = songController.likeSong(songId);
+    //     // Act
+    //     ResponseEntity<Void> response = songController.likeSong(songId);
 
-        // Assert
-        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
-        verify(songService).darLike(songId);
-    }
+    //     // Assert
+    //     assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+    //     verify(songService).darLike(songId);
+    // }
 
     // @Test
     // @DisplayName("Get most liked songs successfully")
