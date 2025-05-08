@@ -36,6 +36,7 @@ public class UserController {
             if (e.getMessage().equals("User already exists")) {
                 return new ResponseEntity<>(HttpStatus.CONFLICT);
             }
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }   
     }

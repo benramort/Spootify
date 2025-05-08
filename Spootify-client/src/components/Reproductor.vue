@@ -1,9 +1,5 @@
 <script setup>
 import { ref, onMounted, computed, watch } from 'vue';
-<<<<<<< HEAD
-import { useRoute } from 'vue-router';
-=======
->>>>>>> main
 
 // Reactive state
 const audioPlayer = ref(null);

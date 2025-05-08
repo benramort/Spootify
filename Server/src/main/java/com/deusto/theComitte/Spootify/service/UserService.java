@@ -34,13 +34,19 @@ public class UserService {
             throw new RuntimeException("User already exists");
         }
         
+        // First save the user (without the song list reference)
         User user = new User(name, email, password);
+        userRepository.save(user);
+        
+        // Then create and save the song list
         String nombre = "Canciones que me gustan";
         SongList cancionesQueMeGustan = new SongList(nombre, user);
-        user.setCancionesMeGustanID(cancionesQueMeGustan.getId());
-        user.addSongList(cancionesQueMeGustan);
-        userRepository.save(user);
         songListRepository.save(cancionesQueMeGustan);
+        
+        // Now that the song list has an ID, set it on the user and update
+        user.addSongList(cancionesQueMeGustan);
+        user.setCancionesMeGustanID(cancionesQueMeGustan.getId());
+        userRepository.save(user);
     }
 
     public long login(String email, String password) {
