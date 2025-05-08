@@ -13,9 +13,14 @@ import { ref, provide } from 'vue';
 const reproductor = ref(null);
 
 provide('reproductor', {
-  playSong: (song) => {
+  selectSong: (song) => {
     if (reproductor.value) {
       reproductor.value.selectSong(song);
+    }
+  },
+  addToQueue: (song) => {
+    if (reproductor.value) {
+      reproductor.value.addToQueue(song);
     }
   }
 })

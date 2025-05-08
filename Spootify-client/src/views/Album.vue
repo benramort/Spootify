@@ -8,8 +8,21 @@
 
     function play(song) {
         song.album = album.value;
-        reproductor.playSong(song);
+        reproductor.selectSong(song);
     }
+
+    function playAll() {
+        try {
+            album.value.songs.forEach(s => s.album = album.value);
+            let albumWithoutFirst = album.value.songs.slice(1, album.value.songs.length);
+            console.log(albumWithoutFirst);
+            reproductor.addToQueue(albumWithoutFirst);
+            reproductor.selectSong(album.value.songs[0]);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+        
 
     const route = useRoute();
 
@@ -39,10 +52,6 @@
         });
     }
 
-    function openLink(link) {
-        window.open(link, "_blank");
-    }
-
 
 
 </script>
@@ -56,6 +65,9 @@
             </div>
             <h2>{{ album.name }}</h2>
             <p v-for="artist in album.artists"><router-link :to="`/artists/${artist.id}`">{{ artist.name }}</router-link></p>
+            <button>
+                <i class="fa-solid fa-circle-play" @click="playAll()"></i>
+            </button>
         </div>
         <div class="columnRight">
             <div v-if="album.songs && album.songs.length > 0" class="songs">
@@ -80,6 +92,11 @@
 
 
 <style scoped>
+
+button {
+    background-color: transparent;
+    border: none;
+}
 
 .cover {
     display: inline-flex;
