@@ -9,7 +9,6 @@ public class SongListDTO {
     private boolean isPublic;
     private String shareLink;
     private List<SongDTO> songs;
-    private UserDTO user;
 
     public SongListDTO() {}
 
@@ -30,14 +29,6 @@ public class SongListDTO {
         this.id = id;
         this.name = name;
         this.isPublic = isPublic;
-        this.songs = songs;
-    }
-
-    public SongListDTO(Long id, String name, boolean isPublic, UserDTO user, List<SongDTO> songs) {
-        this.id = id;
-        this.name = name;
-        this.isPublic = isPublic;
-        this.user = user;
         this.songs = songs;
     }
 
@@ -67,14 +58,6 @@ public class SongListDTO {
 
     public String getShareLink() {
         return shareLink;
-    }
-
-    public void setUser(UserDTO user) {
-        this.user = user;
-    }
-
-    public UserDTO getUser() {
-        return user;
     }
 
     public List<SongDTO> getSongs() {
