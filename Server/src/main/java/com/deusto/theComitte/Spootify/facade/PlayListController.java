@@ -106,6 +106,7 @@ public class PlayListController {
         try {
             playlistService.sharePlaylist(id, token);
         } catch (RuntimeException e) {
+            e.printStackTrace();
             if (e.getMessage().equals("User not logged in")) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED); 
             }
