@@ -2,6 +2,7 @@ package com.deusto.theComitte.Spootify.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
@@ -20,9 +21,11 @@ import org.springframework.web.multipart.MultipartFile;
 import com.deusto.theComitte.Spootify.DAO.AlbumRepository;
 import com.deusto.theComitte.Spootify.DAO.ArtistRepository;
 import com.deusto.theComitte.Spootify.DAO.SongRepository;
+import com.deusto.theComitte.Spootify.DAO.UserRepository;
 import com.deusto.theComitte.Spootify.entity.Album;
 import com.deusto.theComitte.Spootify.entity.Artist;
 import com.deusto.theComitte.Spootify.entity.Song;
+import com.deusto.theComitte.Spootify.entity.User;
 
 public class SongServiceTest {
 
@@ -36,10 +39,16 @@ public class SongServiceTest {
     ArtistRepository artistRepository;
 
     @Mock
+    UserRepository userRepository;
+
+    @Mock
     ArtistService artistService;
 
     @InjectMocks
     SongService songService;
+
+    @InjectMocks
+    UserService userService;
     
     private Artist testArtist;
     private Album testAlbum;
@@ -342,5 +351,16 @@ public class SongServiceTest {
         assertEquals(song2, result.get(0)); // Más likes primero
         assertEquals(song1, result.get(1));
         verify(songRepository).findAll();
+    }
+
+    @Test
+    @DisplayName("Throw exception when liking a non-existent song")
+    void testDarLikeThrowsWhenSongDoesNotExist() {
+        // Arrange
+        when(songRepository.findById(999L)).thenReturn(null);
+
+        // Act & Assert
+        assertThrows(RuntimeException.class, () -> songService.darLike(999L, TOKEN));
+        verify(songRepository, never()).save(any(Song.class));
     }
 }

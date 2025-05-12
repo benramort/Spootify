@@ -289,4 +289,62 @@ public class UserControllerTest {
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         verify(userService).getActiveUser(TOKEN);
     }
+
+    @Test
+    @DisplayName("Get liked songs successfully")
+    void testGetLikedSongsSuccess() {
+        // Arrange
+        SongList likedSongs = new SongList(10L, "Liked Songs", testUser);
+        when(userService.getLikedSongs(TOKEN)).thenReturn(likedSongs);
+
+        // Act
+        ResponseEntity<SongList> response = userController.getLikedSongs(TOKEN);
+
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(likedSongs, response.getBody());
+        verify(userService).getLikedSongs(TOKEN);
+    }
+
+    @Test
+    @DisplayName("Get liked songs fails when user not logged in")
+    void testGetLikedSongsFailsWhenUserNotLoggedIn() {
+        // Arrange
+        when(userService.getLikedSongs(TOKEN)).thenThrow(new RuntimeException("User not logged in"));
+
+        // Act
+        ResponseEntity<SongList> response = userController.getLikedSongs(TOKEN);
+
+        // Assert
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+        verify(userService).getLikedSongs(TOKEN);
+    }
+
+    @Test
+    @DisplayName("Get liked songs fails when song list does not exist")
+    void testGetLikedSongsFailsWhenSongListDoesNotExist() {
+        // Arrange
+        when(userService.getLikedSongs(TOKEN)).thenThrow(new RuntimeException("Song list does not exist"));
+
+        // Act
+        ResponseEntity<SongList> response = userController.getLikedSongs(TOKEN);
+
+        // Assert
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        verify(userService).getLikedSongs(TOKEN);
+    }
+
+    @Test
+    @DisplayName("Get liked songs fails with general error")
+    void testGetLikedSongsFailsWithGeneralError() {
+        // Arrange
+        when(userService.getLikedSongs(TOKEN)).thenThrow(new RuntimeException("General error"));
+
+        // Act
+        ResponseEntity<SongList> response = userController.getLikedSongs(TOKEN);
+
+        // Assert
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        verify(userService).getLikedSongs(TOKEN);
+    }
 }
