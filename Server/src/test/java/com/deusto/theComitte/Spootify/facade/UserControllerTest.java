@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 
 import com.deusto.theComitte.Spootify.DTO.CreateUserDTO;
 import com.deusto.theComitte.Spootify.DTO.LoginDTO;
+import com.deusto.theComitte.Spootify.DTO.SongListDTO;
 import com.deusto.theComitte.Spootify.DTO.TokenDTO;
 import com.deusto.theComitte.Spootify.DTO.UserDTO;
 import com.deusto.theComitte.Spootify.entity.Artist;
@@ -295,14 +296,17 @@ public class UserControllerTest {
     void testGetLikedSongsSuccess() {
         // Arrange
         SongList likedSongs = new SongList(10L, "Liked Songs", testUser);
+        SongListDTO likedSongsDTO = likedSongs.toDTO();
         when(userService.getLikedSongs(TOKEN)).thenReturn(likedSongs);
 
         // Act
-        ResponseEntity<SongList> response = userController.getLikedSongs(TOKEN);
+        ResponseEntity<SongListDTO> response = userController.getLikedSongs(TOKEN);
 
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(likedSongs, response.getBody());
+        assertNotNull(response.getBody());
+        assertEquals(likedSongsDTO.getId(), response.getBody().getId());
+        assertEquals(likedSongsDTO.getName(), response.getBody().getName());
         verify(userService).getLikedSongs(TOKEN);
     }
 
@@ -313,7 +317,7 @@ public class UserControllerTest {
         when(userService.getLikedSongs(TOKEN)).thenThrow(new RuntimeException("User not logged in"));
 
         // Act
-        ResponseEntity<SongList> response = userController.getLikedSongs(TOKEN);
+        ResponseEntity<SongListDTO> response = userController.getLikedSongs(TOKEN);
 
         // Assert
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
@@ -327,7 +331,7 @@ public class UserControllerTest {
         when(userService.getLikedSongs(TOKEN)).thenThrow(new RuntimeException("Song list does not exist"));
 
         // Act
-        ResponseEntity<SongList> response = userController.getLikedSongs(TOKEN);
+        ResponseEntity<SongListDTO> response = userController.getLikedSongs(TOKEN);
 
         // Assert
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
@@ -341,7 +345,7 @@ public class UserControllerTest {
         when(userService.getLikedSongs(TOKEN)).thenThrow(new RuntimeException("General error"));
 
         // Act
-        ResponseEntity<SongList> response = userController.getLikedSongs(TOKEN);
+        ResponseEntity<SongListDTO> response = userController.getLikedSongs(TOKEN);
 
         // Assert
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
