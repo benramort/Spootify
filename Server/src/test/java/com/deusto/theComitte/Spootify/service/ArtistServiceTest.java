@@ -16,6 +16,7 @@ import org.mockito.MockitoAnnotations;
 
 import com.deusto.theComitte.Spootify.DAO.ArtistRepository;
 import com.deusto.theComitte.Spootify.entity.Artist;
+import com.deusto.theComitte.Spootify.entity.User;
 
 class ArtistServiceTest {
 
@@ -202,5 +203,32 @@ class ArtistServiceTest {
         assertEquals("artist@example.com", result.get(0).getEmail());
         verify(artistRepository).findByName(name);
     }
-        
+    
+    @Test
+    void testGetMostFollowedArtists() {
+        // Arrange
+        Artist artist1 = new Artist(1L, "Artist 1", "artist1@email.com", "pass1");
+        Artist artist2 = new Artist(2L, "Artist 2", "artist2@email.com", "pass2");
+        Artist artist3 = new Artist(3L, "Artist 3", "artist3@email.com", "pass3");
+
+        // Simular seguidores
+        artist1.getFollowersList().add(new User()); // 1 seguidor
+        artist2.getFollowersList().add(new User());
+        artist2.getFollowersList().add(new User()); // 2 seguidores
+        // artist3 sin seguidores
+
+        List<Artist> artists = List.of(artist1, artist2, artist3);
+
+        when(artistRepository.findAll()).thenReturn(artists);
+
+        // Act
+        List<Artist> result = artistService.getMostFollowedArtists();
+
+        // Assert
+        assertEquals(3, result.size());
+        assertEquals(artist2, result.get(0)); // Más seguidores primero
+        assertEquals(artist1, result.get(1));
+        assertEquals(artist3, result.get(2));
+        verify(artistRepository).findAll();
+    }
 }
