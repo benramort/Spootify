@@ -97,8 +97,8 @@ public class PlaylistService {
         return updatedUser.getSongLists();
     }
 
-    public SongList getPlaylistById(long userId, long songListId) {
-        User user = userService.getActiveUser(userId);
+    public SongList getPlaylistById(long token, long songListId) {
+        User user = userService.getActiveUser(token);
         if (user == null) {
             throw new RuntimeException("User does not exist");
         }
@@ -106,9 +106,12 @@ public class PlaylistService {
         if (songList == null) {
             throw new RuntimeException("SongList does not exist");
         }
-        if (songList.getUser().getId() != user.getId()) {
+        System.out.println("SongListUserID: " + songList.getUser().getId());
+        System.out.println("UserID: " + user.getId());
+        if (songList.getUser().getId() != user.getId() && !songList.getIsPublic()) {
             throw new RuntimeException("User does not have access to this playlist");
         }
+
         return songList;
     }
 
@@ -124,6 +127,7 @@ public class PlaylistService {
         if(songList.getIsPublic() == false){
             songList.setPublic(true);
             songListRepository.save(songList);
+            System.out.println("Playlist shared");
         }
     }
 }

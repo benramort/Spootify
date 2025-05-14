@@ -40,6 +40,7 @@ function fetchPlaylistDetails() {
             console.log(response.data);
             playlist.value = response.data;
             console.log("Publica: " + playlist.value.isPublic);
+            console.log("User: " + playlist.value.user);
         })
         .catch((error) => {
             console.error("Error al cargar la playlist:", error);
