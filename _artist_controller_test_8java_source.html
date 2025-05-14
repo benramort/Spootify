@@ -189,7 +189,7 @@ $(document).ready(function(){initNavTree('_artist_controller_test_8java_source.h
 <div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>        </div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>        <span class="comment">// Create DTOs - we&#39;ll use real methods instead of mocking them</span></div>
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>        testArtistDTO = <span class="keyword">new</span> Artist(ARTIST_ID, <span class="stringliteral">&quot;Test Artist&quot;</span>, <span class="stringliteral">&quot;artist@example.com&quot;</span>, <span class="stringliteral">&quot;password&quot;</span>).toDTO();</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>        testSongDTO = <span class="keyword">new</span> SongDTO(1L, <span class="stringliteral">&quot;Test Song&quot;</span>, 180, <span class="stringliteral">&quot;https://youtube.com/watch?v=test&quot;</span>);</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>        testSongDTO = <span class="keyword">new</span> SongDTO(1L, <span class="stringliteral">&quot;Test Song&quot;</span>, 180, <span class="stringliteral">&quot;https://youtube.com/watch?v=test&quot;</span>,0);</div>
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    }</div>
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    @Test</div>
@@ -632,9 +632,49 @@ $(document).ready(function(){initNavTree('_artist_controller_test_8java_source.h
 <div class="line"><a id="l00532" name="l00532"></a><span class="lineno">  532</span>        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());</div>
 <div class="line"><a id="l00533" name="l00533"></a><span class="lineno">  533</span>        verify(artistService).searchArtists(invalidName);</div>
 <div class="line"><a id="l00534" name="l00534"></a><span class="lineno">  534</span>    }</div>
-<div class="line"><a id="l00535" name="l00535"></a><span class="lineno">  535</span>}</div>
+<div class="line"><a id="l00535" name="l00535"></a><span class="lineno">  535</span> </div>
+<div class="line"><a id="l00536" name="l00536"></a><span class="lineno">  536</span>    @Test</div>
+<div class="line"><a id="l00537" name="l00537"></a><span class="lineno">  537</span>    <span class="keywordtype">void</span> testGetMostFollowedArtistsSuccess() {</div>
+<div class="line"><a id="l00538" name="l00538"></a><span class="lineno">  538</span>        <span class="comment">// Arrange</span></div>
+<div class="line"><a id="l00539" name="l00539"></a><span class="lineno">  539</span>        Artist artist1 = <span class="keyword">new</span> Artist(1L, <span class="stringliteral">&quot;Artist 1&quot;</span>, <span class="stringliteral">&quot;artist1@email.com&quot;</span>, <span class="stringliteral">&quot;pass1&quot;</span>);</div>
+<div class="line"><a id="l00540" name="l00540"></a><span class="lineno">  540</span>        Artist artist2 = <span class="keyword">new</span> Artist(2L, <span class="stringliteral">&quot;Artist 2&quot;</span>, <span class="stringliteral">&quot;artist2@email.com&quot;</span>, <span class="stringliteral">&quot;pass2&quot;</span>);</div>
+<div class="line"><a id="l00541" name="l00541"></a><span class="lineno">  541</span>        <span class="comment">// Simular seguidores</span></div>
+<div class="line"><a id="l00542" name="l00542"></a><span class="lineno">  542</span>        artist1.getFollowersList().add(<span class="keyword">new</span> User(10L, <span class="stringliteral">&quot;UserA&quot;</span>, <span class="stringliteral">&quot;a@email.com&quot;</span>, <span class="stringliteral">&quot;pw&quot;</span>));</div>
+<div class="line"><a id="l00543" name="l00543"></a><span class="lineno">  543</span>        artist2.getFollowersList().add(<span class="keyword">new</span> User(11L, <span class="stringliteral">&quot;UserB&quot;</span>, <span class="stringliteral">&quot;b@email.com&quot;</span>, <span class="stringliteral">&quot;pw&quot;</span>));</div>
+<div class="line"><a id="l00544" name="l00544"></a><span class="lineno">  544</span>        artist2.getFollowersList().add(<span class="keyword">new</span> User(12L, <span class="stringliteral">&quot;UserC&quot;</span>, <span class="stringliteral">&quot;c@email.com&quot;</span>, <span class="stringliteral">&quot;pw&quot;</span>));</div>
+<div class="line"><a id="l00545" name="l00545"></a><span class="lineno">  545</span> </div>
+<div class="line"><a id="l00546" name="l00546"></a><span class="lineno">  546</span>        List&lt;Artist&gt; artists = List.of(artist2, artist1); <span class="comment">// artist2 tiene más seguidores</span></div>
+<div class="line"><a id="l00547" name="l00547"></a><span class="lineno">  547</span> </div>
+<div class="line"><a id="l00548" name="l00548"></a><span class="lineno">  548</span>        when(artistService.getMostFollowedArtists()).thenReturn(artists);</div>
+<div class="line"><a id="l00549" name="l00549"></a><span class="lineno">  549</span> </div>
+<div class="line"><a id="l00550" name="l00550"></a><span class="lineno">  550</span>        <span class="comment">// Act</span></div>
+<div class="line"><a id="l00551" name="l00551"></a><span class="lineno">  551</span>        ResponseEntity&lt;List&lt;ArtistDTO&gt;&gt; response = artistController.getMostFollowedArtists();</div>
+<div class="line"><a id="l00552" name="l00552"></a><span class="lineno">  552</span> </div>
+<div class="line"><a id="l00553" name="l00553"></a><span class="lineno">  553</span>        <span class="comment">// Assert</span></div>
+<div class="line"><a id="l00554" name="l00554"></a><span class="lineno">  554</span>        assertEquals(HttpStatus.OK, response.getStatusCode());</div>
+<div class="line"><a id="l00555" name="l00555"></a><span class="lineno">  555</span>        assertNotNull(response.getBody());</div>
+<div class="line"><a id="l00556" name="l00556"></a><span class="lineno">  556</span>        assertEquals(2, response.getBody().size());</div>
+<div class="line"><a id="l00557" name="l00557"></a><span class="lineno">  557</span>        assertEquals(<span class="stringliteral">&quot;Artist 2&quot;</span>, response.getBody().get(0).getName());</div>
+<div class="line"><a id="l00558" name="l00558"></a><span class="lineno">  558</span>        assertEquals(<span class="stringliteral">&quot;Artist 1&quot;</span>, response.getBody().get(1).getName());</div>
+<div class="line"><a id="l00559" name="l00559"></a><span class="lineno">  559</span>        verify(artistService).getMostFollowedArtists();</div>
+<div class="line"><a id="l00560" name="l00560"></a><span class="lineno">  560</span>    }</div>
+<div class="line"><a id="l00561" name="l00561"></a><span class="lineno">  561</span> </div>
+<div class="line"><a id="l00562" name="l00562"></a><span class="lineno">  562</span>    @Test</div>
+<div class="line"><a id="l00563" name="l00563"></a><span class="lineno">  563</span>    @DisplayName(<span class="stringliteral">&quot;Get most followed artists fails with exception&quot;</span>)</div>
+<div class="line"><a id="l00564" name="l00564"></a><span class="lineno">  564</span>    <span class="keywordtype">void</span> testGetMostFollowedArtistsFailsWithException() {</div>
+<div class="line"><a id="l00565" name="l00565"></a><span class="lineno">  565</span>        <span class="comment">// Arrange</span></div>
+<div class="line"><a id="l00566" name="l00566"></a><span class="lineno">  566</span>        when(artistService.getMostFollowedArtists()).thenThrow(<span class="keyword">new</span> RuntimeException(<span class="stringliteral">&quot;Error&quot;</span>));</div>
+<div class="line"><a id="l00567" name="l00567"></a><span class="lineno">  567</span> </div>
+<div class="line"><a id="l00568" name="l00568"></a><span class="lineno">  568</span>        <span class="comment">// Act</span></div>
+<div class="line"><a id="l00569" name="l00569"></a><span class="lineno">  569</span>        ResponseEntity&lt;List&lt;ArtistDTO&gt;&gt; response = artistController.getMostFollowedArtists();</div>
+<div class="line"><a id="l00570" name="l00570"></a><span class="lineno">  570</span> </div>
+<div class="line"><a id="l00571" name="l00571"></a><span class="lineno">  571</span>        <span class="comment">// Assert</span></div>
+<div class="line"><a id="l00572" name="l00572"></a><span class="lineno">  572</span>        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());</div>
+<div class="line"><a id="l00573" name="l00573"></a><span class="lineno">  573</span>        verify(artistService).getMostFollowedArtists();</div>
+<div class="line"><a id="l00574" name="l00574"></a><span class="lineno">  574</span>    }</div>
+<div class="line"><a id="l00575" name="l00575"></a><span class="lineno">  575</span>}</div>
 </div>
-<div class="ttc" id="aclasscom_1_1deusto_1_1the_comitte_1_1_spootify_1_1facade_1_1_artist_controller_html"><div class="ttname"><a href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1facade_1_1_artist_controller.html">com.deusto.theComitte.Spootify.facade.ArtistController</a></div><div class="ttdef"><b>Definition</b> <a href="_artist_controller_8java_source.html#l00033">ArtistController.java:33</a></div></div>
+<div class="ttc" id="aclasscom_1_1deusto_1_1the_comitte_1_1_spootify_1_1facade_1_1_artist_controller_html"><div class="ttname"><a href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1facade_1_1_artist_controller.html">com.deusto.theComitte.Spootify.facade.ArtistController</a></div><div class="ttdef"><b>Definition</b> <a href="_artist_controller_8java_source.html#l00035">ArtistController.java:35</a></div></div>
 <div class="ttc" id="aclasscom_1_1deusto_1_1the_comitte_1_1_spootify_1_1facade_1_1_artist_controller_test_html"><div class="ttname"><a href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1facade_1_1_artist_controller_test.html">com.deusto.theComitte.Spootify.facade.ArtistControllerTest</a></div><div class="ttdef"><b>Definition</b> <a href="_artist_controller_test_8java_source.html#l00032">ArtistControllerTest.java:32</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -642,7 +682,7 @@ $(document).ready(function(){initNavTree('_artist_controller_test_8java_source.h
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_120ed4da3e3217b1e7fc0b4f48568e79.html">test</a></li><li class="navelem"><a class="el" href="dir_97debbc39e3b917fca663601bb2b0709.html">java</a></li><li class="navelem"><a class="el" href="dir_23faaf0c5c81a0660a411c4a306acbb5.html">com</a></li><li class="navelem"><a class="el" href="dir_9fcb3e02c03eb09b14614fa24fe7b655.html">deusto</a></li><li class="navelem"><a class="el" href="dir_ab93d6af66c3f2c61114bca6616e7454.html">theComitte</a></li><li class="navelem"><a class="el" href="dir_8b69bb3ed4977461ddd82260156f84b8.html">Spootify</a></li><li class="navelem"><a class="el" href="dir_f9add972bfcaf149ffd71351e862ee2a.html">facade</a></li><li class="navelem"><a class="el" href="_artist_controller_test_8java.html">ArtistControllerTest.java</a></li>
-    <li class="footer">Generated on Wed May 14 2025 08:58:21 for SpringBootLibrary by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Wed May 14 2025 09:59:03 for SpringBootLibrary by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

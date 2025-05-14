@@ -1,11 +1,12 @@
 var classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1_d_t_o_1_1_song_d_t_o =
 [
     [ "SongDTO", "classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1_d_t_o_1_1_song_d_t_o.html#ac240d55ea551633a027a43b5aebda90c", null ],
-    [ "SongDTO", "classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1_d_t_o_1_1_song_d_t_o.html#ac92f5c500f5c5824e48b9c9c4ff58f63", null ],
-    [ "SongDTO", "classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1_d_t_o_1_1_song_d_t_o.html#ae50ec2f9153c59795d3c3085ac80a4b2", null ],
+    [ "SongDTO", "classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1_d_t_o_1_1_song_d_t_o.html#a369be1a00c5d9368b95b081da28da5b5", null ],
+    [ "SongDTO", "classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1_d_t_o_1_1_song_d_t_o.html#a4649893b7966e9d3f75248f77ca17317", null ],
     [ "getAlbum", "classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1_d_t_o_1_1_song_d_t_o.html#abf0e399f28ef9a0bbabc8a6cb39dbc82", null ],
     [ "getDuration", "classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1_d_t_o_1_1_song_d_t_o.html#a2fefbd06155a3da11eb0ab2f9160da41", null ],
     [ "getId", "classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1_d_t_o_1_1_song_d_t_o.html#a8eb27ed97da9347777887302448c6168", null ],
+    [ "getNumeroLikes", "classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1_d_t_o_1_1_song_d_t_o.html#a3b8abe5d72808ee36fd228d7beb3891d", null ],
     [ "getTitle", "classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1_d_t_o_1_1_song_d_t_o.html#a5d43e5ee053901fdd735d24bbd679463", null ],
     [ "getYoutubeUrl", "classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1_d_t_o_1_1_song_d_t_o.html#ae016f9d6b85067fc0ae2f1db935a8c2e", null ],
     [ "isLiked", "classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1_d_t_o_1_1_song_d_t_o.html#a7da7a38920a9a28c707a5219e34258b5", null ],

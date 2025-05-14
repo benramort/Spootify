@@ -9,5 +9,6 @@ var classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1_d_t_o_1_1_artist_d_t_o =
     [ "setAlbums", "classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1_d_t_o_1_1_artist_d_t_o.html#aa3af669384194a10641d779820fd40e5", null ],
     [ "setFollowersList", "classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1_d_t_o_1_1_artist_d_t_o.html#a4454d564bd8e77c35a9308eba149910b", null ],
     [ "setId", "classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1_d_t_o_1_1_artist_d_t_o.html#af739f2201d66fbe49cf06f4145751498", null ],
-    [ "setName", "classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1_d_t_o_1_1_artist_d_t_o.html#ab2be4b10b883a4b48758f31f608fe875", null ]
+    [ "setName", "classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1_d_t_o_1_1_artist_d_t_o.html#ab2be4b10b883a4b48758f31f608fe875", null ],
+    [ "toString", "classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1_d_t_o_1_1_artist_d_t_o.html#acb53c76ca41cbf1e76119f527ed03c25", null ]
 ];
