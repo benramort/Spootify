@@ -105,6 +105,7 @@ public class PlayListController {
     public ResponseEntity<Void> sharePlaylist(@RequestParam long token, @PathVariable long id) {
         try {
             playlistService.sharePlaylist(id, token);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (RuntimeException e) {
             if (e.getMessage().equals("User not logged in")) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED); 
@@ -112,7 +113,7 @@ public class PlayListController {
             if (e.getMessage().equals("Playlist does not exist")) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }
