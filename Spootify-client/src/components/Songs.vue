@@ -1,5 +1,5 @@
 <template>
-    <div class="songs">
+    <div class="songs" v-if="isLikedPlaylistLoaded">
         <div class="song" v-for="song in songs" :key="song.title">
             <i class="fa-solid fa-circle-play" @click="play(song)"></i>
             <div class="horizontal-aling">
@@ -22,9 +22,9 @@
                     <!-- Botón de corazón -->
                     <button 
                         class="heart-button" 
-                        :disabled="isLiked(song)" 
+                        :disabled="song.liked" 
                         @click="() => { toggleLiked(song); addToPlaylistMeGustan(song); }">
-                        <i :class="{'fa-solid fa-heart': isLiked(song), 'fa-regular fa-heart': !isLiked(song)}"></i>
+                        <i :class="{'fa-solid fa-heart': song.liked, 'fa-regular fa-heart': !song.liked}"></i>
                     </button>
                     <button class="queue-button" @click="reproductor.addToQueue([song])">
                         <img id="queue" src="../assets/queue.png">
@@ -72,9 +72,10 @@ const props = defineProps({
 });
 
 let songs = ref([]);
-let playlists = ref([]); // Lista de playlists
+let likedPlaylist = ref([]); // Playlist de canciones que me gustan
 let showModal = ref(false); // Controla la visibilidad del modal
 let selectedSong = ref(null); // Canción seleccionada para añadir a una playlist
+let isLikedPlaylistLoaded = ref(false);
 
 onMounted(() => {
     if (props.songs == null) {
@@ -102,19 +103,28 @@ function getSongs() {
         console.log(songs.value);
         songs.value.forEach((song) => {
             song.duration = printDuration(song.duration);
-            song.liked = song.liked || false; // Inicializa el estado de liked si no está definido
         });
+        getLikedPlaylist();
     });
+}
 
-    // Cargar las playlists del usuario
-    const playlistPath = `http://localhost:8081/playlists?token=${globalState.token.value}`;
-    axios.get(playlistPath).then((response) => {
-        playlists.value = response.data;
+function getLikedPlaylist() {
+    const path = "http://localhost:8081/users/liked?token=" + globalState.token.value;
+    axios.get(path).then((response) => {
+        likedPlaylist.value = response.data;
+        console.log("Playlist de canciones que me gustan:", likedPlaylist.value);
+        console.log("likedPlaylist:");
+        console.log(likedPlaylist);
+        songs.value.forEach((song) => {
+            song.liked = isLiked(song);
+        });
+        isLikedPlaylistLoaded.value = true;
+    }).catch((error) => {
+        console.error("Error al obtener la playlist de canciones que me gustan:", error);
     });
 }
 
 function play(song) {
-    console.log("Reproduciendo canción, portada: " + song);
     reproductor.selectSong(song);
 }
 
@@ -142,7 +152,7 @@ function addToPlaylistMeGustan(song) {
     const token = globalState.token.value; // Asegúrate de que el token esté disponible
 
     const path = `http://localhost:8081/songs/like?token=${token}&songId=${song.id}`;
-    axios.post(path).then(() => {playlists
+    axios.post(path).then(() => {
         console.log("Canción añadida a la playlist 'Canciones que me gustan'");
         location.reload(); // Recarga la página para reflejar los cambios
     }).catch((error) => {
@@ -157,9 +167,10 @@ function toggleLiked(song) {
     console.log(`Canción ${song.title} es liked: ${song.liked}`);
 }
 
-function isLiked(song) {
+function isLiked(song) { //Este método se llama tres veces por cada canción
     // Busca la playlist "Canciones que me gustan" en la lista de playlists
-    const playlist = playlists.value.find((playlist) => playlist.name.startsWith("Canciones que me gustan"));
+    console.log("likedPlaylist: ", likedPlaylist);
+    const playlist = likedPlaylist.value;
 
     if (playlist && playlist.songs) {
         // Verifica si la canción está en la lista de canciones de la playlist

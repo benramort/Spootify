@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.deusto.theComitte.Spootify.DTO.CreateUserDTO;
 import com.deusto.theComitte.Spootify.DTO.LoginDTO;
+import com.deusto.theComitte.Spootify.DTO.SongListDTO;
 import com.deusto.theComitte.Spootify.DTO.TokenDTO;
 import com.deusto.theComitte.Spootify.DTO.UserDTO;
 import com.deusto.theComitte.Spootify.entity.SongList;
@@ -102,9 +103,9 @@ public class UserController {
     }
 
     @GetMapping("/users/liked")
-    public ResponseEntity<SongList> getLikedSongs(@RequestParam long token) {
+    public ResponseEntity<SongListDTO> getLikedSongs(@RequestParam long token) {
         try {
-            SongList likedSongPlaylist = userService.getLikedSongs(token);
+            SongListDTO likedSongPlaylist = userService.getLikedSongs(token).toDTO();
             return ResponseEntity.ok(likedSongPlaylist);
         } catch (Exception e) {
             e.printStackTrace();
