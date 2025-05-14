@@ -88,8 +88,8 @@ public class PlaylistService {
         songListRepository.save(songList);
     }
 
-    public List<SongList> getPlayLists(long userId) {
-        User user = userService.getActiveUser(userId);
+    public List<SongList> getPlayLists(long token) {
+        User user = userService.getActiveUser(token);
         if (user == null) {
             throw new RuntimeException("User does not exist");
         }

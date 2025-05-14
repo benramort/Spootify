@@ -49,6 +49,7 @@ public class PlayListControllerTest {
         // Arrange
         SongListDTO songListDTO = new SongListDTO();
         songListDTO.setName(PLAYLIST_NAME);
+        songListDTO.setIsPublic(true);
 
         doNothing().when(playlistService).createPlayList(TOKEN, PLAYLIST_NAME, true);
 
@@ -66,6 +67,7 @@ public class PlayListControllerTest {
         // Arrange
         SongListDTO songListDTO = new SongListDTO();
         songListDTO.setName(PLAYLIST_NAME);
+        songListDTO.setIsPublic(true);
 
         doThrow(new RuntimeException("User not logged in"))
             .when(playlistService).createPlayList(TOKEN, PLAYLIST_NAME, true);
@@ -227,7 +229,7 @@ public class PlayListControllerTest {
 
         // Assert
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        verify(playlistService, never()).createPlayList(anyLong(), anyString(), true);
+        verify(playlistService, never()).createPlayList(anyLong(), anyString(), anyBoolean());
     }
 
     @Test
@@ -235,14 +237,15 @@ public class PlayListControllerTest {
     void testCreatePlayListFailsWhenNameIsEmpty() {
         // Arrange
         SongListDTO songListDTO = new SongListDTO();
-        songListDTO.setName(""); // Nombre vacío
+        songListDTO.setName("");
+        songListDTO.setIsPublic(true);
 
         // Act
         ResponseEntity<Void> response = playListController.createPlayList(songListDTO, TOKEN);
 
         // Assert
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        verify(playlistService, never()).createPlayList(anyLong(), anyString(), true);
+        verify(playlistService, never()).createPlayList(anyLong(), anyString(), anyBoolean());
     }
 
     @Test
