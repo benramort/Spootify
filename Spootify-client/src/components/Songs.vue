@@ -82,6 +82,7 @@ onMounted(() => {
         getSongs();
     } else {
         songs.value = props.songs;
+        getLikedPlaylist();
     }
 });
 
