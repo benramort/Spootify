@@ -29,9 +29,6 @@
 	<properties>
 		<java.version>21</java.version>
 		<doxygen.config.file>${basedir}/src/main/resources/Doxyfile</doxygen.config.file>
-	</properties>
-
-	<properties>
 		<sonar.organization>benramort</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 	</properties>
