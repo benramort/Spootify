@@ -62,7 +62,8 @@ public class PlaylistServiceTest {
         testSong = new Song(SONG_ID, "Test Song", testAlbum, 180, "https://youtube.com/test");
         
         // Create test playlist
-        testPlaylist = new SongList(PLAYLIST_ID, "Test Playlist", true, testUser);
+        testPlaylist = new SongList(PLAYLIST_ID, "Test Playlist", false, testUser);
+        
         
         // Set up user with playlist
         List<SongList> userPlaylists = new ArrayList<>();
@@ -254,5 +255,49 @@ public class PlaylistServiceTest {
             playlistService.getPlaylistById(TOKEN, PLAYLIST_ID)
         );
         assertEquals("User does not have access to this playlist", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Share playlist successfully")
+    void testSharePlaylistSuccess() {
+        // Arrange
+        when(userService.getActiveUser(TOKEN)).thenReturn(testUser);
+        when(songListRepository.findById(PLAYLIST_ID)).thenReturn(testPlaylist);
+        
+        // Act
+        playlistService.sharePlaylist(PLAYLIST_ID, TOKEN);
+        
+        // Assert
+        assertTrue(testPlaylist.getIsPublic());
+        verify(songListRepository).save(testPlaylist);
+    }
+
+    @Test
+    @DisplayName("Share playlist fails when user does not exist")
+    void testSharePlaylistFailsWhenUserDoesNotExist() {
+        // Arrange
+        when(userService.getActiveUser(TOKEN)).thenReturn(null);
+        
+        // Act & Assert
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> 
+            playlistService.sharePlaylist(PLAYLIST_ID, TOKEN)
+        );
+        assertEquals("User not logged in", exception.getMessage());
+        verify(songListRepository, never()).save(any());
+    }
+
+    @Test
+    @DisplayName("Share playlist fails when playlist does not exist")
+    void testSharePlaylistFailsWhenPlaylistDoesNotExist() {
+        // Arrange
+        when(userService.getActiveUser(TOKEN)).thenReturn(testUser);
+        when(songListRepository.findById(PLAYLIST_ID)).thenReturn(null);
+        
+        // Act & Assert
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> 
+            playlistService.sharePlaylist(PLAYLIST_ID, TOKEN)
+        );
+        assertEquals("Playlist does not exist", exception.getMessage());
+        verify(songListRepository, never()).save(any());
     }
 }

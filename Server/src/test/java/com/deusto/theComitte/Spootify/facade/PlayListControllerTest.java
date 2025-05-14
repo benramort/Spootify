@@ -80,6 +80,25 @@ public class PlayListControllerTest {
         verify(playlistService).createPlayList(TOKEN, PLAYLIST_NAME, true);
     }
 
+    @Test
+    @DisplayName("Create playlist fails with general error")
+    void testCreatePlayListFailsWithGeneralError() {
+        // Arrange
+        SongListDTO songListDTO = new SongListDTO();
+        songListDTO.setName(PLAYLIST_NAME);
+        songListDTO.setIsPublic(true);
+
+        doThrow(new RuntimeException("General error"))
+            .when(playlistService).createPlayList(TOKEN, PLAYLIST_NAME, true);
+
+        // Act
+        ResponseEntity<Void> response = playListController.createPlayList(songListDTO, TOKEN);
+
+        // Assert
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        verify(playlistService).createPlayList(TOKEN, PLAYLIST_NAME, true);
+    }
+
     // Removed duplicate method
 
     @Test
@@ -348,5 +367,64 @@ public class PlayListControllerTest {
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         assertNull(response.getBody());
         verify(playlistService).getPlaylistById(TOKEN, playlistId);
+    }
+
+    @Test
+    @DisplayName("Share playlist successfully")
+    void testSharePlaylistSuccess() {
+        // Arrange
+        doNothing().when(playlistService).sharePlaylist(PLAYLIST_ID, TOKEN);
+
+        // Act
+        ResponseEntity<Void> response = playListController.sharePlaylist(TOKEN, PLAYLIST_ID);
+
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        verify(playlistService).sharePlaylist(PLAYLIST_ID, TOKEN);
+    }
+
+    @Test
+    @DisplayName("Share playlist fails when user not logged in")
+    void testSharePlaylistFailsWhenUserNotLoggedIn() {
+        // Arrange
+        doThrow(new RuntimeException("User not logged in"))
+            .when(playlistService).sharePlaylist(PLAYLIST_ID, TOKEN);
+
+        // Act
+        ResponseEntity<Void> response = playListController.sharePlaylist(TOKEN, PLAYLIST_ID);
+
+        // Assert
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+        verify(playlistService).sharePlaylist(PLAYLIST_ID, TOKEN);
+    }
+
+    @Test
+    @DisplayName("Share playlist fails when playlist does not exist")
+    void testSharePlaylistFailsWhenPlaylistDoesNotExist() {
+        // Arrange
+        doThrow(new RuntimeException("Playlist does not exist"))
+            .when(playlistService).sharePlaylist(PLAYLIST_ID, TOKEN);
+
+        // Act
+        ResponseEntity<Void> response = playListController.sharePlaylist(TOKEN, PLAYLIST_ID);
+
+        // Assert
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        verify(playlistService).sharePlaylist(PLAYLIST_ID, TOKEN);
+    }
+
+    @Test
+    @DisplayName("Share playlist fails with general error")
+    void testSharePlaylistFailsWithGeneralError() {
+        // Arrange
+        doThrow(new RuntimeException("General error"))
+            .when(playlistService).sharePlaylist(PLAYLIST_ID, TOKEN);
+
+        // Act
+        ResponseEntity<Void> response = playListController.sharePlaylist(TOKEN, PLAYLIST_ID);
+
+        // Assert
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        verify(playlistService).sharePlaylist(PLAYLIST_ID, TOKEN);
     }
 }

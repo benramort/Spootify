@@ -127,7 +127,6 @@ public class PlaylistService {
         if(songList.getIsPublic() == false){
             songList.setPublic(true);
             songListRepository.save(songList);
-            System.out.println("Playlist shared");
         }
     }
 }
