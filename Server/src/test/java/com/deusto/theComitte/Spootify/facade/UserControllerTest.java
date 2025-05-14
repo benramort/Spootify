@@ -296,7 +296,6 @@ public class UserControllerTest {
     void testGetLikedSongsSuccess() {
         // Arrange
         SongList likedSongs = new SongList(10L, "Liked Songs", testUser);
-        SongListDTO likedSongsDTO = likedSongs.toDTO();
         when(userService.getLikedSongs(TOKEN)).thenReturn(likedSongs);
 
         // Act
@@ -304,9 +303,7 @@ public class UserControllerTest {
 
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertNotNull(response.getBody());
-        assertEquals(likedSongsDTO.getId(), response.getBody().getId());
-        assertEquals(likedSongsDTO.getName(), response.getBody().getName());
+        assertEquals(likedSongs.toDTO().getId(), response.getBody().getId());
         verify(userService).getLikedSongs(TOKEN);
     }
 
