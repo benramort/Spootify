@@ -31,6 +31,9 @@ public class User extends GenericUser {
     @OneToMany(mappedBy = "user", orphanRemoval = true, fetch = FetchType.EAGER)
     private List<SongList> songsList = new ArrayList<>();
 
+    @Column(nullable = false)
+    private long cancionesMeGustanID;
+
     public User(long id, String name, String email, String password) {
         super(id, name, email, password);
         this.followList = new ArrayList<>();
@@ -59,11 +62,11 @@ public class User extends GenericUser {
             songListDTOList.add(songListDTO);
         }
 
-        return new UserDTO(this.id, this.name, followListDTO, songListDTOList);
+        return new UserDTO(this.id, this.name, followListDTO, songListDTOList, cancionesMeGustanID);
     }
 
     public UserDTO toDTOWithoutFollowing(){
-        return new UserDTO(this.id, this.name, null,null);
+        return new UserDTO(this.id, this.name, null,null, cancionesMeGustanID);
     }
 
  
@@ -86,5 +89,13 @@ public class User extends GenericUser {
     public void removeSongList(SongList songList) {
         songsList.remove(songList);
         songList.setUser(null);
+    }
+
+    public void setCancionesMeGustanID(long cancionesMeGustanID) {
+        this.cancionesMeGustanID = cancionesMeGustanID;
+    }
+
+    public long getCancionesMeGustanID() {
+        return cancionesMeGustanID;
     }
 }

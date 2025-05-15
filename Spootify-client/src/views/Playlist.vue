@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted, ref, inject } from "vue";
 import { useRoute } from "vue-router";
+import Songs from "../components/Songs.vue";
 import axios from "axios";
 
 const globalState = inject("globalState");
@@ -15,7 +16,7 @@ const playlist = ref({
 const reproductor = inject("reproductor");
 
 function play(song) {
-    reproductor.playSong(song);
+    reproductor.selectSong(song);
 }
 
 onMounted(() => {
@@ -70,8 +71,15 @@ function generateShareLink() {
 
 }
 
-function openLink(link) {
-    window.open(link, "_blank");
+function playAll() {
+    try {
+        let albumWithoutFirst = playlist.value.songs.slice(1, playlist.value.songs.length);
+        console.log(albumWithoutFirst);
+        reproductor.addToQueue(albumWithoutFirst);
+        reproductor.selectSong(playlist.value.songs[0]);
+    } catch (error) {
+        console.log(error);
+    }
 }
 </script>
 
@@ -83,23 +91,16 @@ function openLink(link) {
                     <h2 id="playlistName">{{ playlist.name }}</h2>
                     <img @click="generateShareLink()" id="shareImg" src="../assets/Share_button.png" alt="Compartir Playlist">
                 </div>
+                <button>
+                    <i class="fa-solid fa-circle-play" @click="playAll()"></i>
+                </button>
             </div>
             <div class="columnRight">
                 <div class="songs">
                     <!-- Verifica si la playlist tiene canciones -->
-                    <div v-if="playlist.songs.length > 0">
-                        <div class="song" v-for="song in playlist.songs" :key="song.id">
-                            <i class="fa-solid fa-circle-play" @click="play(song)"></i>
-                            <div class="horizontal-aling">
-                                <div>
-                                    <p><b>{{ song.title }}</b></p>
-                                </div>
-                                <p>{{ song.duration }}</p>
-                            </div>
-                        </div>
-                    </div>
+                    <Songs v-if="playlist.songs.length > 0" :songs="playlist.songs" />
                     <!-- Mensaje si no hay canciones -->
-                    <div v-else>
+                    <div v-if="playlist.songs.length === 0">
                         <p>Esta playlist no tiene canciones.</p>
                     </div>
                 </div>
@@ -128,6 +129,11 @@ function openLink(link) {
     display: flex;
     align-items: center;
 }
+button {
+    background-color: transparent;
+    border: none;
+}
+
 
 .columns {
     display: flex;
@@ -188,4 +194,5 @@ i {
 i:hover {
     color: rgb(22, 164, 72);
 }
+
 </style>

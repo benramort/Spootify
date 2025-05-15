@@ -8,4 +8,5 @@ import com.deusto.theComitte.Spootify.entity.SongList;
 @Repository
 public interface PlayListRepository extends JpaRepository<SongList, Long>{
     SongList findById(long id);
+    SongList findByName(String name);
 }

@@ -9,6 +9,7 @@ public class UserDTO {
     private String name;
     private List<ArtistDTO> userFollows;
     private List<SongListDTO> playlists;
+    private long cancionesMeGustanID;
 
     public UserDTO() {
     }
@@ -18,11 +19,12 @@ public class UserDTO {
         this.name = name;
     }
 
-    public UserDTO(long id, String name,  List<ArtistDTO> userFollows, List<SongListDTO> playlists) {
+    public UserDTO(long id, String name,  List<ArtistDTO> userFollows, List<SongListDTO> playlists, long cancionesMeGustanID) {
         this.id = id;
         this.name = name;
         this.userFollows = userFollows;
         this.playlists = playlists;
+        this.cancionesMeGustanID = cancionesMeGustanID;
     }
 
     public Long getId() {
@@ -58,6 +60,13 @@ public class UserDTO {
         this.playlists = playlists;
     }
 
+    public long getCancionesMeGustanID() {
+        return cancionesMeGustanID;
+    }
+
+    public void setCancionesMeGustanID(long cancionesMeGustanID) {
+        this.cancionesMeGustanID = cancionesMeGustanID;
+    }
 
     public static UserDTO fromJson(String json) {
     try {

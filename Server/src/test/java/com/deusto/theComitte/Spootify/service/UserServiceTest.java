@@ -14,8 +14,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -25,6 +27,7 @@ import com.deusto.theComitte.Spootify.DAO.ArtistRepository;
 import com.deusto.theComitte.Spootify.DAO.PlayListRepository;
 import com.deusto.theComitte.Spootify.DAO.UserRepository;
 import com.deusto.theComitte.Spootify.entity.Artist;
+import com.deusto.theComitte.Spootify.entity.SongList;
 import com.deusto.theComitte.Spootify.entity.User;
 
 public class UserServiceTest {
@@ -47,16 +50,25 @@ public class UserServiceTest {
     }
 
     @Test
-    void testCreateUser_Success() {
-        String name = "User Name";
+    void testLoginSuccess() {
+        // Arrange
         String email = "user@example.com";
         String password = "password";
 
-        when(userRepository.findByEmail(email)).thenReturn(null);
-    
-        userService.createUser(name, email, password);
+        User mockUser = new User();
+        mockUser.setEmail(email);
+        mockUser.setPassword(password);
 
-        verify(userRepository, times(1)).save(any(User.class));
+        when(userRepository.findByEmail(email)).thenReturn(mockUser);
+
+        // Act
+        long token = userService.login(email, password);
+
+        // Assert
+        assertNotNull(token, "Token should not be null");
+        assertTrue(userService.getActiveUserMap().containsKey(token), "Token should be present in active users");
+        assertEquals(mockUser, userService.getActiveUserMap().get(token), "The user should be associated with the token");
+        verify(userRepository).findByEmail(email);
     }
 
     @Test
@@ -220,6 +232,47 @@ public class UserServiceTest {
         assertEquals("Artist does not exist", exception.getMessage());
         verify(artistRepository, never()).save(any(Artist.class));
         verify(userRepository, never()).save(any(User.class));
+    }
+
+    @Test
+    void testGetLikedSongs_Success() {
+        long token = 12345L;
+        User user = new User("User1", "user1@email.com", "password1");
+        user.setCancionesMeGustanID(10L);
+        userService.getActiveUserMap().put(token, user);
+
+        SongList songList = new SongList("Canciones que me gustan", false, user);
+        songList.setId(10L);
+
+        when(playListRepository.findById(10L)).thenReturn(songList);
+
+        SongList result = userService.getLikedSongs(token);
+
+        assertEquals(songList, result);
+    }
+
+    @Test
+    void testGetLikedSongs_UserNotLoggedIn() {
+        long token = 12345L;
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            userService.getLikedSongs(token);
+        });
+        assertEquals("User not logged in", exception.getMessage());
+    }
+
+    @Test
+    void testGetLikedSongs_SongListDoesNotExist() {
+        long token = 12345L;
+        User user = new User("User1", "user1@email.com", "password1");
+        user.setCancionesMeGustanID(10L);
+        userService.getActiveUserMap().put(token, user);
+
+        when(playListRepository.findById(10L)).thenReturn(null);
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            userService.getLikedSongs(token);
+        });
+        assertEquals("Song list does not exist", exception.getMessage());
     }
 }
     
