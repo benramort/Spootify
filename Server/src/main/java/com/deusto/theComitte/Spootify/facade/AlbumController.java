@@ -44,8 +44,6 @@ public class AlbumController {
      * @param name Nombre del álbum
      * @param cover Portada del álbum. El nombre del archivo de imagen no puede tener espacios. Se acepta cualquier tipo de archivo de imagen.
      * @param token Token del artista, generado al iniciar sesión
-     * @throws IOException Si ocurre un error al guardar la imagen
-     * @throws RuntimeException Si el artista no está logueado o si ocurre un error al crear el álbum
      * @return Este método no devuelve nada
      */
     @PostMapping(value = "", consumes = {"multipart/form-data"})

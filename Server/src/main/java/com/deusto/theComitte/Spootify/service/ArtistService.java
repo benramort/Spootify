@@ -71,7 +71,7 @@ public class ArtistService {
     }
 
     /**
-     * Devuelve la lista de artistas.
+     * Devuelve una lista con todos los artistas.
      * @return Lista de artistas
      */
     public List<Artist> getArtists() {

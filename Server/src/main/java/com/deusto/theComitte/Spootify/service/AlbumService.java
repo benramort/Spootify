@@ -54,6 +54,7 @@ public class AlbumService {
      * Devuelve un álbum por su ID
      * @param id ID del álbum
      * @return Álbum correspondiente al ID dado
+     * @throws RuntimeException Si no se encuentra el álbum.
      */
     public Album getAlbum(long id) {
         Album album = albumRepository.findById(id);
@@ -67,6 +68,7 @@ public class AlbumService {
      * Busca álbumes por su nombre
      * @param name Nombre del álbum
      * @return Lista de álbumes que coinciden con el nombre dado
+     * @throws RuntimeException Si no se encuentran álbumes con el nombre dado
      */
     public List<Album> searchAlbums(String name) {
         List<Album> albums = albumRepository.findByName(name);
@@ -80,6 +82,7 @@ public class AlbumService {
      * Devuelve la lista de álbumes de un artista
      * @param artistId ID del artista
      * @return Lista de álbumes del artista
+     * @throws RuntimeException Si el artista no está loggeado
      */
     public List<Album> getArtistAlbums(long artistId) {
         Artist artist = artistService.getActiveArtist(artistId);
