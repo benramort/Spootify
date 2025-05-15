@@ -20,6 +20,13 @@ public class AlbumService {
     @Autowired
     AlbumRepository albumRepository;
 
+    /**
+     * Crea un nuevo álbum en el artista activo
+     * @param name Nombre del álbum
+     * @param cover Portada del álbum
+     * @param token Token del artista, generado al iniciar sesión
+     * @return Este método no devuelve nada
+     */
     public void createAlbum(String name, String cover, long token) {
         Artist artist = artistService.getActiveArtist(token);
         Album album = new Album(name);
@@ -28,9 +35,13 @@ public class AlbumService {
         album.getArtists().add(artist);
         albumRepository.save(album);
         artistRepository.save(artist);
-        // System.out.println(albumRepository.findById(al));
     }
 
+    /**
+     * Devuelve la lista de álbumes de un artista
+     * @param artistId ID del artista
+     * @return Lista de álbumes del artista
+     */
     public List<Album> getAlbums(long artistId) {
         if(artistId != 0) {
             Artist artist = artistRepository.findById(artistId);
@@ -39,6 +50,11 @@ public class AlbumService {
         return albumRepository.findAll();
     }
 
+    /**
+     * Devuelve un álbum por su ID
+     * @param id ID del álbum
+     * @return Álbum correspondiente al ID dado
+     */
     public Album getAlbum(long id) {
         Album album = albumRepository.findById(id);
         if (album == null) {
@@ -47,6 +63,11 @@ public class AlbumService {
         return album;
     }
 
+    /**
+     * Busca álbumes por su nombre
+     * @param name Nombre del álbum
+     * @return Lista de álbumes que coinciden con el nombre dado
+     */
     public List<Album> searchAlbums(String name) {
         List<Album> albums = albumRepository.findByName(name);
         if (albums.isEmpty()) {
@@ -54,6 +75,12 @@ public class AlbumService {
         }
         return albums;
     }
+
+    /**
+     * Devuelve la lista de álbumes de un artista
+     * @param artistId ID del artista
+     * @return Lista de álbumes del artista
+     */
     public List<Album> getArtistAlbums(long artistId) {
         Artist artist = artistService.getActiveArtist(artistId);
         if(artist == null) {
@@ -63,6 +90,10 @@ public class AlbumService {
         //return albumRepository.findByArtistId(artist.getId());
     }
 
+    /**
+     * Devuelve todos los álbumes
+     * @return Lista de todos los álbumes
+     */
     public List<Album> getAllAlbums() {
         return albumRepository.findAll();
     }
