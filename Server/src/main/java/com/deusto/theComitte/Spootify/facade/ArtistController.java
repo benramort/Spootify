@@ -201,7 +201,7 @@ public class ArtistController {
             // Convertir la lista de artistas a una lista de ArtistDTO
             List<ArtistDTO> mostFollowedArtistsDTO = new ArrayList<>();
             for (Artist artist : mostFollowedArtists) {
-                mostFollowedArtistsDTO.add(artist.toDTO());
+                mostFollowedArtistsDTO.add(artist.toDTOWithFollowers());
             }
 
             return ResponseEntity.ok(mostFollowedArtistsDTO);
