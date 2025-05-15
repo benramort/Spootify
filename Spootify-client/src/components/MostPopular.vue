@@ -9,7 +9,6 @@ const isLoaded = ref(false);
 const reproductor = inject("reproductor");
 
 function playSong(song) {
-    // Igual que en Songs.vue
     reproductor.selectSong(song);
 }
 
@@ -39,6 +38,7 @@ onMounted(async () => {
                     <span class="ranking">{{ idx + 1 }}.</span>
                     <router-link :to="`/artists/${artist.id}`">{{ artist.name }}</router-link>
                     <span class="followers-count">{{ artist.followersList?.length || 0 }} seguidores</span>
+                    <div v-if="idx < mostFollowedArtists.length - 1" class="divider"></div>
                 </div>
             </div>
             <div v-else>
@@ -57,9 +57,13 @@ onMounted(async () => {
                     <span class="song-title">
                         {{ song.title }}
                     </span>
+                    <span class="likes-count">
+                        {{ song.numeroLikes || 0 }} <i class="fa-solid fa-heart"></i>
+                    </span>
                     <button class="play-btn" @click="playSong(song)" title="Reproducir">
                         ▶
                     </button>
+                    <div v-if="idx < mostLikedSongs.length - 1" class="divider"></div>
                 </div>
             </div>
             <div v-else>
@@ -78,10 +82,11 @@ onMounted(async () => {
 }
 .left, .right {
     width: 48%;
-    background: #fafafa;
+    /* Quitar fondo */
+    background: none;
     border-radius: 1.5em;
     padding: 1.5em;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    box-shadow: none;
 }
 .artist {
     border-radius: 1.5em;
@@ -91,6 +96,8 @@ onMounted(async () => {
     align-items: center;
     background: none;
     justify-content: space-between;
+    position: relative;
+    flex-wrap: wrap;
 }
 .song {
     background: none !important;
@@ -99,6 +106,17 @@ onMounted(async () => {
     margin: 1em 0;
     display: flex;
     align-items: center;
+    position: relative;
+    flex-wrap: wrap;
+}
+.divider {
+    width: 100%;
+    height: 1px;
+    background: #e0e0e0;
+    margin: 0.5em 0 0 0;
+    position: absolute;
+    left: 0;
+    bottom: -0.5em;
 }
 .ranking {
     font-weight: bold;
@@ -114,6 +132,15 @@ onMounted(async () => {
     margin-left: 0.5em;
     text-decoration: none;
     transition: text-decoration 0.2s, color 0.2s;
+}
+.likes-count {
+    display: flex;
+    align-items: center;
+    margin-right: 1em;
+    color: #1db954;
+    font-weight: 500;
+    font-size: 1.1em;
+    gap: 0.3em;
 }
 .play-btn {
     background: #1db954;
