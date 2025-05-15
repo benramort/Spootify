@@ -100,12 +100,14 @@ $(document).ready(function(){initNavTree('classcom_1_1deusto_1_1the_comitte_1_1_
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a496e61daab515bdde830583809e6dad9" id="r_a496e61daab515bdde830583809e6dad9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_playlist_service.html#a496e61daab515bdde830583809e6dad9">addSongToPlayList</a> (long token, long songId, long songListId)</td></tr>
 <tr class="separator:a496e61daab515bdde830583809e6dad9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acc2567ab43b66e43d1231c1b005861ec" id="r_acc2567ab43b66e43d1231c1b005861ec"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_playlist_service.html#acc2567ab43b66e43d1231c1b005861ec">createPlayList</a> (long token, String name)</td></tr>
-<tr class="separator:acc2567ab43b66e43d1231c1b005861ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7dd8d6df3600c02048028fbe143e9172" id="r_a7dd8d6df3600c02048028fbe143e9172"><td class="memItemLeft" align="right" valign="top">List&lt; SongList &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_playlist_service.html#a7dd8d6df3600c02048028fbe143e9172">getPlayLists</a> (long userId)</td></tr>
-<tr class="separator:a7dd8d6df3600c02048028fbe143e9172"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a46f65bae87a39482e0294824ca28d1d5" id="r_a46f65bae87a39482e0294824ca28d1d5"><td class="memItemLeft" align="right" valign="top">SongList&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_playlist_service.html#a46f65bae87a39482e0294824ca28d1d5">getPlaylistById</a> (long userId, long songListId)</td></tr>
-<tr class="separator:a46f65bae87a39482e0294824ca28d1d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82c460499b7bc728319d57f8afb7fce4" id="r_a82c460499b7bc728319d57f8afb7fce4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_playlist_service.html#a82c460499b7bc728319d57f8afb7fce4">createPlayList</a> (long token, String name, boolean isPublic)</td></tr>
+<tr class="separator:a82c460499b7bc728319d57f8afb7fce4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0ebb0bfcfb878d126b5a2e92cb03c60" id="r_ac0ebb0bfcfb878d126b5a2e92cb03c60"><td class="memItemLeft" align="right" valign="top">List&lt; SongList &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_playlist_service.html#ac0ebb0bfcfb878d126b5a2e92cb03c60">getPlayLists</a> (long token)</td></tr>
+<tr class="separator:ac0ebb0bfcfb878d126b5a2e92cb03c60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a3d68bd3c810ece16f14bf319ac2f43" id="r_a5a3d68bd3c810ece16f14bf319ac2f43"><td class="memItemLeft" align="right" valign="top">SongList&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_playlist_service.html#a5a3d68bd3c810ece16f14bf319ac2f43">getPlaylistById</a> (long token, long songListId)</td></tr>
+<tr class="separator:a5a3d68bd3c810ece16f14bf319ac2f43"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05fbfd9bf27a6ce589016306f2045f49" id="r_a05fbfd9bf27a6ce589016306f2045f49"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_playlist_service.html#a05fbfd9bf27a6ce589016306f2045f49">sharePlaylist</a> (long id, long token)</td></tr>
+<tr class="separator:a05fbfd9bf27a6ce589016306f2045f49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
@@ -147,8 +149,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="acc2567ab43b66e43d1231c1b005861ec" name="acc2567ab43b66e43d1231c1b005861ec"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acc2567ab43b66e43d1231c1b005861ec">&#9670;&#160;</a></span>createPlayList()</h2>
+<a id="a82c460499b7bc728319d57f8afb7fce4" name="a82c460499b7bc728319d57f8afb7fce4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a82c460499b7bc728319d57f8afb7fce4">&#9670;&#160;</a></span>createPlayList()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -163,7 +165,13 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">String&#160;</td>
-          <td class="paramname"><em>name</em>&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">boolean&#160;</td>
+          <td class="paramname"><em>isPublic</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -177,8 +185,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a46f65bae87a39482e0294824ca28d1d5" name="a46f65bae87a39482e0294824ca28d1d5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a46f65bae87a39482e0294824ca28d1d5">&#9670;&#160;</a></span>getPlaylistById()</h2>
+<a id="a5a3d68bd3c810ece16f14bf319ac2f43" name="a5a3d68bd3c810ece16f14bf319ac2f43"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5a3d68bd3c810ece16f14bf319ac2f43">&#9670;&#160;</a></span>getPlaylistById()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -187,7 +195,7 @@ Public Member Functions</h2></td></tr>
           <td class="memname">SongList com.deusto.theComitte.Spootify.service.PlaylistService.getPlaylistById </td>
           <td>(</td>
           <td class="paramtype">long&#160;</td>
-          <td class="paramname"><em>userId</em>, </td>
+          <td class="paramname"><em>token</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -207,8 +215,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a7dd8d6df3600c02048028fbe143e9172" name="a7dd8d6df3600c02048028fbe143e9172"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7dd8d6df3600c02048028fbe143e9172">&#9670;&#160;</a></span>getPlayLists()</h2>
+<a id="ac0ebb0bfcfb878d126b5a2e92cb03c60" name="ac0ebb0bfcfb878d126b5a2e92cb03c60"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0ebb0bfcfb878d126b5a2e92cb03c60">&#9670;&#160;</a></span>getPlayLists()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -217,13 +225,43 @@ Public Member Functions</h2></td></tr>
           <td class="memname">List&lt; SongList &gt; com.deusto.theComitte.Spootify.service.PlaylistService.getPlayLists </td>
           <td>(</td>
           <td class="paramtype">long&#160;</td>
-          <td class="paramname"><em>userId</em></td><td>)</td>
+          <td class="paramname"><em>token</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="_playlist_service_8java_source.html#l00090">90</a> of file <a class="el" href="_playlist_service_8java_source.html">PlaylistService.java</a>.</p>
+
+</div>
+</div>
+<a id="a05fbfd9bf27a6ce589016306f2045f49" name="a05fbfd9bf27a6ce589016306f2045f49"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a05fbfd9bf27a6ce589016306f2045f49">&#9670;&#160;</a></span>sharePlaylist()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void com.deusto.theComitte.Spootify.service.PlaylistService.sharePlaylist </td>
+          <td>(</td>
+          <td class="paramtype">long&#160;</td>
+          <td class="paramname"><em>id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">long&#160;</td>
+          <td class="paramname"><em>token</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_playlist_service_8java_source.html#l00117">117</a> of file <a class="el" href="_playlist_service_8java_source.html">PlaylistService.java</a>.</p>
 
 </div>
 </div>
@@ -236,7 +274,7 @@ Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>com</b></li><li class="navelem"><b>deusto</b></li><li class="navelem"><b>theComitte</b></li><li class="navelem"><a class="el" href="namespacecom_1_1deusto_1_1the_comitte_1_1_spootify.html">Spootify</a></li><li class="navelem"><a class="el" href="namespacecom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service.html">service</a></li><li class="navelem"><a class="el" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_playlist_service.html">PlaylistService</a></li>
-    <li class="footer">Generated on Thu May 15 2025 11:07:44 for SpringBootLibrary by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Thu May 15 2025 12:58:33 for SpringBootLibrary by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

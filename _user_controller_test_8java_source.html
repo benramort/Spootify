@@ -151,7 +151,7 @@ $(document).ready(function(){initNavTree('_user_controller_test_8java_source.htm
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>        followedArtists.add(testArtist);</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>        </div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>        List&lt;SongList&gt; playlists = <span class="keyword">new</span> ArrayList&lt;&gt;();</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>        SongList testPlaylist = <span class="keyword">new</span> SongList(1L, <span class="stringliteral">&quot;Test Playlist&quot;</span>, testUser);</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>        SongList testPlaylist = <span class="keyword">new</span> SongList(1L, <span class="stringliteral">&quot;Test Playlist&quot;</span>, <span class="keyword">true</span>, testUser);</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>        playlists.add(testPlaylist);</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        testUser.setSongLists(playlists);</div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    }</div>
@@ -395,7 +395,7 @@ $(document).ready(function(){initNavTree('_user_controller_test_8java_source.htm
 <div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>    @DisplayName(<span class="stringliteral">&quot;Get liked songs successfully&quot;</span>)</div>
 <div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>    <span class="keywordtype">void</span> testGetLikedSongsSuccess() {</div>
 <div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>        <span class="comment">// Arrange</span></div>
-<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>        SongList likedSongs = <span class="keyword">new</span> SongList(10L, <span class="stringliteral">&quot;Liked Songs&quot;</span>, testUser);</div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>        SongList likedSongs = <span class="keyword">new</span> SongList(<span class="stringliteral">&quot;Liked Songs&quot;</span>, <span class="keyword">false</span>, testUser);</div>
 <div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>        when(userService.getLikedSongs(TOKEN)).thenReturn(likedSongs);</div>
 <div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span> </div>
 <div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>        <span class="comment">// Act</span></div>
@@ -458,7 +458,7 @@ $(document).ready(function(){initNavTree('_user_controller_test_8java_source.htm
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_120ed4da3e3217b1e7fc0b4f48568e79.html">test</a></li><li class="navelem"><a class="el" href="dir_97debbc39e3b917fca663601bb2b0709.html">java</a></li><li class="navelem"><a class="el" href="dir_23faaf0c5c81a0660a411c4a306acbb5.html">com</a></li><li class="navelem"><a class="el" href="dir_9fcb3e02c03eb09b14614fa24fe7b655.html">deusto</a></li><li class="navelem"><a class="el" href="dir_ab93d6af66c3f2c61114bca6616e7454.html">theComitte</a></li><li class="navelem"><a class="el" href="dir_8b69bb3ed4977461ddd82260156f84b8.html">Spootify</a></li><li class="navelem"><a class="el" href="dir_f9add972bfcaf149ffd71351e862ee2a.html">facade</a></li><li class="navelem"><a class="el" href="_user_controller_test_8java.html">UserControllerTest.java</a></li>
-    <li class="footer">Generated on Thu May 15 2025 11:07:44 for SpringBootLibrary by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Thu May 15 2025 12:58:32 for SpringBootLibrary by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

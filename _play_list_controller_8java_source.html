@@ -134,7 +134,7 @@ $(document).ready(function(){initNavTree('_play_list_controller_8java_source.htm
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>            <span class="keywordflow">if</span> (songListDTO.getName() == <span class="keyword">null</span> || songListDTO.getName().isEmpty()) {</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>                <span class="keywordflow">return</span> <span class="keyword">new</span> ResponseEntity&lt;&gt;(HttpStatus.BAD_REQUEST); <span class="comment">// Validación añadida</span></div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>            }</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>            playlistService.createPlayList(token, songListDTO.getName());</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>            playlistService.createPlayList(token, songListDTO.getName(), songListDTO.getIsPublic());</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>            <span class="keywordflow">return</span> <span class="keyword">new</span> ResponseEntity&lt;&gt;(HttpStatus.OK);</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>        } <span class="keywordflow">catch</span> (RuntimeException e) {</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>            <span class="keywordflow">if</span> (e.getMessage().equals(<span class="stringliteral">&quot;User not logged in&quot;</span>)) {</div>
@@ -195,19 +195,37 @@ $(document).ready(function(){initNavTree('_play_list_controller_8java_source.htm
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>                <span class="keywordflow">return</span> ResponseEntity.status(HttpStatus.NOT_FOUND).body(<span class="keyword">null</span>);</div>
 <div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>            }</div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>        } <span class="keywordflow">catch</span> (RuntimeException e) {</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>            e.printStackTrace();</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>            <span class="keywordflow">if</span> (e.getMessage().equals(<span class="stringliteral">&quot;User not logged in&quot;</span>)) {</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>                <span class="keywordflow">return</span> <span class="keyword">new</span> ResponseEntity&lt;&gt;(HttpStatus.UNAUTHORIZED);</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>            } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (e.getMessage().equals(<span class="stringliteral">&quot;SongList does not exist&quot;</span>)) {</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>                <span class="keywordflow">return</span> <span class="keyword">new</span> ResponseEntity&lt;&gt;(HttpStatus.NOT_FOUND);</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>            } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (e.getMessage().equals(<span class="stringliteral">&quot;User does not have access to this playlist&quot;</span>)) {</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>                <span class="keywordflow">return</span> <span class="keyword">new</span> ResponseEntity&lt;&gt;(HttpStatus.FORBIDDEN);</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>            }</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>            <span class="keywordflow">if</span> (e.getMessage().equals(<span class="stringliteral">&quot;User not logged in&quot;</span>)) {</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>                <span class="keywordflow">return</span> <span class="keyword">new</span> ResponseEntity&lt;&gt;(HttpStatus.UNAUTHORIZED);</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>            } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (e.getMessage().equals(<span class="stringliteral">&quot;SongList does not exist&quot;</span>)) {</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>                <span class="keywordflow">return</span> <span class="keyword">new</span> ResponseEntity&lt;&gt;(HttpStatus.NOT_FOUND);</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>            } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (e.getMessage().equals(<span class="stringliteral">&quot;User does not have access to this playlist&quot;</span>)) {</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>                <span class="keywordflow">return</span> <span class="keyword">new</span> ResponseEntity&lt;&gt;(HttpStatus.FORBIDDEN);</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>            }</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>            e.printStackTrace();</div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>            <span class="keywordflow">return</span> <span class="keyword">new</span> ResponseEntity&lt;&gt;(HttpStatus.BAD_REQUEST);</div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>        }</div>
 <div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    }</div>
 </div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>}</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    @PostMapping(<span class="stringliteral">&quot;/{id}/share&quot;</span>)</div>
+<div class="foldopen" id="foldopen00104" data-start="{" data-end="}">
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno"><a class="line" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1facade_1_1_play_list_controller.html#a1005720dc50eb87f619dd554a14dd4c4">  104</a></span>    public ResponseEntity&lt;Void&gt; sharePlaylist(@RequestParam <span class="keywordtype">long</span> token, @PathVariable <span class="keywordtype">long</span> <span class="keywordtype">id</span>) {</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>        <span class="keywordflow">try</span> {</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>            playlistService.sharePlaylist(<span class="keywordtype">id</span>, token);</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>            <span class="keywordflow">return</span> <span class="keyword">new</span> ResponseEntity&lt;&gt;(HttpStatus.OK);</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>        } <span class="keywordflow">catch</span> (RuntimeException e) {</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>            <span class="keywordflow">if</span> (e.getMessage().equals(<span class="stringliteral">&quot;User not logged in&quot;</span>)) {</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>                <span class="keywordflow">return</span> <span class="keyword">new</span> ResponseEntity&lt;&gt;(HttpStatus.UNAUTHORIZED); </div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>            }</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>            <span class="keywordflow">if</span> (e.getMessage().equals(<span class="stringliteral">&quot;Playlist does not exist&quot;</span>)) {</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>                <span class="keywordflow">return</span> <span class="keyword">new</span> ResponseEntity&lt;&gt;(HttpStatus.NOT_FOUND);</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>            }</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>            <span class="keywordflow">return</span> <span class="keyword">new</span> ResponseEntity&lt;&gt;(HttpStatus.BAD_REQUEST);</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>        }</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    }</div>
+</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>}</div>
 </div>
 <div class="ttc" id="aclasscom_1_1deusto_1_1the_comitte_1_1_spootify_1_1facade_1_1_play_list_controller_html"><div class="ttname"><a href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1facade_1_1_play_list_controller.html">com.deusto.theComitte.Spootify.facade.PlayListController</a></div><div class="ttdef"><b>Definition</b> <a href="_play_list_controller_8java_source.html#l00025">PlayListController.java:25</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
@@ -216,7 +234,7 @@ $(document).ready(function(){initNavTree('_play_list_controller_8java_source.htm
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_5eb159725f84c66aafd839904a4acdd0.html">main</a></li><li class="navelem"><a class="el" href="dir_fd3f6763802dee1ad875f6c80eac0bda.html">java</a></li><li class="navelem"><a class="el" href="dir_d8517d8b842053dc3dd7dde525dd9163.html">com</a></li><li class="navelem"><a class="el" href="dir_c829b153888480d1cd6945dc2092d47a.html">deusto</a></li><li class="navelem"><a class="el" href="dir_9e8249ab69c7e7905edac3fc2eb21c5d.html">theComitte</a></li><li class="navelem"><a class="el" href="dir_7d4421e643568451290b798a8553386f.html">Spootify</a></li><li class="navelem"><a class="el" href="dir_199eca5b0928bae2d562c9c922e53a3a.html">facade</a></li><li class="navelem"><a class="el" href="_play_list_controller_8java.html">PlayListController.java</a></li>
-    <li class="footer">Generated on Thu May 15 2025 11:07:44 for SpringBootLibrary by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Thu May 15 2025 12:58:32 for SpringBootLibrary by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

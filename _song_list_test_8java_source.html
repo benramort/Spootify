@@ -223,10 +223,10 @@ $(document).ready(function(){initNavTree('_song_list_test_8java_source.html','')
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    @Test</div>
 <div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>    @DisplayName(<span class="stringliteral">&quot;Test equals method&quot;</span>)</div>
 <div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    void testEquals() {</div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>        SongList songList = <span class="keyword">new</span> SongList(1L, <span class="stringliteral">&quot;Test Playlist&quot;</span>, user, <span class="keyword">new</span> ArrayList&lt;&gt;());</div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>        SongList songList2 = <span class="keyword">new</span> SongList(1L, <span class="stringliteral">&quot;Test Playlist&quot;</span>, user, <span class="keyword">new</span> ArrayList&lt;&gt;());</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>        SongList sameIdSongList = <span class="keyword">new</span> SongList(1L, <span class="stringliteral">&quot;Different Name&quot;</span>, user, <span class="keyword">new</span> ArrayList&lt;&gt;());</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>        SongList differentIdSongList = <span class="keyword">new</span> SongList(2L, <span class="stringliteral">&quot;Test Playlist&quot;</span>, user, <span class="keyword">new</span> ArrayList&lt;&gt;());</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>        SongList songList = <span class="keyword">new</span> SongList(1L, <span class="stringliteral">&quot;Test Playlist&quot;</span>, <span class="keyword">true</span>, user, <span class="keyword">new</span> ArrayList&lt;&gt;());</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>        SongList songList2 = <span class="keyword">new</span> SongList(1L, <span class="stringliteral">&quot;Test Playlist&quot;</span>, <span class="keyword">true</span>, user, <span class="keyword">new</span> ArrayList&lt;&gt;());</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>        SongList sameIdSongList = <span class="keyword">new</span> SongList(1L, <span class="stringliteral">&quot;Different Name&quot;</span>, <span class="keyword">true</span>, user, <span class="keyword">new</span> ArrayList&lt;&gt;());</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>        SongList differentIdSongList = <span class="keyword">new</span> SongList(2L, <span class="stringliteral">&quot;Test Playlist&quot;</span>, <span class="keyword">true</span>, user, <span class="keyword">new</span> ArrayList&lt;&gt;());</div>
 <div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span> </div>
 <div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>        <span class="comment">// Same ID, name, songs and user</span></div>
 <div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>        assertTrue(songList.equals(songList2));</div>
@@ -250,68 +250,70 @@ $(document).ready(function(){initNavTree('_song_list_test_8java_source.html','')
 <div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>    @Test</div>
 <div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>    @DisplayName(<span class="stringliteral">&quot;Test equals method with null attributes&quot;</span>)</div>
 <div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>    void testEqualsWithNullAttributes() {</div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>        SongList songList = <span class="keyword">new</span> SongList(1L, <span class="stringliteral">&quot;Test Playlist&quot;</span>, user, <span class="keyword">new</span> ArrayList&lt;&gt;());</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>        SongList songList = <span class="keyword">new</span> SongList(1L, <span class="stringliteral">&quot;Test Playlist&quot;</span>, <span class="keyword">true</span>, user, <span class="keyword">new</span> ArrayList&lt;&gt;());</div>
 <div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span> </div>
 <div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>        <span class="comment">// Caso donde el ID es null</span></div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>        SongList songListWithNullId = <span class="keyword">new</span> SongList(<span class="keyword">null</span>, <span class="stringliteral">&quot;Test Playlist&quot;</span>, user, <span class="keyword">new</span> ArrayList&lt;&gt;());</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>        SongList songListWithNullId = <span class="keyword">new</span> SongList(<span class="keyword">null</span>, <span class="stringliteral">&quot;Test Playlist&quot;</span>, <span class="keyword">true</span>, user, <span class="keyword">new</span> ArrayList&lt;&gt;());</div>
 <div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>        assertFalse(songList.equals(songListWithNullId));</div>
 <div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span> </div>
 <div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>        <span class="comment">// Caso donde el nombre es null</span></div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>        SongList songListWithNullName = <span class="keyword">new</span> SongList(1L, <span class="keyword">null</span>, user, <span class="keyword">new</span> ArrayList&lt;&gt;());</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>        SongList songListWithNullName = <span class="keyword">new</span> SongList(1L, <span class="keyword">null</span>, <span class="keyword">true</span>, user, <span class="keyword">new</span> ArrayList&lt;&gt;());</div>
 <div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>        assertFalse(songList.equals(songListWithNullName));</div>
 <div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span> </div>
 <div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>        <span class="comment">// Caso donde la lista de canciones es null</span></div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>        SongList songListWithNullSongs = <span class="keyword">new</span> SongList(1L, <span class="stringliteral">&quot;Test Playlist&quot;</span>, user, <span class="keyword">null</span>);</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>        SongList songListWithNullSongs = <span class="keyword">new</span> SongList(1L, <span class="stringliteral">&quot;Test Playlist&quot;</span>, <span class="keyword">true</span>, user, <span class="keyword">null</span>);</div>
 <div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>        assertFalse(songList.equals(songListWithNullSongs));</div>
 <div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span> </div>
 <div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>        <span class="comment">// Caso donde el usuario es null</span></div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>        SongList songListWithNullUser = <span class="keyword">new</span> SongList(1L, <span class="stringliteral">&quot;Test Playlist&quot;</span>, <span class="keyword">null</span>, <span class="keyword">new</span> ArrayList&lt;&gt;());</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>        SongList songListWithNullUser = <span class="keyword">new</span> SongList(1L, <span class="stringliteral">&quot;Test Playlist&quot;</span>, <span class="keyword">true</span>, <span class="keyword">null</span>, <span class="keyword">new</span> ArrayList&lt;&gt;());</div>
 <div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>        assertFalse(songList.equals(songListWithNullUser));</div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>    }</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span> </div>
 <div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span> </div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>    @Test</div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>    @DisplayName(<span class="stringliteral">&quot;Test para el constructor vacío&quot;</span>)</div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>    void testEmptyConstructor() {</div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>        SongList emptySongList = <span class="keyword">new</span> SongList();</div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>        assertNotNull(emptySongList);</div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>        assertNull(emptySongList.getId());</div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>        assertNull(emptySongList.getName());</div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>        assertNull(emptySongList.getUser());</div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>        assertNotNull(emptySongList.getSongs());</div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>        assertTrue(emptySongList.getSongs().isEmpty());</div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>    }</div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span> </div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>    @Test</div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>    @DisplayName(<span class="stringliteral">&quot;Test para el constructor con nombre y usuario&quot;</span>)</div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>    void testConstructorWithNameAndUser() {</div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>        SongList newSongList = <span class="keyword">new</span> SongList(<span class="stringliteral">&quot;My Playlist&quot;</span>, user);</div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>        assertEquals(<span class="stringliteral">&quot;My Playlist&quot;</span>, newSongList.getName());</div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>        assertEquals(user, newSongList.getUser());</div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>        assertNotNull(newSongList.getSongs());</div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>        assertTrue(newSongList.getSongs().isEmpty());</div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>    }</div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span> </div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>    @Test</div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>    @DisplayName(<span class="stringliteral">&quot;Test para el constructor completo&quot;</span>)</div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>    void testFullConstructor() {</div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>        List&lt;Song&gt; songs = <span class="keyword">new</span> ArrayList&lt;&gt;();</div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>        songs.add(song1);</div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>        songs.add(song2);</div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span> </div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>        SongList fullSongList = <span class="keyword">new</span> SongList(1L, <span class="stringliteral">&quot;My Playlist&quot;</span>, user, songs);</div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>        assertEquals(1L, fullSongList.getId());</div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>        assertEquals(<span class="stringliteral">&quot;My Playlist&quot;</span>, fullSongList.getName());</div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>        assertEquals(user, fullSongList.getUser());</div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>        assertEquals(2, fullSongList.getSongs().size());</div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>    }</div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>}</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>    }</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span> </div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>    @Test</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>    @DisplayName(<span class="stringliteral">&quot;Test para el constructor vacío&quot;</span>)</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>    void testEmptyConstructor() {</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>        SongList emptySongList = <span class="keyword">new</span> SongList();</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>        assertNotNull(emptySongList);</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>        assertNull(emptySongList.getId());</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>        assertNull(emptySongList.getName());</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>        assertNull(emptySongList.getUser());</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>        assertNotNull(emptySongList.getSongs());</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>        assertTrue(emptySongList.getSongs().isEmpty());</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>    }</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span> </div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>    @Test</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>    @DisplayName(<span class="stringliteral">&quot;Test para el constructor con nombre y usuario&quot;</span>)</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>    void testConstructorWithNameAndUser() {</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>        SongList newSongList = <span class="keyword">new</span> SongList(<span class="stringliteral">&quot;My Playlist&quot;</span>, <span class="keyword">true</span>, user);</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>        assertEquals(<span class="stringliteral">&quot;My Playlist&quot;</span>, newSongList.getName());</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>        assertEquals(user, newSongList.getUser());</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>        assertNotNull(newSongList.getSongs());</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>        assertTrue(newSongList.getSongs().isEmpty());</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>    }</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span> </div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>    @Test</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>    @DisplayName(<span class="stringliteral">&quot;Test para el constructor completo&quot;</span>)</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>    void testFullConstructor() {</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>        List&lt;Song&gt; songs = <span class="keyword">new</span> ArrayList&lt;&gt;();</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>        songs.add(song1);</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>        songs.add(song2);</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span> </div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>        SongList fullSongList = <span class="keyword">new</span> SongList(1L, <span class="stringliteral">&quot;My Playlist&quot;</span>, <span class="keyword">true</span>, user, songs);</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>        assertEquals(1L, fullSongList.getId());</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>        assertEquals(<span class="stringliteral">&quot;My Playlist&quot;</span>, fullSongList.getName());</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>        assertEquals(user, fullSongList.getUser());</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>        assertEquals(2, fullSongList.getSongs().size());</div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>    }</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>}</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_120ed4da3e3217b1e7fc0b4f48568e79.html">test</a></li><li class="navelem"><a class="el" href="dir_97debbc39e3b917fca663601bb2b0709.html">java</a></li><li class="navelem"><a class="el" href="dir_23faaf0c5c81a0660a411c4a306acbb5.html">com</a></li><li class="navelem"><a class="el" href="dir_9fcb3e02c03eb09b14614fa24fe7b655.html">deusto</a></li><li class="navelem"><a class="el" href="dir_ab93d6af66c3f2c61114bca6616e7454.html">theComitte</a></li><li class="navelem"><a class="el" href="dir_8b69bb3ed4977461ddd82260156f84b8.html">Spootify</a></li><li class="navelem"><a class="el" href="dir_41ab9e9383015697211dc1ea74a6a2df.html">entity</a></li><li class="navelem"><a class="el" href="_song_list_test_8java.html">SongListTest.java</a></li>
-    <li class="footer">Generated on Thu May 15 2025 11:07:44 for SpringBootLibrary by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Thu May 15 2025 12:58:32 for SpringBootLibrary by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>
