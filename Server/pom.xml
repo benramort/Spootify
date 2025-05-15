@@ -31,6 +31,7 @@
 		<doxygen.config.file>${basedir}/src/main/resources/Doxyfile</doxygen.config.file>
 		<sonar.organization>benramort</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+		<sonar.exclusions>**/DTO/**,**/integration/**,**/performance/**</sonar.exclusions>
 	</properties>
 	
 	<dependencies>
