@@ -149,6 +149,15 @@ public class ArtistService {
     //     return sortedArtistFollowerCountMap;
     // }
 
+    /**
+     * Devuelve una lista de artistas ordenada de mayor a menor según el número de seguidores.
+     * 
+     * Este método recupera todos los artistas de la base de datos y los ordena
+     * en función del tamaño de su lista de seguidores (followersList), de forma
+     * descendente. El primer artista de la lista será el que tenga más seguidores.
+     * 
+     * @return Lista de artistas ordenada por número de seguidores (de mayor a menor)
+     */
     public List<Artist> getMostFollowedArtists() {
         // Recuperar todos los artistas de la base de datos
         List<Artist> artists = artistRepository.findAll();
