@@ -40,11 +40,35 @@ function fetchPlaylistDetails() {
         .then((response) => {
             console.log(response.data);
             playlist.value = response.data;
+            console.log("Publica: " + playlist.value.isPublic);
+            console.log("User: " + playlist.value.user);
         })
         .catch((error) => {
             console.error("Error al cargar la playlist:", error);
             playlist.value = null; // Maneja el error asignando null
         });
+
+}
+
+function generateShareLink() {
+
+    let path = `http://localhost:8081/playlists/${playlist.value.id}/share?token=${globalState.token.value}`;
+    let link = `http://localhost:8080/playlists/${playlist.value.id}`;
+    
+    window.navigator.clipboard.writeText(link).then(() => {
+        alert("Enlace copiado al portapapeles");
+    }).catch(err => {
+        console.error('Error al copiar el enlace: ', err);
+    });
+    
+    axios.post(path, {id: playlist.value.id})
+        .then((response) => {
+            console.log("La playlist pasa a ser pública", response.data);
+        })
+        .catch((error) => {
+            console.error("Error al hacer pública la playlist:", error);
+        });
+
 }
 
 function playAll() {
@@ -63,7 +87,10 @@ function playAll() {
     <div v-if="playlist.name">
         <div class="columns">
             <div class="columnLeft">
-                <h2>{{ playlist.name }}</h2>
+                <div id="nameAndShare">
+                    <h2 id="playlistName">{{ playlist.name }}</h2>
+                    <img @click="generateShareLink()" id="shareImg" src="../assets/Share_button.png" alt="Compartir Playlist">
+                </div>
                 <button>
                     <i class="fa-solid fa-circle-play" @click="playAll()"></i>
                 </button>
@@ -86,6 +113,22 @@ function playAll() {
 </template>
 
 <style scoped>
+#shareImg {
+    width: 1.2em;
+    height: 1.2em;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+#shareImg:hover {
+    transform: translateY(-5px);
+    transition: 0.3s ease;
+}
+
+#nameAndShare {
+    display: flex;
+    align-items: center;
+}
 button {
     background-color: transparent;
     border: none;

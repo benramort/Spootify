@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.query.sqm.CastType;
-
 import com.deusto.theComitte.Spootify.DTO.SongDTO;
 import com.deusto.theComitte.Spootify.DTO.SongListDTO;
 
@@ -19,6 +17,10 @@ public class SongList {
     private Long id;
     @Column(nullable = false)
     private String name;
+    @Column(nullable = false)
+    private boolean isPublic = false;
+    @Column(nullable = true)
+    private String shareLink;
 
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
     @JoinTable(
@@ -34,22 +36,28 @@ public class SongList {
 
     public SongList() {}
 
-    public SongList(String name, User user) {
+    public SongList(String name, boolean isPublic, User user) {
         this.name = name;
+        this.isPublic = isPublic;
+        this.shareLink = "";
         this.user = user;
         this.songs = new ArrayList<>();
     }
 
-    public SongList(Long id, String name, User user) {
+    public SongList(Long id, String name, boolean isPublic, User user) {
         this.id = id;
         this.name = name;
+        this.isPublic = isPublic;
+        this.shareLink = "";
         this.user = user;
         this.songs = new ArrayList<>();
     }
 
-    public SongList(Long id, String name, User user, List<Song> songs) {
+    public SongList(Long id, String name, boolean isPublic, User user, List<Song> songs) {
         this.id = id;
         this.name = name;
+        this.isPublic = isPublic;
+        this.shareLink = "";
         this.user = user;
         this.songs = songs;
     }
@@ -86,18 +94,26 @@ public class SongList {
         this.user = user;
     }
 
+    public boolean getIsPublic() {
+        return this.isPublic;
+    }
+
+    public void setPublic(boolean isPublic) {
+        this.isPublic = isPublic;
+    }
+
     public SongListDTO toDTO() {
         List<SongDTO> songs = new ArrayList<>();
         for (Song song : this.songs) {
-            songs.add(new SongDTO(song.getId(), song.getName(), song.getAlbum().toDTOWithoutSongs(), song.getDuration(), song.getSongPath()));
+            songs.add(new SongDTO(song.getId(), song.getName(), song.getAlbum().toDTOWithoutSongs(), song.getDuration(), song.getSongPath(), song.getNumeroLikes()));
         }
-        return new SongListDTO(this.id, this.name, songs);
+        return new SongListDTO(this.id, this.name, this.isPublic, songs);
     }
 
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof SongList)) return false;
         SongList songList = (SongList) o;
-        return id.equals(songList.id) && name.equals(songList.name) && songs.equals(songList.songs) && user.equals(songList.user);
+        return id.equals(songList.id) && name.equals(songList.name) && isPublic == songList.isPublic && songs.equals(songList.songs) && user.equals(songList.user);
     }
 }

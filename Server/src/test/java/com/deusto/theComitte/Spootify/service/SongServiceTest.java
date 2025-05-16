@@ -2,6 +2,7 @@ package com.deusto.theComitte.Spootify.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
@@ -20,9 +21,11 @@ import org.springframework.web.multipart.MultipartFile;
 import com.deusto.theComitte.Spootify.DAO.AlbumRepository;
 import com.deusto.theComitte.Spootify.DAO.ArtistRepository;
 import com.deusto.theComitte.Spootify.DAO.SongRepository;
+import com.deusto.theComitte.Spootify.DAO.UserRepository;
 import com.deusto.theComitte.Spootify.entity.Album;
 import com.deusto.theComitte.Spootify.entity.Artist;
 import com.deusto.theComitte.Spootify.entity.Song;
+import com.deusto.theComitte.Spootify.entity.User;
 
 public class SongServiceTest {
 
@@ -36,10 +39,16 @@ public class SongServiceTest {
     ArtistRepository artistRepository;
 
     @Mock
+    UserRepository userRepository;
+
+    @Mock
     ArtistService artistService;
 
     @InjectMocks
     SongService songService;
+
+    @InjectMocks
+    UserService userService;
     
     private Artist testArtist;
     private Album testAlbum;
@@ -292,5 +301,66 @@ public class SongServiceTest {
         List<Song> result = songService.searchSongs(searchTerm);
 
         assertEquals(expectedSongs, result);
+    }
+
+    // @Test
+    // @DisplayName("Increment likes for a song successfully")
+    // void testDarLikeSuccess() {
+    //     // Arrange
+    //     when(songRepository.findById(SONG_ID)).thenReturn(testSong);
+
+    //     // Act
+    //     songService.darLike(SONG_ID);
+
+    //     // Assert
+    //     assertEquals(1, testSong.getNumeroLikes());
+    //     verify(songRepository).save(testSong);
+    // }
+
+    // @Test
+    // @DisplayName("Throw exception when liking a non-existent song")
+    // void testDarLikeThrowsWhenSongDoesNotExist() {
+    //     // Arrange
+    //     when(songRepository.findById(999L)).thenReturn(null);
+
+    //     // Act & Assert
+    //     assertThrows(RuntimeException.class, () -> songService.darLike(999L));
+    //     verify(songRepository, never()).save(any(Song.class));
+    // }
+
+    @Test
+    @DisplayName("Get most liked songs successfully")
+    void testGetMostLikedSongs() {
+        // Arrange
+        Song song1 = new Song(1L, "Song 1", testAlbum, 180, "url1");
+        song1.setNumeroLikes(5);
+
+        Song song2 = new Song(2L, "Song 2", testAlbum, 200, "url2");
+        song2.setNumeroLikes(10);
+
+        Song song3 = new Song(3L, "Song 3", testAlbum, 220, "url3");
+        song3.setNumeroLikes(0); // No likes, no debería incluirse
+
+        when(songRepository.findAll()).thenReturn(Arrays.asList(song1, song2, song3));
+
+        // Act
+        List<Song> result = songService.getMostLikedSongs();
+
+        // Assert
+        assertEquals(2, result.size());
+        assertEquals(song2, result.get(0)); // Más likes primero
+        assertEquals(song1, result.get(1));
+        verify(songRepository).findAll();
+    }
+
+    @Test
+    @DisplayName("Throw exception when liking a non-existent song")
+    void testDarLikeThrowsWhenSongDoesNotExist() {
+        // Arrange
+        when(songRepository.findById(999L)).thenReturn(null);
+
+        // Act & Assert
+        assertThrows(RuntimeException.class, () -> songService.darLike(999L, TOKEN));
+        verify(songRepository, never()).save(any(Song.class));
     }
 }

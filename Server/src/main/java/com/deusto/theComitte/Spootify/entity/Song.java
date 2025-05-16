@@ -20,6 +20,7 @@ public class Song {
     private int duration;
     @Column(nullable = false, unique = true)
     private String songPath;
+    private int numeroLikes;
 
     public Song(long id, String name, Album album, int duration, String songPath) {
         this.id = id;
@@ -27,6 +28,7 @@ public class Song {
         this.name = name;
         this.duration = duration;
         this.songPath = songPath;
+        this.numeroLikes = 0;
     }
     
     public Song(String name, Album album, int duration, String songPath) {
@@ -34,6 +36,7 @@ public class Song {
         this.name = name;
         this.duration = duration;
         this.songPath = songPath;
+        this.numeroLikes = 0;
     }
 
     public Song() {
@@ -80,11 +83,19 @@ public class Song {
         this.id = id;
     }
 
+    public int getNumeroLikes() {
+        return numeroLikes;
+    }
+
+    public void setNumeroLikes(int numeroLikes) {
+        this.numeroLikes = numeroLikes;
+    }
+
     public SongDTO toDTO() {
-        return new SongDTO(this.id, this.name, this.album.toDTOWithoutSongs(), this.duration, this.songPath);
+        return new SongDTO(this.id, this.name, this.album.toDTOWithoutSongs(), this.duration, this.songPath, this.numeroLikes);
     }
 
     public SongDTO toDTOWithoutAlbum() {
-        return new SongDTO(this.id, this.name, null, this.duration, this.songPath);
+        return new SongDTO(this.id, this.name, null, this.duration, this.songPath, this.numeroLikes);
     }
 }

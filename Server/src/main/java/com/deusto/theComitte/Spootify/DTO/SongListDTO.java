@@ -6,24 +6,29 @@ import java.util.List;
 public class SongListDTO {
     private Long id;
     private String name;
+    private boolean isPublic;
+    private String shareLink;
     private List<SongDTO> songs;
 
     public SongListDTO() {}
 
-    public SongListDTO(String name) {
+    public SongListDTO(String name, boolean isPublic) {
         this.name = name;
+        this.isPublic = isPublic;
         this.songs = new ArrayList<>();
     }
 
-    public SongListDTO(Long id, String name) {
+    public SongListDTO(Long id, boolean isPublic, String name) {
         this.id = id;
         this.name = name;
+        this.isPublic = isPublic;
         this.songs = new ArrayList<>();
     }
 
-    public SongListDTO(Long id, String name, List<SongDTO> songs) {
+    public SongListDTO(Long id, String name, boolean isPublic, List<SongDTO> songs) {
         this.id = id;
         this.name = name;
+        this.isPublic = isPublic;
         this.songs = songs;
     }
 
@@ -41,6 +46,18 @@ public class SongListDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setIsPublic(boolean isPublic) {
+        this.isPublic = isPublic;
+    }
+
+    public boolean getIsPublic() {
+        return this.isPublic;
+    }
+
+    public String getShareLink() {
+        return shareLink;
     }
 
     public List<SongDTO> getSongs() {

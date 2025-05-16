@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 
 import com.deusto.theComitte.Spootify.DTO.CreateUserDTO;
 import com.deusto.theComitte.Spootify.DTO.LoginDTO;
+import com.deusto.theComitte.Spootify.DTO.SongListDTO;
 import com.deusto.theComitte.Spootify.DTO.TokenDTO;
 import com.deusto.theComitte.Spootify.DTO.UserDTO;
 import com.deusto.theComitte.Spootify.entity.Artist;
@@ -50,7 +51,7 @@ public class UserControllerTest {
         followedArtists.add(testArtist);
         
         List<SongList> playlists = new ArrayList<>();
-        SongList testPlaylist = new SongList(1L, "Test Playlist", testUser);
+        SongList testPlaylist = new SongList(1L, "Test Playlist", true, testUser);
         playlists.add(testPlaylist);
         testUser.setSongLists(playlists);
     }
@@ -288,5 +289,63 @@ public class UserControllerTest {
         // Assert
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         verify(userService).getActiveUser(TOKEN);
+    }
+
+    @Test
+    @DisplayName("Get liked songs successfully")
+    void testGetLikedSongsSuccess() {
+        // Arrange
+        SongList likedSongs = new SongList("Liked Songs", false, testUser);
+        when(userService.getLikedSongs(TOKEN)).thenReturn(likedSongs);
+
+        // Act
+        ResponseEntity<SongListDTO> response = userController.getLikedSongs(TOKEN);
+
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(likedSongs.toDTO().getId(), response.getBody().getId());
+        verify(userService).getLikedSongs(TOKEN);
+    }
+
+    @Test
+    @DisplayName("Get liked songs fails when user not logged in")
+    void testGetLikedSongsFailsWhenUserNotLoggedIn() {
+        // Arrange
+        when(userService.getLikedSongs(TOKEN)).thenThrow(new RuntimeException("User not logged in"));
+
+        // Act
+        ResponseEntity<SongListDTO> response = userController.getLikedSongs(TOKEN);
+
+        // Assert
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+        verify(userService).getLikedSongs(TOKEN);
+    }
+
+    @Test
+    @DisplayName("Get liked songs fails when song list does not exist")
+    void testGetLikedSongsFailsWhenSongListDoesNotExist() {
+        // Arrange
+        when(userService.getLikedSongs(TOKEN)).thenThrow(new RuntimeException("Song list does not exist"));
+
+        // Act
+        ResponseEntity<SongListDTO> response = userController.getLikedSongs(TOKEN);
+
+        // Assert
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        verify(userService).getLikedSongs(TOKEN);
+    }
+
+    @Test
+    @DisplayName("Get liked songs fails with general error")
+    void testGetLikedSongsFailsWithGeneralError() {
+        // Arrange
+        when(userService.getLikedSongs(TOKEN)).thenThrow(new RuntimeException("General error"));
+
+        // Act
+        ResponseEntity<SongListDTO> response = userController.getLikedSongs(TOKEN);
+
+        // Assert
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        verify(userService).getLikedSongs(TOKEN);
     }
 }

@@ -6,7 +6,9 @@ import com.deusto.theComitte.Spootify.service.SongService;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -87,5 +89,47 @@ public class SongController {
         }
     }
 
-    
+    @PostMapping("/like")
+    public ResponseEntity<Void> likeSong(@RequestParam long songId, @RequestParam long token) {
+        try {
+            songService.darLike(songId, token);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            if (e.getMessage().equals("User not logged in")) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            } else if (e.getMessage().equals("Song does not exist")) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    // @GetMapping("/mostlikedsongs")
+    // public ResponseEntity<Map<String, Integer>> getMostLikedSongs() {
+    //     try {
+    //         Map<String, Integer> mostLikedSongs = songService.getMostLikedSongs();
+    //         return ResponseEntity.ok(mostLikedSongs);
+    //     } catch (RuntimeException e) {
+    //         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    //     }
+    // }
+
+    @GetMapping("/mostlikedsongs")
+    public ResponseEntity<List<SongDTO>> getMostLikedSongs() {
+        try {
+            // Obtener la lista de canciones más gustadas
+            List<Song> mostLikedSongs = songService.getMostLikedSongs();
+
+            // Convertir la lista de canciones a una lista de SongDTO
+            List<SongDTO> mostLikedSongsDTO = new ArrayList<>();
+            for (Song song : mostLikedSongs) {
+                mostLikedSongsDTO.add(song.toDTO());
+            }
+
+            return ResponseEntity.ok(mostLikedSongsDTO);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 }

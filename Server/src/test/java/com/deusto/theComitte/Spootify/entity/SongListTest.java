@@ -124,10 +124,10 @@ class SongListTest {
     @Test
     @DisplayName("Test equals method")
     void testEquals() {
-        SongList songList = new SongList(1L, "Test Playlist", user, new ArrayList<>());
-        SongList songList2 = new SongList(1L, "Test Playlist", user, new ArrayList<>());
-        SongList sameIdSongList = new SongList(1L, "Different Name", user, new ArrayList<>());
-        SongList differentIdSongList = new SongList(2L, "Test Playlist", user, new ArrayList<>());
+        SongList songList = new SongList(1L, "Test Playlist", true, user, new ArrayList<>());
+        SongList songList2 = new SongList(1L, "Test Playlist", true, user, new ArrayList<>());
+        SongList sameIdSongList = new SongList(1L, "Different Name", true, user, new ArrayList<>());
+        SongList differentIdSongList = new SongList(2L, "Test Playlist", true, user, new ArrayList<>());
 
         // Same ID, name, songs and user
         assertTrue(songList.equals(songList2));
@@ -151,23 +151,25 @@ class SongListTest {
     @Test
     @DisplayName("Test equals method with null attributes")
     void testEqualsWithNullAttributes() {
-        SongList songList = new SongList(1L, "Test Playlist", user, new ArrayList<>());
+        SongList songList = new SongList(1L, "Test Playlist", true, user, new ArrayList<>());
 
         // Caso donde el ID es null
-        SongList songListWithNullId = new SongList(null, "Test Playlist", user, new ArrayList<>());
+        SongList songListWithNullId = new SongList(null, "Test Playlist", true, user, new ArrayList<>());
         assertFalse(songList.equals(songListWithNullId));
 
         // Caso donde el nombre es null
-        SongList songListWithNullName = new SongList(1L, null, user, new ArrayList<>());
+        SongList songListWithNullName = new SongList(1L, null, true, user, new ArrayList<>());
         assertFalse(songList.equals(songListWithNullName));
 
         // Caso donde la lista de canciones es null
-        SongList songListWithNullSongs = new SongList(1L, "Test Playlist", user, null);
+        SongList songListWithNullSongs = new SongList(1L, "Test Playlist", true, user, null);
         assertFalse(songList.equals(songListWithNullSongs));
 
         // Caso donde el usuario es null
-        SongList songListWithNullUser = new SongList(1L, "Test Playlist", null, new ArrayList<>());
+        SongList songListWithNullUser = new SongList(1L, "Test Playlist", true, null, new ArrayList<>());
         assertFalse(songList.equals(songListWithNullUser));
+
+
     }
 
     @Test
@@ -185,7 +187,7 @@ class SongListTest {
     @Test
     @DisplayName("Test para el constructor con nombre y usuario")
     void testConstructorWithNameAndUser() {
-        SongList newSongList = new SongList("My Playlist", user);
+        SongList newSongList = new SongList("My Playlist", true, user);
         assertEquals("My Playlist", newSongList.getName());
         assertEquals(user, newSongList.getUser());
         assertNotNull(newSongList.getSongs());
@@ -199,7 +201,7 @@ class SongListTest {
         songs.add(song1);
         songs.add(song2);
 
-        SongList fullSongList = new SongList(1L, "My Playlist", user, songs);
+        SongList fullSongList = new SongList(1L, "My Playlist", true, user, songs);
         assertEquals(1L, fullSongList.getId());
         assertEquals("My Playlist", fullSongList.getName());
         assertEquals(user, fullSongList.getUser());

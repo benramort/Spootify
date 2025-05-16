@@ -89,7 +89,7 @@ public class ArtistControllerTest {
         
         // Create DTOs - we'll use real methods instead of mocking them
         testArtistDTO = new Artist(ARTIST_ID, "Test Artist", "artist@example.com", "password").toDTO();
-        testSongDTO = new SongDTO(1L, "Test Song", 180, "https://youtube.com/watch?v=test");
+        testSongDTO = new SongDTO(1L, "Test Song", 180, "https://youtube.com/watch?v=test",0);
     }
 
     @Test
@@ -531,5 +531,45 @@ public class ArtistControllerTest {
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         verify(artistService).searchArtists(invalidName);
+    }
+
+    @Test
+    void testGetMostFollowedArtistsSuccess() {
+        // Arrange
+        Artist artist1 = new Artist(1L, "Artist 1", "artist1@email.com", "pass1");
+        Artist artist2 = new Artist(2L, "Artist 2", "artist2@email.com", "pass2");
+        // Simular seguidores
+        artist1.getFollowersList().add(new User(10L, "UserA", "a@email.com", "pw"));
+        artist2.getFollowersList().add(new User(11L, "UserB", "b@email.com", "pw"));
+        artist2.getFollowersList().add(new User(12L, "UserC", "c@email.com", "pw"));
+
+        List<Artist> artists = List.of(artist2, artist1); // artist2 tiene más seguidores
+
+        when(artistService.getMostFollowedArtists()).thenReturn(artists);
+
+        // Act
+        ResponseEntity<List<ArtistDTO>> response = artistController.getMostFollowedArtists();
+
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(2, response.getBody().size());
+        assertEquals("Artist 2", response.getBody().get(0).getName());
+        assertEquals("Artist 1", response.getBody().get(1).getName());
+        verify(artistService).getMostFollowedArtists();
+    }
+
+    @Test
+    @DisplayName("Get most followed artists fails with exception")
+    void testGetMostFollowedArtistsFailsWithException() {
+        // Arrange
+        when(artistService.getMostFollowedArtists()).thenThrow(new RuntimeException("Error"));
+
+        // Act
+        ResponseEntity<List<ArtistDTO>> response = artistController.getMostFollowedArtists();
+
+        // Assert
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        verify(artistService).getMostFollowedArtists();
     }
 }

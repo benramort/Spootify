@@ -1,6 +1,7 @@
 package com.deusto.theComitte.Spootify.service;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -121,5 +122,42 @@ public class ArtistService {
      */
     public List<Artist> searchArtists(String name) {
         return artistRepository.findByName(name);
+    }
+
+    // public Map<String, Integer> getMostFollowedArtists() {
+    //     // Recuperar todos los artistas de la base de datos
+    //     List<Artist> artists = artistRepository.findAll();
+    
+    //     // Crear un mapa donde la clave es el nombre del artista y el valor es el número de seguidores
+    //     Map<String, Integer> artistFollowerCountMap = new HashMap<>();
+    
+    //     // Recorrer los artistas y contar el tamaño de su lista de seguidores
+    //     for (Artist artist : artists) {
+    //         artistFollowerCountMap.put(artist.getName(), artist.getFollowersList().size());
+    //     }
+    
+    //     // Ordenar el mapa de mayor a menor según el número de seguidores
+    //     Map<String, Integer> sortedArtistFollowerCountMap = artistFollowerCountMap.entrySet()
+    //             .stream()
+    //             .sorted((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue()))
+    //             .collect(
+    //                     LinkedHashMap::new, // Usar LinkedHashMap para mantener el orden
+    //                     (map, entry) -> map.put(entry.getKey(), entry.getValue()),
+    //                     Map::putAll
+    //             );
+    
+    //     return sortedArtistFollowerCountMap;
+    // }
+
+    public List<Artist> getMostFollowedArtists() {
+        // Recuperar todos los artistas de la base de datos
+        List<Artist> artists = artistRepository.findAll();
+    
+        // Ordenar los artistas de mayor a menor según el número de seguidores
+        List<Artist> sortedArtists = artists.stream()
+                .sorted((artist1, artist2) -> Integer.compare(artist2.getFollowersList().size(), artist1.getFollowersList().size()))
+                .toList();
+    
+        return sortedArtists; // Devolver la lista ordenada
     }
 }

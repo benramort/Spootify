@@ -51,4 +51,7 @@ public class ArtistDTO {
         this.followersList = followersList;
     }
 
+    public String toString() {
+        return "ArtistDTO [id=" + id + ", name=" + name + ", albums=" + albums + ", followersList=" + followersList + "]";
+    }
 }

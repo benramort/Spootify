@@ -12,6 +12,7 @@ import UserDashboard from '../views/UserDashboard.vue';
 import Playlist from '@/views/Playlist.vue';
 import Search from '@/views/Search.vue';
 import Reproductor from '@/components/Reproductor.vue';
+import MostPopular from '@/components/MostPopular.vue';
 
 const routes = [
   { path: '/', component: Main },
@@ -27,7 +28,8 @@ const routes = [
   { path: '/playlists/:id', component: Playlist },
   { path: '/artists/:id', component: ArtistDetail },
   {path: '/search',component: Search},
-  {path: '/stream', component: Reproductor}
+  {path: '/stream', component: Reproductor},
+  {path: '/mostPopular', component: MostPopular}
 ];
 
 const router = createRouter({
