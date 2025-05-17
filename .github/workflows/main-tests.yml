@@ -62,3 +62,21 @@ jobs:
         folder: docs
         branch: gh-pages
         token: ${{ secrets.GITHUB_TOKEN }}
+
+  sonar:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+    
+    - name: Run SonarQube Analysis
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      run: |
+        docker compose --profile=sonar up --build --abort-on-container-exit --exit-code-from server-sonar

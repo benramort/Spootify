@@ -80,6 +80,26 @@ services:
       environment:
         - SPRING_DATASOURCE_URL=jdbc:mysql://database-test:3306/spootifydb
       command: mvn site
+
+  server-sonar:
+   build: Server/.
+   profiles:
+     - sonar
+   ports:
+     - "8081:8081"
+   volumes:
+     - ./Server:/app
+   working_dir: /app
+   environment:
+     - SPRING_DATASOURCE_URL=jdbc:mysql://database-test:3306/spootifydb
+   command: >
+     sh -c "mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar 
+     -Dsonar.projectKey=benramort_Spootify 
+     -Dsonar.organization=benramort 
+     -Dsonar.host.url=https://sonarcloud.io 
+     -Dsonar.login=$SONAR_TOKEN"
+   depends_on:
+     - database-test
     
 
 volumes:
