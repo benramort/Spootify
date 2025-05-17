@@ -270,7 +270,7 @@ defineExpose({
       
       <!-- Right section: Volume control, hide -->
       <div class="player-right">
-        <button class="volume-button" @click="toggleMute" @mouseenter="showVolumeControl = true" @mouseleave="showVolumeControl = false">
+        <button class="volume-button" @click="toggleMute">
           <i :class="['fa', isMuted ? 'fa-volume-off' : volume.value < 50 ? 'fa-volume-down' : 'fa-volume-up']"></i>
         </button>
         <div class="volume-control" v-show="showVolumeControl">
