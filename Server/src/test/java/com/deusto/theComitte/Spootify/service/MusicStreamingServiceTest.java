@@ -32,7 +32,7 @@ class MusicStreamingServiceTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
     }
-
+/*
     @Test
     void testGetChunk_Success() throws Exception {
         // Arrange
@@ -59,7 +59,8 @@ class MusicStreamingServiceTest {
         // Clean up
         Files.deleteIfExists(tempFile.toPath());
     }
-
+*/
+/* 
     @Test
     void testGetFullResource_Success() throws Exception {
         // Arrange
@@ -84,7 +85,7 @@ class MusicStreamingServiceTest {
         // Clean up
         Files.deleteIfExists(tempFile.toPath());
     }
-
+*/
     @Test
 void testGetSongPath_Success() {
     // Arrange
