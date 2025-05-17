@@ -66,6 +66,9 @@
             <div class="song-row" v-for="(song, index) in songsList" :key="song.id">
               <div class="song-number">{{ index + 1 }}</div>
               <div class="song-title">
+                <button class="queue-button" @click="reproductor.addToQueue([song])">
+                    <img id="queue" src="../assets/queue.png">
+                </button>
                 <div class="song-play">
                   <i class="fa-solid fa-circle-play" @click="playSong(song)"></i>
                 </div>
@@ -215,6 +218,27 @@
   </script>
   
   <style scoped>
+
+  #queue {
+      height: 2em;
+      width: 2em;
+      cursor: pointer;
+      transition: 0.2s ease-in-out;
+  }
+
+  #queue:hover {
+      transform: scale(1.2); /* Aumenta el tamaño al pasar el cursor */
+  }
+
+  button {
+    background-color: transparent;
+    border: 0;
+    margin: 0;
+    margin-right: 1em;
+    padding: 0;
+    /* border: 1px solid black; */
+  }
+
   /* Modern, clean styling with Spotify-inspired design */
   .search-container {
     max-width: 1200px;
@@ -550,6 +574,8 @@
     animation: spin 1s ease-in-out infinite;
     margin-bottom: 20px;
   }
+
+  
   
   @keyframes spin {
     to { transform: rotate(360deg); }
@@ -584,4 +610,6 @@
       padding: 8px 16px;
     }
   }
+
+  
   </style>
