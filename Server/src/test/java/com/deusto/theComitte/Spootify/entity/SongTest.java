@@ -159,6 +159,25 @@ public class SongTest {
         assertEquals(0, dto.getDuration());
     }
     
+    @Test
+    @DisplayName("Test setter and getter for numeroLikes")
+    void testNumeroLikesSetterGetter() {
+        // Verificar el valor inicial de numeroLikes
+        assertEquals(0, song.getNumeroLikes(), "El número inicial de likes debe ser 0");
+
+        // Establecer un nuevo valor para numeroLikes
+        song.setNumeroLikes(10);
+
+        // Verificar que el valor se actualizó correctamente
+        assertEquals(10, song.getNumeroLikes(), "El número de likes debe ser 10");
+
+        // Establecer otro valor para numeroLikes
+        song.setNumeroLikes(25);
+
+        // Verificar que el valor se actualizó correctamente
+        assertEquals(25, song.getNumeroLikes(), "El número de likes debe ser 25");
+    }
+
     // @Test
     // @DisplayName("Test handling of negative duration")
     // void testNegativeDuration() {

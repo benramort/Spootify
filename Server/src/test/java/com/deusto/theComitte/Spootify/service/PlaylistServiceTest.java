@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -46,6 +45,7 @@ public class PlaylistServiceTest {
     private User testUser;
     private Song testSong;
     private SongList testPlaylist;
+    private final long TOKEN = 12345L;
     private final long USER_ID = 1L;
     private final long SONG_ID = 1L;
     private final long PLAYLIST_ID = 1L;
@@ -62,7 +62,8 @@ public class PlaylistServiceTest {
         testSong = new Song(SONG_ID, "Test Song", testAlbum, 180, "https://youtube.com/test");
         
         // Create test playlist
-        testPlaylist = new SongList(PLAYLIST_ID, "Test Playlist", testUser);
+        testPlaylist = new SongList(PLAYLIST_ID, "Test Playlist", false, testUser);
+        
         
         // Set up user with playlist
         List<SongList> userPlaylists = new ArrayList<>();
@@ -142,13 +143,14 @@ public class PlaylistServiceTest {
         when(userService.getActiveUser(USER_ID)).thenReturn(testUser);
         
         // Act
-        playlistService.createPlayList(USER_ID, "New Playlist");
+        playlistService.createPlayList(USER_ID, "New Playlist", true);
         
         // Assert
         verify(userRepository).save(testUser);
         verify(songListRepository).save(any(SongList.class));
         assertEquals(2, testUser.getSongLists().size());
         assertEquals("New Playlist", testUser.getSongLists().get(1).getName());
+        assertEquals(true, testUser.getSongLists().get(1).getIsPublic());
     }
     
     @Test
@@ -159,7 +161,7 @@ public class PlaylistServiceTest {
         
         // Act & Assert
         RuntimeException exception = assertThrows(RuntimeException.class, () -> 
-            playlistService.createPlayList(USER_ID, "New Playlist")
+            playlistService.createPlayList(USER_ID, "New Playlist", true)
         );
         assertEquals("User not logged in", exception.getMessage());
         verify(userRepository, never()).save(any());
@@ -170,11 +172,11 @@ public class PlaylistServiceTest {
     @DisplayName("Get playlists for user successfully")
     void testGetPlayListsSuccess() {
         // Arrange
-        when(userService.getActiveUser(USER_ID)).thenReturn(testUser);
+        when(userService.getActiveUser(TOKEN)).thenReturn(testUser);
         when(userRepository.findById(USER_ID)).thenReturn(testUser);
         
         // Act
-        List<SongList> result = playlistService.getPlayLists(USER_ID);
+        List<SongList> result = playlistService.getPlayLists(TOKEN);
         
         // Assert
         assertEquals(1, result.size());
@@ -243,16 +245,59 @@ public class PlaylistServiceTest {
     void testGetPlaylistByIdFailsWhenUserDoesNotHaveAccess() {
         // Arrange
         User otherUser = new User(2L, "otheruser", "other@example.com", "password");
-        SongList otherPlaylist = new SongList(PLAYLIST_ID, "Other Playlist", otherUser);
-        otherPlaylist.setUser(otherUser);
+        SongList otherPlaylist = new SongList(PLAYLIST_ID, "Other Playlist", false, otherUser);
         
-        when(userService.getActiveUser(USER_ID)).thenReturn(testUser);
+        when(userService.getActiveUser(TOKEN)).thenReturn(testUser);
         when(songListRepository.findById(PLAYLIST_ID)).thenReturn(otherPlaylist);
         
         // Act & Assert
         RuntimeException exception = assertThrows(RuntimeException.class, () -> 
-            playlistService.getPlaylistById(USER_ID, PLAYLIST_ID)
+            playlistService.getPlaylistById(TOKEN, PLAYLIST_ID)
         );
         assertEquals("User does not have access to this playlist", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Share playlist successfully")
+    void testSharePlaylistSuccess() {
+        // Arrange
+        when(userService.getActiveUser(TOKEN)).thenReturn(testUser);
+        when(songListRepository.findById(PLAYLIST_ID)).thenReturn(testPlaylist);
+        
+        // Act
+        playlistService.sharePlaylist(PLAYLIST_ID, TOKEN);
+        
+        // Assert
+        assertTrue(testPlaylist.getIsPublic());
+        verify(songListRepository).save(testPlaylist);
+    }
+
+    @Test
+    @DisplayName("Share playlist fails when user does not exist")
+    void testSharePlaylistFailsWhenUserDoesNotExist() {
+        // Arrange
+        when(userService.getActiveUser(TOKEN)).thenReturn(null);
+        
+        // Act & Assert
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> 
+            playlistService.sharePlaylist(PLAYLIST_ID, TOKEN)
+        );
+        assertEquals("User not logged in", exception.getMessage());
+        verify(songListRepository, never()).save(any());
+    }
+
+    @Test
+    @DisplayName("Share playlist fails when playlist does not exist")
+    void testSharePlaylistFailsWhenPlaylistDoesNotExist() {
+        // Arrange
+        when(userService.getActiveUser(TOKEN)).thenReturn(testUser);
+        when(songListRepository.findById(PLAYLIST_ID)).thenReturn(null);
+        
+        // Act & Assert
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> 
+            playlistService.sharePlaylist(PLAYLIST_ID, TOKEN)
+        );
+        assertEquals("Playlist does not exist", exception.getMessage());
+        verify(songListRepository, never()).save(any());
     }
 }

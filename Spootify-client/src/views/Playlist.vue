@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted, ref, inject } from "vue";
 import { useRoute } from "vue-router";
+import Songs from "../components/Songs.vue";
 import axios from "axios";
 
 const globalState = inject("globalState");
@@ -15,7 +16,7 @@ const playlist = ref({
 const reproductor = inject("reproductor");
 
 function play(song) {
-    reproductor.playSong(song);
+    reproductor.selectSong(song);
 }
 
 onMounted(() => {
@@ -39,15 +40,46 @@ function fetchPlaylistDetails() {
         .then((response) => {
             console.log(response.data);
             playlist.value = response.data;
+            console.log("Publica: " + playlist.value.isPublic);
+            console.log("User: " + playlist.value.user);
         })
         .catch((error) => {
             console.error("Error al cargar la playlist:", error);
             playlist.value = null; // Maneja el error asignando null
         });
+
 }
 
-function openLink(link) {
-    window.open(link, "_blank");
+function generateShareLink() {
+
+    let path = `http://localhost:8081/playlists/${playlist.value.id}/share?token=${globalState.token.value}`;
+    let link = `http://localhost:8080/playlists/${playlist.value.id}`;
+    
+    window.navigator.clipboard.writeText(link).then(() => {
+        alert("Enlace copiado al portapapeles");
+    }).catch(err => {
+        console.error('Error al copiar el enlace: ', err);
+    });
+    
+    axios.post(path, {id: playlist.value.id})
+        .then((response) => {
+            console.log("La playlist pasa a ser pública", response.data);
+        })
+        .catch((error) => {
+            console.error("Error al hacer pública la playlist:", error);
+        });
+
+}
+
+function playAll() {
+    try {
+        let albumWithoutFirst = playlist.value.songs.slice(1, playlist.value.songs.length);
+        console.log(albumWithoutFirst);
+        reproductor.addToQueue(albumWithoutFirst);
+        reproductor.selectSong(playlist.value.songs[0]);
+    } catch (error) {
+        console.log(error);
+    }
 }
 </script>
 
@@ -55,24 +87,20 @@ function openLink(link) {
     <div v-if="playlist.name">
         <div class="columns">
             <div class="columnLeft">
-                <h2>{{ playlist.name }}</h2>
+                <div id="nameAndShare">
+                    <h2 id="playlistName">{{ playlist.name }}</h2>
+                    <img @click="generateShareLink()" id="shareImg" src="../assets/Share_button.png" alt="Compartir Playlist">
+                </div>
+                <button>
+                    <i class="fa-solid fa-circle-play" @click="playAll()"></i>
+                </button>
             </div>
             <div class="columnRight">
                 <div class="songs">
                     <!-- Verifica si la playlist tiene canciones -->
-                    <div v-if="playlist.songs.length > 0">
-                        <div class="song" v-for="song in playlist.songs" :key="song.id">
-                            <i class="fa-solid fa-circle-play" @click="play(song)"></i>
-                            <div class="horizontal-aling">
-                                <div>
-                                    <p><b>{{ song.title }}</b></p>
-                                </div>
-                                <p>{{ song.duration }}</p>
-                            </div>
-                        </div>
-                    </div>
+                    <Songs v-if="playlist.songs.length > 0" :songs="playlist.songs" />
                     <!-- Mensaje si no hay canciones -->
-                    <div v-else>
+                    <div v-if="playlist.songs.length === 0">
                         <p>Esta playlist no tiene canciones.</p>
                     </div>
                 </div>
@@ -85,6 +113,28 @@ function openLink(link) {
 </template>
 
 <style scoped>
+#shareImg {
+    width: 1.2em;
+    height: 1.2em;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+#shareImg:hover {
+    transform: translateY(-5px);
+    transition: 0.3s ease;
+}
+
+#nameAndShare {
+    display: flex;
+    align-items: center;
+}
+button {
+    background-color: transparent;
+    border: none;
+}
+
+
 .columns {
     display: flex;
     justify-content: space-between;
@@ -144,4 +194,5 @@ i {
 i:hover {
     color: rgb(22, 164, 72);
 }
+
 </style>

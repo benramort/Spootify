@@ -1,7 +1,9 @@
 package com.deusto.theComitte.Spootify.facade;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -180,5 +182,31 @@ public class ArtistController {
         }
     }
 
+    // @GetMapping("/mostfollowedartists")
+    // public ResponseEntity<Map<String, Integer>> getMostFollowedArtists() {
+    //     try {
+    //         Map<String, Integer> mostFollowedArtists = artistService.getMostFollowedArtists();
+    //         return ResponseEntity.ok(mostFollowedArtists);
+    //     } catch (RuntimeException e) {
+    //         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    //     }
+    // }
 
+    @GetMapping("/mostfollowedartists")
+    public ResponseEntity<List<ArtistDTO>> getMostFollowedArtists() {
+        try {
+            // Obtener la lista de artistas más seguidos
+            List<Artist> mostFollowedArtists = artistService.getMostFollowedArtists();
+
+            // Convertir la lista de artistas a una lista de ArtistDTO
+            List<ArtistDTO> mostFollowedArtistsDTO = new ArrayList<>();
+            for (Artist artist : mostFollowedArtists) {
+                mostFollowedArtistsDTO.add(artist.toDTOWithFollowers());
+            }
+
+            return ResponseEntity.ok(mostFollowedArtistsDTO);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 }

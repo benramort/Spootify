@@ -314,7 +314,7 @@ public class IntegrationTests {
 
             //Crear playlist
             String PLAYLIST_NAME = "playlist1";
-            SongListDTO songListDTO = new SongListDTO(PLAYLIST_NAME);
+            SongListDTO songListDTO = new SongListDTO(PLAYLIST_NAME, true);
             request = HttpRequest.newBuilder()
             .uri(URI.create("http://localhost:8081/playlists?token=" + TOKEN))
             .POST(HttpRequest.BodyPublishers.ofString(objectMapper.writeValueAsString(songListDTO)))

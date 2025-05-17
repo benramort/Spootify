@@ -52,8 +52,8 @@ public class PlaylistService {
     //     }
     // }
 
-    public void addSongToPlayList(long userId, long songId, long songListId) {
-        User user = userService.getActiveUser(userId); // Obtén el usuario activo
+    public void addSongToPlayList(long token, long songId, long songListId) {
+        User user = userService.getActiveUser(token); // Obtén el usuario activo
         if (user == null) {
             throw new RuntimeException("User does not exist");
         }
@@ -76,20 +76,19 @@ public class PlaylistService {
         userRepository.save(user); // Guarda el usuario en la base de datos
     }
 
-    public void createPlayList(long token, String name) {
+    public void createPlayList(long token, String name, boolean isPublic) {
         User user = userService.getActiveUser(token);
         if (user == null) {
-            System.out.println("aaaaaaaaaaaaa");
             throw new RuntimeException("User not logged in");
         }
-        SongList songList = new SongList(name, user);
+        SongList songList = new SongList(name, isPublic, user);
         user.addSongList(songList);
         userRepository.save(user);
         songListRepository.save(songList);
     }
 
-    public List<SongList> getPlayLists(long userId) {
-        User user = userService.getActiveUser(userId);
+    public List<SongList> getPlayLists(long token) {
+        User user = userService.getActiveUser(token);
         if (user == null) {
             throw new RuntimeException("User does not exist");
         }
@@ -97,8 +96,8 @@ public class PlaylistService {
         return updatedUser.getSongLists();
     }
 
-    public SongList getPlaylistById(long userId, long songListId) {
-        User user = userService.getActiveUser(userId);
+    public SongList getPlaylistById(long token, long songListId) {
+        User user = userService.getActiveUser(token);
         if (user == null) {
             throw new RuntimeException("User does not exist");
         }
@@ -106,9 +105,27 @@ public class PlaylistService {
         if (songList == null) {
             throw new RuntimeException("SongList does not exist");
         }
-        if (songList.getUser().getId() != user.getId()) {
+        System.out.println("SongListUserID: " + songList.getUser().getId());
+        System.out.println("UserID: " + user.getId());
+        if (songList.getUser().getId() != user.getId() && !songList.getIsPublic()) {
             throw new RuntimeException("User does not have access to this playlist");
         }
+
         return songList;
+    }
+
+    public void sharePlaylist(long id, long token) {
+        User user = userService.getActiveUser(token);
+        if (user == null) {
+            throw new RuntimeException("User not logged in");
+        }
+        SongList songList = songListRepository.findById(id);
+        if (songList == null) {
+            throw new RuntimeException("Playlist does not exist");
+        }
+        if(songList.getIsPublic() == false){
+            songList.setPublic(true);
+            songListRepository.save(songList);
+        }
     }
 }

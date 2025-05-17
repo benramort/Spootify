@@ -29,8 +29,8 @@ public class UserTest {
         artist2 = new Artist(2L, "Artist Two", "artist2@example.com", "pass2");
         
         // Create test song lists
-        songList1 = new SongList(1L, "Playlist One", user);
-        songList2 = new SongList(2L, "Playlist Two", user);
+        songList1 = new SongList(1L, "Playlist One", true, user);
+        songList2 = new SongList(2L, "Playlist Two", true, user);
         
         // Add artists to follow list
         List<Artist> followList = new ArrayList<>();
@@ -160,7 +160,7 @@ public class UserTest {
     void testSetSongLists() {
         // Create a new list
         List<SongList> newSongLists = new ArrayList<>();
-        SongList newSongList = new SongList(3L, "New Playlist", user);
+        SongList newSongList = new SongList(3L, "New Playlist", true, user);
         newSongLists.add(newSongList);
         
         // Set the new list
@@ -181,7 +181,7 @@ public class UserTest {
         assertEquals(2, user.getSongLists().size());
         
         // Create new song list
-        SongList newSongList = new SongList(3L, "Added Playlist", null);
+        SongList newSongList = new SongList(3L, "Added Playlist", true, null);
         
         // Add the new song list
         user.addSongList(newSongList);

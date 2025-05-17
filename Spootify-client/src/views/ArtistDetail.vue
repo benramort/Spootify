@@ -40,9 +40,7 @@
 
 
     function chechFollow(){
-        console.log("chechFollow");
         console.log(artist.value);
-        console.log("ueadafds");
         console.log(artist.value.followersList.length);
         artist.value.followersList.forEach((follower) => {
             if (follower.id == globalState.userId.value) {
@@ -57,6 +55,8 @@
         axios.post(path).then((response) => {
             console.log(response.data);
             isFollowing.value = true;
+            // Refrescar la página después de seguir al artista
+            window.location.reload();
         }).catch((error) => {
             console.log(error);
         });

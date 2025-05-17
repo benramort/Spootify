@@ -140,7 +140,7 @@
 
   function playSong(song) {
       console.log('Playing song:', song);
-      reproductor.playSong(song);
+      reproductor.selectSong(song);
   }
 
   function debounceSearch(event) {

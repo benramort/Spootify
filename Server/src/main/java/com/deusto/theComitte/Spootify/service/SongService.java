@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +14,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.deusto.theComitte.Spootify.DAO.AlbumRepository;
 import com.deusto.theComitte.Spootify.DAO.ArtistRepository;
+import com.deusto.theComitte.Spootify.DAO.PlayListRepository;
 import com.deusto.theComitte.Spootify.DAO.SongRepository;
 import com.deusto.theComitte.Spootify.entity.Album;
 import com.deusto.theComitte.Spootify.entity.Artist;
 import com.deusto.theComitte.Spootify.entity.Song;
+import com.deusto.theComitte.Spootify.entity.User;
 
 @Service
 public class SongService {
@@ -29,6 +32,12 @@ public class SongService {
     ArtistRepository artistRepository;
     @Autowired
     ArtistService artistService;
+    @Autowired
+    PlaylistService playlistService;
+    @Autowired
+    UserService userService;
+    @Autowired
+    PlayListRepository playListRepository;
 
 
     public void createSong(String title, int duration, MultipartFile audioFile, long albumId, long token) throws IOException {
@@ -93,4 +102,59 @@ public class SongService {
     public List<Song> searchSongs(String title) {
         return songRepository.findByName(title);
     }
+
+    public void darLike(long songId, long token) {
+        // System.out.println("Song ID: " + songId);
+        System.out.println("Token: " + token);
+        System.out.println("Hola");
+        User user = userService.getActiveUser(token);
+        playlistService.addSongToPlayList(token, songId, user.getCancionesMeGustanID());
+        Song song = songRepository.findById(songId);
+        if (song == null) {
+            throw new RuntimeException("Song does not exist");
+        }
+        song.setNumeroLikes(song.getNumeroLikes() + 1);
+        songRepository.save(song);
+    }
+
+    // public Map<String, Integer> getMostLikedSongs() {
+    //     // Recuperar todas las canciones de la base de datos
+    //     List<Song> songs = songRepository.findAll();
+    
+    //     // Crear un mapa donde la clave es el nombre de la canción y el valor es el número de likes
+    //     Map<String, Integer> songLikesMap = new HashMap<>();
+    
+    //     // Recorrer las canciones y añadirlas al mapa si tienen más de 0 likes
+    //     for (Song song : songs) {
+    //         if (song.getNumeroLikes() > 0) {
+    //             songLikesMap.put(song.getName(), song.getNumeroLikes());
+    //         }
+    //     }
+    
+    //     // Ordenar el mapa de mayor a menor según el número de likes
+    //     Map<String, Integer> sortedSongLikesMap = songLikesMap.entrySet()
+    //             .stream()
+    //             .sorted((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue()))
+    //             .collect(
+    //                     LinkedHashMap::new, // Usar LinkedHashMap para mantener el orden
+    //                     (map, entry) -> map.put(entry.getKey(), entry.getValue()),
+    //                     Map::putAll
+    //             );
+    
+    //     return sortedSongLikesMap;
+    // }
+
+    public List<Song> getMostLikedSongs() {
+        // Recuperar todas las canciones de la base de datos
+        List<Song> songs = songRepository.findAll();
+
+        // Filtrar las canciones con más de 0 likes
+        List<Song> filteredSongs = songs.stream()
+                .filter(song -> song.getNumeroLikes() > 0)
+                .sorted((song1, song2) -> Integer.compare(song2.getNumeroLikes(), song1.getNumeroLikes())) // Ordenar de mayor a menor
+                .toList();
+
+        return new ArrayList<>(filteredSongs); // Convertir a ArrayList y devolver
+    }
+
 }

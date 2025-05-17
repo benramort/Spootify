@@ -39,6 +39,20 @@ onMounted(() => {
 function goToPlaylist(id) {
     router.push(`/playlists/${id}`); // Navega a la ruta de la playlist con su ID
 }
+
+function playAll() {
+        try {
+            album.value.songs.forEach(s => s.album = album.value);
+            let albumWithoutFirst = album.value.songs.slice(1, album.value.songs.length);
+            console.log(albumWithoutFirst);
+            reproductor.addToQueue(albumWithoutFirst);
+            reproductor.selectSong(album.value.songs[0]);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+
 </script>
 
 <template>

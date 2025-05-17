@@ -1,6 +1,8 @@
 <script setup>
-import { ref, onMounted, computed, watch } from 'vue';
-import { useRoute } from 'vue-router';
+import { ref, onMounted, computed, watch, inject } from 'vue';
+import axios from 'axios';
+
+const globalState = inject('globalState');
 
 // Reactive state
 const audioPlayer = ref(null);
@@ -11,35 +13,30 @@ const isPlaying = ref(false);
 const volume = ref(80);
 const isMuted = ref(false);
 const showVolumeControl = ref(false);
-const isLiked = ref(false);
 const isShuffle = ref(false);
 const isRepeat = ref(false);
+const previousEnabled = ref(false);
+const nextEnabled = ref(false);
+const visible = ref(true);
 
-// Song info (replace with your API data)
-const songInfo = ref({
-  title: "Song Title",
-  artist: "Artist Name",
-  album: "Album Name",
-  albumCover: "http://localhost:8081/",
-});
 const song = ref(null);
+let queue = [];
+let queueIndex = -1;
 
-function selectSong(songParam) {
+function playSong(songParam) {
   song.value = songParam;
   console.log("Portada before: " + songParam.album.cover);
   if(song.value.album.cover.startsWith("http")) {
-    songInfo.value.albumCover = song.value.album.cover;
+    song.value.albumCover = song.value.album.cover;
   } else {
-    songInfo.value.albumCover = "http://localhost:8081/" + song.value.album.cover.substring(9);
+    song.value.albumCover = "http://localhost:8081/" + song.value.album.cover.substring(9);
   }
-  console.log('Portada after:' + songInfo.value.albumCover);
   
   setTimeout(
   () => {
       if (audioPlayer.value && songParam) {
       audioPlayer.value.src = `http://localhost:8081/stream?song=${songParam.id}`;
       audioPlayer.value.load(); // Important: reload the audio element
-      // Auto-play if desired 
       }
 
       audioPlayer.value.play()
@@ -47,6 +44,54 @@ function selectSong(songParam) {
       isPlaying.value = true;
   }, 100);
 
+}
+
+function selectSong(song) {
+  queueIndex++;
+  queue.splice(queueIndex, 0, song);
+  playSong(song);
+}
+
+function nextSong() {
+  if (!isRepeat.value) {
+    if (isShuffle.value) {
+      queueIndex = Math.floor(Math.random() * queue.length);
+    } else {
+      queueIndex++;
+    }
+  }
+  console.log("Next song. Queue index: ", queueIndex, "Queue length:", queue.length, "Shuffle: ", isShuffle.value, "Repeat: ", isRepeat.value);
+  if (queueIndex < queue.length) {
+    playSong(queue[queueIndex]);
+  }
+  if (queueIndex >= 1) {
+    previousEnabled.value = true;
+  }
+  if (queueIndex >= queue.length - 1 && !isShuffle.value) {
+    console.log("Queue finished");
+    nextEnabled.value = false;
+  }
+}
+
+function previousSong() {
+  queueIndex--;
+  nextEnabled.value = true;
+  if (queueIndex >= 0) {
+    playSong(queue[queueIndex]);
+  }
+  if (queueIndex < 1) {
+    previousEnabled.value = false;
+  }
+}
+
+
+function addToQueue(songs) {
+  nextEnabled.value = true;
+  songs.forEach(song => {
+    queue.push(song);
+  });
+  console.log("Index: ", queueIndex);
+  console.log("Queue: ", queue);
 }
 
 // Format time functions
@@ -119,8 +164,21 @@ const setVolume = (e) => {
   }
 };
 
-const toggleLike = () => {
-  isLiked.value = !isLiked.value;
+const likeSong = () => {
+  console.log("Like button clicked");
+  if (song.value.liked) {
+    console.log("Canción ya está en la playlist 'Canciones que me gustan'");
+    return;
+  }
+  const token = globalState.token.value;
+
+  const path = `http://localhost:8081/songs/like?token=${token}&songId=${song.value.id}`;
+  axios.post(path).then(() => {
+      console.log("Canción añadida a la playlist 'Canciones que me gustan'");
+      song.value.liked = true;
+  }).catch((error) => {
+      console.error("Error al añadir la canción a la playlist 'Canciones que me gustan':", error);
+  });
 };
 
 const toggleShuffle = () => {
@@ -143,11 +201,13 @@ watch(() => audioPlayer.value, (newPlayer) => {
   if (newPlayer) {
     newPlayer.addEventListener('timeupdate', updateProgress);
     newPlayer.addEventListener('loadedmetadata', updateProgress);
+    newPlayer.addEventListener('ended', nextSong)
   }
 }, { immediate: true });
 
 defineExpose({
-  selectSong
+  selectSong: selectSong,
+  addToQueue: addToQueue
 });
 </script>
 
@@ -161,18 +221,21 @@ defineExpose({
     </audio>
     
     <!-- Player UI -->
-    <div class="player">
+    <div class="player" v-if="visible">
       <!-- Left section: Album & Song info -->
       <div class="player-left">
         <div class="album-cover">
-          <img :src="songInfo.albumCover" alt="Album Cover" />
+          <img :src="song.albumCover" alt="Album Cover" />
         </div>
         <div class="song-info">
           <div class="song-title">{{ song.title }}</div>
           <div class="song-artist">{{ song.album.artists[0].name }}</div>
         </div>
-        <div class="like-button" @click="toggleLike">
-          <i :class="['fa', isLiked ? 'fa-heart' : 'fa-heart-o']"></i>
+        <div class="like-button"
+            @click="likeSong()"
+            :disabled="song.liked"
+            >
+          <i :class="['fa', song.liked ? 'fa-heart' : 'fa-heart-o']"></i>
         </div>
       </div>
       
@@ -182,13 +245,13 @@ defineExpose({
           <button class="control-button shuffle" @click="toggleShuffle" :class="{ active: isShuffle }">
             <i class="fa fa-random"></i>
           </button>
-          <button class="control-button prev">
+          <button class="control-button prev" :disabled="!previousEnabled" @click="previousSong">
             <i class="fa fa-step-backward"></i>
           </button>
           <button class="control-button play-pause" @click="togglePlay">
             <i :class="['fa', isPlaying ? 'fa-pause' : 'fa-play']"></i>
           </button>
-          <button class="control-button next">
+          <button class="control-button next" :disabled="!nextEnabled" @click="nextSong">
             <i class="fa fa-step-forward"></i>
           </button>
           <button class="control-button repeat" @click="toggleRepeat" :class="{ active: isRepeat }">
@@ -205,9 +268,9 @@ defineExpose({
         </div>
       </div>
       
-      <!-- Right section: Volume control -->
-      <div class="player-right" @mouseenter="showVolumeControl = true" @mouseleave="showVolumeControl = false">
-        <button class="volume-button" @click="toggleMute">
+      <!-- Right section: Volume control, hide -->
+      <div class="player-right">
+        <button class="volume-button" @click="toggleMute" @mouseenter="showVolumeControl = true" @mouseleave="showVolumeControl = false">
           <i :class="['fa', isMuted ? 'fa-volume-off' : volume.value < 50 ? 'fa-volume-down' : 'fa-volume-up']"></i>
         </button>
         <div class="volume-control" v-show="showVolumeControl">
@@ -215,7 +278,16 @@ defineExpose({
             <div class="volume-level" :style="volumeStyle"></div>
           </div>
         </div>
+        <button class="down-button">
+          <i class="fa fa-angle-down" @click="visible = false"></i>
+        </button>
       </div>
+    </div>
+
+    <div v-if="!visible"> 
+      <button class="down-button-floating" @click="visible = true">
+        <i class="fa fa-angle-up"></i>
+      </button>
     </div>
   </div>
 </template>
@@ -328,6 +400,14 @@ defineExpose({
   transform: scale(1.05);
 }
 
+.control-button:disabled {
+  color: #535353;
+}
+
+.control-button:disabled:hover {
+  transform: none;
+}
+
 .shuffle, .repeat {
   font-size: 12px;
 }
@@ -427,7 +507,7 @@ defineExpose({
 .volume-control {
   width: 100px;
   position: absolute;
-  right: 30px;
+  right: 60px;
   top: 50%;
   transform: translateY(-50%);
 }
@@ -451,6 +531,45 @@ defineExpose({
 
 .volume-bar:hover .volume-level {
   background-color: #1ed760;
+}
+
+.down-button {
+  background: none;
+  border: none;
+  color: #b3b3b3;
+  font-size: 27px;
+  cursor: pointer;
+  margin-left: 8px;
+  padding-bottom: 2px;
+}
+
+.down-button:hover {
+  color: #fff;
+}
+
+.down-button-floating {
+  position: fixed;
+  bottom: 25px;
+  right: 10px;
+  background-color: #181818;
+  color: #b3b3b3;
+  border: none;
+  font-size: 27px;
+  padding-bottom: 2px;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.down-button-floating:hover {
+  color: #fff;
+  transform: scale(1.1);
+  
 }
 
 /* Media queries for responsive design */
