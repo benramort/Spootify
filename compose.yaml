@@ -52,7 +52,7 @@ services:
     working_dir: /app
     environment:
       - SPRING_DATASOURCE_URL=jdbc:mysql://database-test:3306/spootifydb
-    command: mvn verify
+    command: mvn verify -PIntegrationTests
     depends_on:
       - database-test
 

@@ -39,7 +39,9 @@
 <template>
   <div class="header">
     <div id="contenedorLogo">
-      <img src="../assets/Spootify_logo.png" alt="Spotify logo"/>
+      <router-link to="/">
+        <img src="../assets/Spootify_logo.png" alt="Spotify logo" />
+      </router-link>
       <p id="titulo">Spootify</p>
     </div>
     <div class="side">
