@@ -99,6 +99,8 @@
 			<scope>test</scope>
 		</dependency>
 
+
+
 	</dependencies>
 
 	<build>
@@ -169,15 +171,6 @@
 				</configuration>
 			</plugin>
 
-			<plugin>
-				<artifactId>maven-failsafe-plugin</artifactId>
-				<configuration>
-					<includes>
-						<include>**/integration/**</include>
-						<include>**/performance/**</include>
-					</includes>
-				</configuration>
-			</plugin>
 
 			<plugin>
 				<groupId>com.soebes.maven.plugins</groupId>
@@ -200,5 +193,27 @@
 		</plugins>
 
 	</build>
+
+	<profiles>
+		
+		<profile>
+			<id>IntegrationTests</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-failsafe-plugin</artifactId>
+						<configuration>
+							<includes>
+								<include>**/integration/**</include>
+								<include>**/performance/**</include>
+							</includes>
+							<printSummary>true</printSummary>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 </project>
