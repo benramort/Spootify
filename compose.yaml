@@ -59,6 +59,7 @@ services:
   database-test:
     profiles:
       - test
+      - sonar
     image: mysql:latest
     ports:
       - "3300:3306"
