@@ -60,9 +60,7 @@ onMounted(async () => {
                     <span class="likes-count">
                         {{ song.numeroLikes || 0 }} <i class="fa-solid fa-heart"></i>
                     </span>
-                    <button class="play-btn" @click="playSong(song)" title="Reproducir">
-                        ▶
-                    </button>
+                    <i class="fa-solid fa-circle-play" @click="playSong(song)"></i>
                     <div v-if="idx < mostLikedSongs.length - 1" class="divider"></div>
                 </div>
             </div>
@@ -142,23 +140,16 @@ onMounted(async () => {
     font-size: 1.1em;
     gap: 0.3em;
 }
-.play-btn {
-    background: #1db954;
-    border: none;
-    color: white;
-    border-radius: 50%;
-    width: 2.2em;
-    height: 2.2em;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.2em;
+.fa-circle-play {
+    color: rgb(30, 215, 96);
+    font-size: 2em;
+    margin-right: 0.7em;
+    margin-left: 0.3em;
     cursor: pointer;
-    margin-left: auto;
-    transition: background 0.2s;
+    transition: 0.2s;
 }
-.play-btn:hover {
-    background: #169943;
+.fa-circle-play:hover {
+    color: #169943;
 }
 .followers-count {
     margin-left: auto;
