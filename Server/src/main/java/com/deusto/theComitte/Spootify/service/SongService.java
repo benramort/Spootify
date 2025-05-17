@@ -40,6 +40,17 @@ public class SongService {
     PlayListRepository playListRepository;
 
 
+    /**
+     * Crea una nueva canción asociada a un álbum y la guarda en la base de datos.
+     *
+     * @param title Título de la canción
+     * @param duration Duración de la canción en segundos
+     * @param audioFile Archivo de audio de la canción (opcional)
+     * @param albumId ID del álbum al que pertenece la canción
+     * @param token Token de autenticación del artista
+     * @throws IOException Si ocurre un error al guardar el archivo de audio
+     * @throws RuntimeException Si el álbum no existe o el artista no tiene acceso
+     */
     public void createSong(String title, int duration, MultipartFile audioFile, long albumId, long token) throws IOException {
         Artist artist = artistService.getActiveArtist(token);
         List<Album> albums = artist.getAlbums();
@@ -70,6 +81,13 @@ public class SongService {
         songRepository.save(song);
     }
 
+    /**
+     * Obtiene una lista de canciones filtradas por artista y/o álbum.
+     *
+     * @param artistId ID del artista (opcional, 0 para ignorar)
+     * @param albumId ID del álbum (opcional, 0 para ignorar)
+     * @return Lista de canciones que cumplen los criterios
+     */
     public List<Song> getSongs(long artistId, long albumId) {
         if (artistId != 0 && albumId != 0) {
             return songRepository.findByArtistIdAndAlbumId(artistId, albumId);
@@ -83,6 +101,12 @@ public class SongService {
         return songRepository.findAll();
     }
 
+    /**
+     * Obtiene todas las canciones de los álbumes de un artista autenticado.
+     *
+     * @param token Token de autenticación del artista
+     * @return Lista de canciones del artista
+     */
     public List<Song> getArtistSongs(long token) {
         Artist artist = artistService.getActiveArtist(token);
         return artist.getAlbums()
@@ -90,6 +114,13 @@ public class SongService {
             .flatMap(s -> s.getSongs().stream()).toList();
     }
 
+    /**
+     * Obtiene una canción por su ID.
+     *
+     * @param id ID de la canción
+     * @return La canción encontrada
+     * @throws RuntimeException Si la canción no existe
+     */
     public Song getSong(long id) {
         Song song = songRepository.findById(id);
         if(song == null)
@@ -99,10 +130,23 @@ public class SongService {
         return song;
     }
 
+    /**
+     * Busca canciones por nombre.
+     *
+     * @param title Nombre o parte del nombre de la canción
+     * @return Lista de canciones que coinciden con el nombre
+     */
     public List<Song> searchSongs(String title) {
         return songRepository.findByName(title);
     }
 
+    /**
+     * Permite a un usuario dar like a una canción y la añade a su playlist de "Canciones que me gustan".
+     *
+     * @param songId ID de la canción a la que se da like
+     * @param token Token de autenticación del usuario
+     * @throws RuntimeException Si la canción no existe
+     */
     public void darLike(long songId, long token) {
         // System.out.println("Song ID: " + songId);
         System.out.println("Token: " + token);
@@ -117,33 +161,11 @@ public class SongService {
         songRepository.save(song);
     }
 
-    // public Map<String, Integer> getMostLikedSongs() {
-    //     // Recuperar todas las canciones de la base de datos
-    //     List<Song> songs = songRepository.findAll();
-    
-    //     // Crear un mapa donde la clave es el nombre de la canción y el valor es el número de likes
-    //     Map<String, Integer> songLikesMap = new HashMap<>();
-    
-    //     // Recorrer las canciones y añadirlas al mapa si tienen más de 0 likes
-    //     for (Song song : songs) {
-    //         if (song.getNumeroLikes() > 0) {
-    //             songLikesMap.put(song.getName(), song.getNumeroLikes());
-    //         }
-    //     }
-    
-    //     // Ordenar el mapa de mayor a menor según el número de likes
-    //     Map<String, Integer> sortedSongLikesMap = songLikesMap.entrySet()
-    //             .stream()
-    //             .sorted((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue()))
-    //             .collect(
-    //                     LinkedHashMap::new, // Usar LinkedHashMap para mantener el orden
-    //                     (map, entry) -> map.put(entry.getKey(), entry.getValue()),
-    //                     Map::putAll
-    //             );
-    
-    //     return sortedSongLikesMap;
-    // }
-
+    /**
+     * Obtiene la lista de canciones con más likes, ordenadas de mayor a menor.
+     *
+     * @return Lista de canciones más gustadas
+     */
     public List<Song> getMostLikedSongs() {
         // Recuperar todas las canciones de la base de datos
         List<Song> songs = songRepository.findAll();
