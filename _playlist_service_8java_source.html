@@ -205,43 +205,47 @@ $(document).ready(function(){initNavTree('_playlist_service_8java_source.html','
 <div class="foldopen" id="foldopen00099" data-start="{" data-end="}">
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno"><a class="line" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_playlist_service.html#a5a3d68bd3c810ece16f14bf319ac2f43">   99</a></span>    <span class="keyword">public</span> SongList <a class="code hl_function" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_playlist_service.html#a5a3d68bd3c810ece16f14bf319ac2f43">getPlaylistById</a>(<span class="keywordtype">long</span> token, <span class="keywordtype">long</span> songListId) {</div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>        User user = userService.getActiveUser(token);</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>        <span class="keywordflow">if</span> (user == <span class="keyword">null</span>) {</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>            <span class="keywordflow">throw</span> <span class="keyword">new</span> RuntimeException(<span class="stringliteral">&quot;User does not exist&quot;</span>);</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>        }</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>        SongList songList = songListRepository.findById(songListId);</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>        <span class="keywordflow">if</span> (songList == <span class="keyword">null</span>) {</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>            <span class="keywordflow">throw</span> <span class="keyword">new</span> RuntimeException(<span class="stringliteral">&quot;SongList does not exist&quot;</span>);</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>        }</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>        System.out.println(<span class="stringliteral">&quot;SongListUserID: &quot;</span> + songList.getUser().getId());</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>        System.out.println(<span class="stringliteral">&quot;UserID: &quot;</span> + user.getId());</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>        <span class="keywordflow">if</span> (songList.getUser().getId() != user.getId() &amp;&amp; !songList.getIsPublic()) {</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>            <span class="keywordflow">throw</span> <span class="keyword">new</span> RuntimeException(<span class="stringliteral">&quot;User does not have access to this playlist&quot;</span>);</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>        }</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span> </div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>        <span class="keywordflow">return</span> songList;</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    }</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>        SongList songList = songListRepository.findById(songListId);</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>        <span class="keywordflow">if</span> (songList == <span class="keyword">null</span>) {</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>            <span class="keywordflow">throw</span> <span class="keyword">new</span> RuntimeException(<span class="stringliteral">&quot;SongList does not exist&quot;</span>);</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>        }</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>        <span class="comment">// if (!songList.getIsPublic() &amp;&amp; user != null &amp;&amp; songList.getUser().getId() != user.getId()) {</span></div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>        <span class="comment">//     throw new RuntimeException(&quot;User does not have access to this playlist&quot;);</span></div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>        <span class="comment">// }</span></div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>        <span class="keywordflow">if</span> (!songList.getIsPublic()) {</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>            <span class="keywordflow">if</span> (user != <span class="keyword">null</span> &amp;&amp; songList.getUser().getId() != user.getId()) {</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>                <span class="keywordflow">throw</span> <span class="keyword">new</span> RuntimeException(<span class="stringliteral">&quot;User does not have access to this playlist&quot;</span>);</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>            }</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>            <span class="keywordflow">if</span> (user == <span class="keyword">null</span>) {</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>                <span class="keywordflow">throw</span> <span class="keyword">new</span> RuntimeException(<span class="stringliteral">&quot;User does not have access to this playlist&quot;</span>);</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>            }</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>        }</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>        <span class="keywordflow">return</span> songList;</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    }</div>
 </div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span> </div>
-<div class="foldopen" id="foldopen00117" data-start="{" data-end="}">
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno"><a class="line" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_playlist_service.html#a05fbfd9bf27a6ce589016306f2045f49">  117</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_playlist_service.html#a05fbfd9bf27a6ce589016306f2045f49">sharePlaylist</a>(<span class="keywordtype">long</span> <span class="keywordtype">id</span>, <span class="keywordtype">long</span> token) {</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>        User user = userService.getActiveUser(token);</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>        <span class="keywordflow">if</span> (user == <span class="keyword">null</span>) {</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>            <span class="keywordflow">throw</span> <span class="keyword">new</span> RuntimeException(<span class="stringliteral">&quot;User not logged in&quot;</span>);</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>        }</div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>        SongList songList = songListRepository.findById(<span class="keywordtype">id</span>);</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>        <span class="keywordflow">if</span> (songList == <span class="keyword">null</span>) {</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>            <span class="keywordflow">throw</span> <span class="keyword">new</span> RuntimeException(<span class="stringliteral">&quot;Playlist does not exist&quot;</span>);</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span> </div>
+<div class="foldopen" id="foldopen00121" data-start="{" data-end="}">
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno"><a class="line" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_playlist_service.html#a05fbfd9bf27a6ce589016306f2045f49">  121</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_playlist_service.html#a05fbfd9bf27a6ce589016306f2045f49">sharePlaylist</a>(<span class="keywordtype">long</span> <span class="keywordtype">id</span>, <span class="keywordtype">long</span> token) {</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>        User user = userService.getActiveUser(token);</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>        <span class="keywordflow">if</span> (user == <span class="keyword">null</span>) {</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>            <span class="keywordflow">throw</span> <span class="keyword">new</span> RuntimeException(<span class="stringliteral">&quot;User not logged in&quot;</span>);</div>
 <div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>        }</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>        <span class="keywordflow">if</span>(songList.getIsPublic() == <span class="keyword">false</span>){</div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>            songList.setPublic(<span class="keyword">true</span>);</div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>            songListRepository.save(songList);</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>        SongList songList = songListRepository.findById(<span class="keywordtype">id</span>);</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>        <span class="keywordflow">if</span> (songList == <span class="keyword">null</span>) {</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>            <span class="keywordflow">throw</span> <span class="keyword">new</span> RuntimeException(<span class="stringliteral">&quot;Playlist does not exist&quot;</span>);</div>
 <div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>        }</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>    }</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>        <span class="keywordflow">if</span>(songList.getIsPublic() == <span class="keyword">false</span>){</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>            songList.setPublic(<span class="keyword">true</span>);</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>            songListRepository.save(songList);</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>        }</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>    }</div>
 </div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>}</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>}</div>
 </div>
 <div class="ttc" id="aclasscom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_playlist_service_html"><div class="ttname"><a href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_playlist_service.html">com.deusto.theComitte.Spootify.service.PlaylistService</a></div><div class="ttdef"><b>Definition</b> <a href="_playlist_service_8java_source.html#l00017">PlaylistService.java:17</a></div></div>
-<div class="ttc" id="aclasscom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_playlist_service_html_a05fbfd9bf27a6ce589016306f2045f49"><div class="ttname"><a href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_playlist_service.html#a05fbfd9bf27a6ce589016306f2045f49">com.deusto.theComitte.Spootify.service.PlaylistService.sharePlaylist</a></div><div class="ttdeci">void sharePlaylist(long id, long token)</div><div class="ttdef"><b>Definition</b> <a href="_playlist_service_8java_source.html#l00117">PlaylistService.java:117</a></div></div>
+<div class="ttc" id="aclasscom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_playlist_service_html_a05fbfd9bf27a6ce589016306f2045f49"><div class="ttname"><a href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_playlist_service.html#a05fbfd9bf27a6ce589016306f2045f49">com.deusto.theComitte.Spootify.service.PlaylistService.sharePlaylist</a></div><div class="ttdeci">void sharePlaylist(long id, long token)</div><div class="ttdef"><b>Definition</b> <a href="_playlist_service_8java_source.html#l00121">PlaylistService.java:121</a></div></div>
 <div class="ttc" id="aclasscom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_playlist_service_html_a496e61daab515bdde830583809e6dad9"><div class="ttname"><a href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_playlist_service.html#a496e61daab515bdde830583809e6dad9">com.deusto.theComitte.Spootify.service.PlaylistService.addSongToPlayList</a></div><div class="ttdeci">void addSongToPlayList(long token, long songId, long songListId)</div><div class="ttdef"><b>Definition</b> <a href="_playlist_service_8java_source.html#l00055">PlaylistService.java:55</a></div></div>
 <div class="ttc" id="aclasscom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_playlist_service_html_a5a3d68bd3c810ece16f14bf319ac2f43"><div class="ttname"><a href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_playlist_service.html#a5a3d68bd3c810ece16f14bf319ac2f43">com.deusto.theComitte.Spootify.service.PlaylistService.getPlaylistById</a></div><div class="ttdeci">SongList getPlaylistById(long token, long songListId)</div><div class="ttdef"><b>Definition</b> <a href="_playlist_service_8java_source.html#l00099">PlaylistService.java:99</a></div></div>
 <div class="ttc" id="aclasscom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_playlist_service_html_a82c460499b7bc728319d57f8afb7fce4"><div class="ttname"><a href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_playlist_service.html#a82c460499b7bc728319d57f8afb7fce4">com.deusto.theComitte.Spootify.service.PlaylistService.createPlayList</a></div><div class="ttdeci">void createPlayList(long token, String name, boolean isPublic)</div><div class="ttdef"><b>Definition</b> <a href="_playlist_service_8java_source.html#l00079">PlaylistService.java:79</a></div></div>
@@ -253,7 +257,7 @@ $(document).ready(function(){initNavTree('_playlist_service_8java_source.html','
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_5eb159725f84c66aafd839904a4acdd0.html">main</a></li><li class="navelem"><a class="el" href="dir_fd3f6763802dee1ad875f6c80eac0bda.html">java</a></li><li class="navelem"><a class="el" href="dir_d8517d8b842053dc3dd7dde525dd9163.html">com</a></li><li class="navelem"><a class="el" href="dir_c829b153888480d1cd6945dc2092d47a.html">deusto</a></li><li class="navelem"><a class="el" href="dir_9e8249ab69c7e7905edac3fc2eb21c5d.html">theComitte</a></li><li class="navelem"><a class="el" href="dir_7d4421e643568451290b798a8553386f.html">Spootify</a></li><li class="navelem"><a class="el" href="dir_8af7d75a541f5e227fb0a2fc157475e3.html">service</a></li><li class="navelem"><a class="el" href="_playlist_service_8java.html">PlaylistService.java</a></li>
-    <li class="footer">Generated on Sat May 17 2025 16:17:56 for SpringBootLibrary by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sat May 17 2025 16:35:42 for SpringBootLibrary by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>
