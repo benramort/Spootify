@@ -97,6 +97,7 @@ public class SongServiceTest {
         try {
             songService.createSong("New Song", 240, mockFile, ALBUM_ID, TOKEN);
         } catch (Exception e) {
+            e.printStackTrace();
             fail("Exception should not be thrown");
         }
         
