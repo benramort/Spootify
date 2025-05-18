@@ -22,10 +22,11 @@ public class PlaylistService {
 
     @Autowired
     public PlaylistService(UserRepository userRepository,
-            SongRepository songRepository, PlayListRepository songListRepository) {
+            SongRepository songRepository, PlayListRepository songListRepository, UserService userService) {
         this.userRepository = userRepository;
         this.songRepository = songRepository;
         this.songListRepository = songListRepository;
+        this.userService = userService;
     }
 
     // public void addSongsToUser(long userId, List<Long> songIds, long songListId) {

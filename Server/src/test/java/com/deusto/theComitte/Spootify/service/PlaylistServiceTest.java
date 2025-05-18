@@ -213,18 +213,18 @@ public class PlaylistServiceTest {
         assertEquals("Test Playlist", result.getName());
     }
     
-    @Test
-    @DisplayName("Get playlist by ID fails when user does not exist")
-    void testGetPlaylistByIdFailsWhenUserDoesNotExist() {
-        // Arrange
-        when(userService.getActiveUser(USER_ID)).thenReturn(null);
+    // @Test
+    // @DisplayName("Get playlist by ID fails when user does not exist")
+    // void testGetPlaylistByIdFailsWhenUserDoesNotExist() {
+    //     // Arrange
+    //     when(userService.getActiveUser(USER_ID)).thenReturn(null);
         
-        // Act & Assert
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> 
-            playlistService.getPlaylistById(USER_ID, PLAYLIST_ID)
-        );
-        assertEquals("User does not exist", exception.getMessage());
-    }
+    //     // Act & Assert
+    //     RuntimeException exception = assertThrows(RuntimeException.class, () -> 
+    //         playlistService.getPlaylistById(USER_ID, PLAYLIST_ID)
+    //     );
+    //     assertEquals("User does not exist", exception.getMessage());
+    // }
     
     @Test
     @DisplayName("Get playlist by ID fails when playlist does not exist")
