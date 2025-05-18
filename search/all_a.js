@@ -5,6 +5,6 @@ var searchData=
   ['playlistcontroller_2ejava_2',['PlayListController.java',['../_play_list_controller_8java.html',1,'']]],
   ['playlistrepository_3',['PlayListRepository',['../interfacecom_1_1deusto_1_1the_comitte_1_1_spootify_1_1_d_a_o_1_1_play_list_repository.html',1,'com::deusto::theComitte::Spootify::DAO']]],
   ['playlistrepository_2ejava_4',['PlayListRepository.java',['../_play_list_repository_8java.html',1,'']]],
-  ['playlistservice_5',['playlistservice',['../classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_playlist_service.html',1,'com.deusto.theComitte.Spootify.service.PlaylistService'],['../classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_playlist_service.html#ac996268590e5c12cb4b0d752e15e269e',1,'com.deusto.theComitte.Spootify.service.PlaylistService.PlaylistService()']]],
+  ['playlistservice_5',['playlistservice',['../classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_playlist_service.html',1,'com.deusto.theComitte.Spootify.service.PlaylistService'],['../classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_playlist_service.html#a46d7f126b7e0b0d4be31536abc8c19cf',1,'com.deusto.theComitte.Spootify.service.PlaylistService.PlaylistService()']]],
   ['playlistservice_2ejava_6',['PlaylistService.java',['../_playlist_service_8java.html',1,'']]]
 ];
