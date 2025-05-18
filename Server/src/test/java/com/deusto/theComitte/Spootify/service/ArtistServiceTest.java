@@ -66,9 +66,15 @@ class ArtistServiceTest {
 
         when(artistRepository.findByEmail(email)).thenReturn(artist);
 
-        long token = artistService.login(email, password);
+        try {
+            long token = artistService.login(email, password);
+            assertNotEquals(0, token);
+        } catch (RuntimeException e) {
+            fail("Login should not throw an exception");
+        }
+        
 
-        assertNotNull(token);
+        
     }
 
     @Test

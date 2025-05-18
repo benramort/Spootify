@@ -10,9 +10,11 @@ import java.util.List;
 import static org.mockito.Mockito.never;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 
@@ -65,7 +67,7 @@ public class UserServiceTest {
         long token = userService.login(email, password);
 
         // Assert
-        assertNotNull(token, "Token should not be null");
+        assertNotEquals(0, token, "Token should not be null");
         assertTrue(userService.getActiveUserMap().containsKey(token), "Token should be present in active users");
         assertEquals(mockUser, userService.getActiveUserMap().get(token), "The user should be associated with the token");
         verify(userRepository).findByEmail(email);
@@ -93,9 +95,12 @@ public class UserServiceTest {
 
         when(userRepository.findByEmail(email)).thenReturn(user);
 
-        long token = userService.login(email, password);
-
-        assertNotNull(token);
+        try {
+            long token = userService.login(email, password);
+            assertNotEquals(0, token);
+        } catch (RuntimeException e) {
+            fail("Login should not throw an exception");
+        }
     }
 
     @Test

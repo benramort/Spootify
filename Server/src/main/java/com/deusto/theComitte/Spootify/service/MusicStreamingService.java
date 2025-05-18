@@ -28,8 +28,7 @@ public class MusicStreamingService {
      */
     public Resource getChunk(String path, long start, long end) {
 
-        try {
-            InputStream inputStream = new FileInputStream(path);
+        try (InputStream inputStream = new FileInputStream(path)) {
             inputStream.skip(start);
             InputStreamResource resource = new InputStreamResource(new LimitedInputStream(inputStream, end));
             return resource;
@@ -37,7 +36,7 @@ public class MusicStreamingService {
             e.printStackTrace();
             return null;
         }
-        
+            
     }
 
 
