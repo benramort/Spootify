@@ -146,10 +146,17 @@ public class PlaylistService {
         if (songList == null) {
             throw new RuntimeException("SongList does not exist");
         }
-        System.out.println("SongListUserID: " + songList.getUser().getId());
-        System.out.println("UserID: " + user.getId());
-        if (songList.getUser().getId() != user.getId() && !songList.getIsPublic()) {
-            throw new RuntimeException("User does not have access to this playlist");
+        // if (!songList.getIsPublic() && user != null && songList.getUser().getId() != user.getId()) {
+        //     throw new RuntimeException("User does not have access to this playlist");
+        // }
+
+        if (!songList.getIsPublic()) {
+            if (user != null && songList.getUser().getId() != user.getId()) {
+                throw new RuntimeException("User does not have access to this playlist");
+            }
+            if (user == null) {
+                throw new RuntimeException("User does not have access to this playlist");
+            }
         }
 
         return songList;

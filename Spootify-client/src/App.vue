@@ -87,7 +87,7 @@ header {
 main {
   flex: 1;
   width: 100%;
-  overflow-y: auto; /* Enable scrolling for main content */
+  overflow-y: hidden; /* Enable scrolling for main content */
   overflow-x: hidden;
   padding: 0px;
   box-sizing: border-box;

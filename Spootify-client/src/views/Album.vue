@@ -3,6 +3,7 @@
     import axios from 'axios';
     import { useRoute } from 'vue-router';
     import { printDuration } from '../main.js';
+    import Songs from "../components/Songs.vue";
 
     const reproductor = inject("reproductor");
 
@@ -59,33 +60,33 @@
 
 <template>
 
-    <div class="columns">
-        <div class="columnLeft">
-            <div class="cover" :style="{ backgroundImage: 'url(' + album.cover + ')' }">
+
+    <div v-if="album.name">
+        
+        <div class="columns">
+            <div class="columnLeft">
+                <div class="cover" :style="{ backgroundImage: 'url(' + album.cover + ')' }">
+                </div>
+                <h2>{{ album.name }}</h2>
+                <p v-for="artist in album.artists"><router-link :to="`/artists/${artist.id}`">{{ artist.name }}</router-link></p>
+                <button>
+                    <i class="fa-solid fa-circle-play" @click="playAll()"></i>
+                </button>
             </div>
-            <h2>{{ album.name }}</h2>
-            <p v-for="artist in album.artists"><router-link :to="`/artists/${artist.id}`">{{ artist.name }}</router-link></p>
-            <button>
-                <i class="fa-solid fa-circle-play" @click="playAll()"></i>
-            </button>
-        </div>
-        <div class="columnRight">
-            <div v-if="album.songs && album.songs.length > 0" class="songs">
-                <div class="song" v-for="song in album.songs" :key="song.id"> <!-- Key para reaccionar bien a los cambios-->
-                    <i class="fa-solid fa-circle-play" @click="play(song)"></i>
-                    <div class="horizontal-aling">
-                        <div>
-                            <p><b>{{ song.title }}</b></p>
-                            <!-- <p><span class="name">{{ song.album.artists[0].name}}</span> - <span class="album"><i>{{ song.album.name }}</i></span></p> -->
-                        </div>
-                        <p>{{ song.duration }}</p>
+            <div class="columnRight">
+                <div class="songs">
+                    <!-- Verifica si la playlist tiene canciones -->
+                    <Songs v-if="album.songs.length > 0" :songs="album.songs" />
+                    <!-- Mensaje si no hay canciones -->
+                    <div v-if="album.songs.length === 0">
+                        <p>Este album no tiene canciones.</p>
                     </div>
                 </div>
             </div>
-            <div v-else>
-                <p id="errorNoCanciones">Todavía no hay canciones para este álbum</p>
-            </div>
         </div>
+    </div>
+    <div v-else>
+        <p>No se pudo cargar la playlist. Por favor, inténtalo de nuevo más tarde.</p>
     </div>
 
 </template>

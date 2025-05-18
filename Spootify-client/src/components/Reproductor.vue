@@ -1,5 +1,8 @@
 <script setup>
-import { ref, onMounted, computed, watch } from 'vue';
+import { ref, onMounted, computed, watch, inject } from 'vue';
+import axios from 'axios';
+
+const globalState = inject('globalState');
 
 // Reactive state
 const audioPlayer = ref(null);
@@ -10,7 +13,6 @@ const isPlaying = ref(false);
 const volume = ref(80);
 const isMuted = ref(false);
 const showVolumeControl = ref(false);
-const isLiked = ref(false);
 const isShuffle = ref(false);
 const isRepeat = ref(false);
 const previousEnabled = ref(false);
@@ -162,8 +164,21 @@ const setVolume = (e) => {
   }
 };
 
-const toggleLike = () => {
-  isLiked.value = !isLiked.value;
+const likeSong = () => {
+  console.log("Like button clicked");
+  if (song.value.liked) {
+    console.log("Canción ya está en la playlist 'Canciones que me gustan'");
+    return;
+  }
+  const token = globalState.token.value;
+
+  const path = `http://localhost:8081/songs/like?token=${token}&songId=${song.value.id}`;
+  axios.post(path).then(() => {
+      console.log("Canción añadida a la playlist 'Canciones que me gustan'");
+      song.value.liked = true;
+  }).catch((error) => {
+      console.error("Error al añadir la canción a la playlist 'Canciones que me gustan':", error);
+  });
 };
 
 const toggleShuffle = () => {
@@ -216,8 +231,11 @@ defineExpose({
           <div class="song-title">{{ song.title }}</div>
           <div class="song-artist">{{ song.album.artists[0].name }}</div>
         </div>
-        <div class="like-button" @click="toggleLike">
-          <i :class="['fa', isLiked ? 'fa-heart' : 'fa-heart-o']"></i>
+        <div class="like-button"
+            @click="likeSong()"
+            :disabled="song.liked"
+            >
+          <i :class="['fa', song.liked ? 'fa-heart' : 'fa-heart-o']"></i>
         </div>
       </div>
       
@@ -252,7 +270,7 @@ defineExpose({
       
       <!-- Right section: Volume control, hide -->
       <div class="player-right">
-        <button class="volume-button" @click="toggleMute" @mouseenter="showVolumeControl = true" @mouseleave="showVolumeControl = false">
+        <button class="volume-button" @click="toggleMute">
           <i :class="['fa', isMuted ? 'fa-volume-off' : volume.value < 50 ? 'fa-volume-down' : 'fa-volume-up']"></i>
         </button>
         <div class="volume-control" v-show="showVolumeControl">

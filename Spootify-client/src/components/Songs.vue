@@ -5,7 +5,7 @@
             <div class="horizontal-aling">
                 <div>
                     <p><b>{{ song.title }}</b></p>
-                    <p>
+                    <p v-if="song.album">
                         <span class="name">
                             <router-link :to="`/artists/${song.album.artists[0].id}`">{{ song.album.artists[0].name }}</router-link>
                         </span>
@@ -82,6 +82,7 @@ onMounted(() => {
         getSongs();
     } else {
         songs.value = props.songs;
+        console.log("Songs: " + songs.value);
         getLikedPlaylist();
     }
 });

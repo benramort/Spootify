@@ -72,6 +72,11 @@ public class SongService {
             return;
         }
 
+        Path songsDirectory = Paths.get("songs");
+        if (!Files.exists(songsDirectory)) {
+            Files.createDirectories(songsDirectory);
+        }
+
         String fileName = System.currentTimeMillis() + "_" + audioFile.getOriginalFilename();
         Path filePath = Paths.get("songs").resolve(fileName);
         Files.copy(audioFile.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
