@@ -64,6 +64,13 @@ public class SongService {
             throw new RuntimeException("Artist does not have access to this album");
         }
 
+        if (audioFile == null) {
+            Song song = new Song(title, album, duration, "");
+            album.getSongs().add(song);
+            songRepository.save(song);
+            return;
+        }
+
         Path songsDirectory = Paths.get("songs");
         if (!Files.exists(songsDirectory)) {
             Files.createDirectories(songsDirectory);
