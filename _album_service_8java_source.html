@@ -113,88 +113,96 @@ $(document).ready(function(){initNavTree('_album_service_8java_source.html','');
 <div class="foldopen" id="foldopen00014" data-start="{" data-end="};">
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno"><a class="line" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service.html">   14</a></span><span class="keyword">public</span> <span class="keyword">class </span><a class="code hl_class" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service.html">AlbumService</a> {</div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    </div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    @Autowired</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    <a class="code hl_class" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_artist_service.html">ArtistService</a> artistService;</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    @Autowired</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    ArtistRepository artistRepository;</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    <a class="code hl_class" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_artist_service.html">ArtistService</a> artistService;</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    ArtistRepository artistRepository;</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    AlbumRepository albumRepository;</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    @Autowired</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    AlbumRepository albumRepository;</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
-<div class="foldopen" id="foldopen00030" data-start="{" data-end="}">
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service.html#a3b1c6673b15b65177f3ad4bc6d43d62e">   30</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service.html#a3b1c6673b15b65177f3ad4bc6d43d62e">createAlbum</a>(String name, String cover, <span class="keywordtype">long</span> token) {</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>        Artist artist = artistService.getActiveArtist(token);</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>        Album album = <span class="keyword">new</span> Album(name);</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>        album.setCover(cover);</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>        artist.getAlbums().add(album);</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>        album.getArtists().add(artist);</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>        albumRepository.save(album);</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>        artistRepository.save(artist);</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    }</div>
+<div class="foldopen" id="foldopen00021" data-start="{" data-end="}">
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno"><a class="line" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service.html#aa4fa57c3b720cd1048c676381684fbd1">   21</a></span>    <span class="keyword">public</span> <a class="code hl_function" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service.html#aa4fa57c3b720cd1048c676381684fbd1">AlbumService</a>(<a class="code hl_class" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_artist_service.html">ArtistService</a> artistService, ArtistRepository artistRepository, AlbumRepository albumRepository) {</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>        this.artistService = artistService;</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>        this.artistRepository = artistRepository;</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>        this.albumRepository = albumRepository;</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    }</div>
 </div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
-<div class="foldopen" id="foldopen00045" data-start="{" data-end="}">
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service.html#a7875842db7d6a120c30777e0da06e1c0">   45</a></span>    <span class="keyword">public</span> List&lt;Album&gt; <a class="code hl_function" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service.html#a7875842db7d6a120c30777e0da06e1c0">getAlbums</a>(<span class="keywordtype">long</span> artistId) {</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        <span class="keywordflow">if</span>(artistId != 0) {</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>            Artist artist = artistRepository.findById(artistId);</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>            <span class="keywordflow">return</span> artist.getAlbums();</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        }</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        <span class="keywordflow">return</span> albumRepository.findAll();</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    }</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
+<div class="foldopen" id="foldopen00034" data-start="{" data-end="}">
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service.html#a3b1c6673b15b65177f3ad4bc6d43d62e">   34</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service.html#a3b1c6673b15b65177f3ad4bc6d43d62e">createAlbum</a>(String name, String cover, <span class="keywordtype">long</span> token) {</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>        Artist artist = artistService.<a class="code hl_function" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_artist_service.html#a81cff6036b1d619ee35dbaadeb78f23b">getActiveArtist</a>(token);</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>        Album album = <span class="keyword">new</span> Album(name);</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>        album.setCover(cover);</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>        artist.getAlbums().add(album);</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>        album.getArtists().add(artist);</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>        albumRepository.save(album);</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>        artistRepository.save(artist);</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    }</div>
 </div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
-<div class="foldopen" id="foldopen00059" data-start="{" data-end="}">
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service.html#ad780bd8b923fd2c05d38d9777c0d92fe">   59</a></span>    <span class="keyword">public</span> Album <a class="code hl_function" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service.html#ad780bd8b923fd2c05d38d9777c0d92fe">getAlbum</a>(<span class="keywordtype">long</span> <span class="keywordtype">id</span>) {</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>        Album album = albumRepository.findById(<span class="keywordtype">id</span>);</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>        <span class="keywordflow">if</span> (album == <span class="keyword">null</span>) {</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>            <span class="keywordflow">throw</span> <span class="keyword">new</span> RuntimeException(<span class="stringliteral">&quot;Album not found&quot;</span>);</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>        }</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        <span class="keywordflow">return</span> album;</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    }</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="foldopen" id="foldopen00049" data-start="{" data-end="}">
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service.html#a7875842db7d6a120c30777e0da06e1c0">   49</a></span>    <span class="keyword">public</span> List&lt;Album&gt; <a class="code hl_function" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service.html#a7875842db7d6a120c30777e0da06e1c0">getAlbums</a>(<span class="keywordtype">long</span> artistId) {</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        <span class="keywordflow">if</span>(artistId != 0) {</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>            Artist artist = artistRepository.findById(artistId);</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>            <span class="keywordflow">return</span> artist.getAlbums();</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>        }</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>        <span class="keywordflow">return</span> albumRepository.findAll();</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    }</div>
 </div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
-<div class="foldopen" id="foldopen00073" data-start="{" data-end="}">
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno"><a class="line" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service.html#ad054043e4b4f97a6969f3f917ccab15f">   73</a></span>    <span class="keyword">public</span> List&lt;Album&gt; <a class="code hl_function" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service.html#ad054043e4b4f97a6969f3f917ccab15f">searchAlbums</a>(String name) {</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>        List&lt;Album&gt; albums = albumRepository.findByName(name);</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>        <span class="keywordflow">if</span> (albums.isEmpty()) {</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>            <span class="keywordflow">throw</span> <span class="keyword">new</span> RuntimeException(<span class="stringliteral">&quot;No albums found with the given name&quot;</span>);</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>        }</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>        <span class="keywordflow">return</span> albums;</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    }</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="foldopen" id="foldopen00063" data-start="{" data-end="}">
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service.html#ad780bd8b923fd2c05d38d9777c0d92fe">   63</a></span>    <span class="keyword">public</span> Album <a class="code hl_function" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service.html#ad780bd8b923fd2c05d38d9777c0d92fe">getAlbum</a>(<span class="keywordtype">long</span> <span class="keywordtype">id</span>) {</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        Album album = albumRepository.findById(<span class="keywordtype">id</span>);</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>        <span class="keywordflow">if</span> (album == <span class="keyword">null</span>) {</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>            <span class="keywordflow">throw</span> <span class="keyword">new</span> RuntimeException(<span class="stringliteral">&quot;Album not found&quot;</span>);</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>        }</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>        <span class="keywordflow">return</span> album;</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    }</div>
 </div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
-<div class="foldopen" id="foldopen00087" data-start="{" data-end="}">
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno"><a class="line" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service.html#ade0821560fecf560edff3dfa17817fc8">   87</a></span>    <span class="keyword">public</span> List&lt;Album&gt; <a class="code hl_function" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service.html#ade0821560fecf560edff3dfa17817fc8">getArtistAlbums</a>(<span class="keywordtype">long</span> artistId) {</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>        Artist artist = artistService.getActiveArtist(artistId);</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>        <span class="keywordflow">if</span>(artist == <span class="keyword">null</span>) {</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>            <span class="keywordflow">throw</span> <span class="keyword">new</span> RuntimeException(<span class="stringliteral">&quot;Artist not logged in&quot;</span>);</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>        }</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>        <span class="keywordflow">return</span> artist.getAlbums();</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>        <span class="comment">//return albumRepository.findByArtistId(artist.getId());</span></div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    }</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
+<div class="foldopen" id="foldopen00077" data-start="{" data-end="}">
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno"><a class="line" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service.html#ad054043e4b4f97a6969f3f917ccab15f">   77</a></span>    <span class="keyword">public</span> List&lt;Album&gt; <a class="code hl_function" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service.html#ad054043e4b4f97a6969f3f917ccab15f">searchAlbums</a>(String name) {</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>        List&lt;Album&gt; albums = albumRepository.findByName(name);</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>        <span class="keywordflow">if</span> (albums.isEmpty()) {</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>            <span class="keywordflow">throw</span> <span class="keyword">new</span> RuntimeException(<span class="stringliteral">&quot;No albums found with the given name&quot;</span>);</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>        }</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>        <span class="keywordflow">return</span> albums;</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    }</div>
 </div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
-<div class="foldopen" id="foldopen00100" data-start="{" data-end="}">
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno"><a class="line" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service.html#a624782574d062a71e66bcc249fbf99dd">  100</a></span>    <span class="keyword">public</span> List&lt;Album&gt; <a class="code hl_function" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service.html#a624782574d062a71e66bcc249fbf99dd">getAllAlbums</a>() {</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>        <span class="keywordflow">return</span> albumRepository.findAll();</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    }</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
+<div class="foldopen" id="foldopen00091" data-start="{" data-end="}">
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno"><a class="line" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service.html#ade0821560fecf560edff3dfa17817fc8">   91</a></span>    <span class="keyword">public</span> List&lt;Album&gt; <a class="code hl_function" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service.html#ade0821560fecf560edff3dfa17817fc8">getArtistAlbums</a>(<span class="keywordtype">long</span> artistId) {</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>        Artist artist = artistService.<a class="code hl_function" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_artist_service.html#a81cff6036b1d619ee35dbaadeb78f23b">getActiveArtist</a>(artistId);</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>        <span class="keywordflow">if</span>(artist == <span class="keyword">null</span>) {</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>            <span class="keywordflow">throw</span> <span class="keyword">new</span> RuntimeException(<span class="stringliteral">&quot;Artist not logged in&quot;</span>);</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>        }</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>        <span class="keywordflow">return</span> artist.getAlbums();</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>        <span class="comment">//return albumRepository.findByArtistId(artist.getId());</span></div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    }</div>
 </div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>}</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
+<div class="foldopen" id="foldopen00104" data-start="{" data-end="}">
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno"><a class="line" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service.html#a624782574d062a71e66bcc249fbf99dd">  104</a></span>    <span class="keyword">public</span> List&lt;Album&gt; <a class="code hl_function" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service.html#a624782574d062a71e66bcc249fbf99dd">getAllAlbums</a>() {</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>        <span class="keywordflow">return</span> albumRepository.findAll();</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    }</div>
+</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>}</div>
 </div>
 <div class="ttc" id="aclasscom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service_html"><div class="ttname"><a href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service.html">com.deusto.theComitte.Spootify.service.AlbumService</a></div><div class="ttdef"><b>Definition</b> <a href="_album_service_8java_source.html#l00014">AlbumService.java:14</a></div></div>
-<div class="ttc" id="aclasscom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service_html_a3b1c6673b15b65177f3ad4bc6d43d62e"><div class="ttname"><a href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service.html#a3b1c6673b15b65177f3ad4bc6d43d62e">com.deusto.theComitte.Spootify.service.AlbumService.createAlbum</a></div><div class="ttdeci">void createAlbum(String name, String cover, long token)</div><div class="ttdef"><b>Definition</b> <a href="_album_service_8java_source.html#l00030">AlbumService.java:30</a></div></div>
-<div class="ttc" id="aclasscom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service_html_a624782574d062a71e66bcc249fbf99dd"><div class="ttname"><a href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service.html#a624782574d062a71e66bcc249fbf99dd">com.deusto.theComitte.Spootify.service.AlbumService.getAllAlbums</a></div><div class="ttdeci">List&lt; Album &gt; getAllAlbums()</div><div class="ttdef"><b>Definition</b> <a href="_album_service_8java_source.html#l00100">AlbumService.java:100</a></div></div>
-<div class="ttc" id="aclasscom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service_html_a7875842db7d6a120c30777e0da06e1c0"><div class="ttname"><a href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service.html#a7875842db7d6a120c30777e0da06e1c0">com.deusto.theComitte.Spootify.service.AlbumService.getAlbums</a></div><div class="ttdeci">List&lt; Album &gt; getAlbums(long artistId)</div><div class="ttdef"><b>Definition</b> <a href="_album_service_8java_source.html#l00045">AlbumService.java:45</a></div></div>
-<div class="ttc" id="aclasscom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service_html_ad054043e4b4f97a6969f3f917ccab15f"><div class="ttname"><a href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service.html#ad054043e4b4f97a6969f3f917ccab15f">com.deusto.theComitte.Spootify.service.AlbumService.searchAlbums</a></div><div class="ttdeci">List&lt; Album &gt; searchAlbums(String name)</div><div class="ttdef"><b>Definition</b> <a href="_album_service_8java_source.html#l00073">AlbumService.java:73</a></div></div>
-<div class="ttc" id="aclasscom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service_html_ad780bd8b923fd2c05d38d9777c0d92fe"><div class="ttname"><a href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service.html#ad780bd8b923fd2c05d38d9777c0d92fe">com.deusto.theComitte.Spootify.service.AlbumService.getAlbum</a></div><div class="ttdeci">Album getAlbum(long id)</div><div class="ttdef"><b>Definition</b> <a href="_album_service_8java_source.html#l00059">AlbumService.java:59</a></div></div>
-<div class="ttc" id="aclasscom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service_html_ade0821560fecf560edff3dfa17817fc8"><div class="ttname"><a href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service.html#ade0821560fecf560edff3dfa17817fc8">com.deusto.theComitte.Spootify.service.AlbumService.getArtistAlbums</a></div><div class="ttdeci">List&lt; Album &gt; getArtistAlbums(long artistId)</div><div class="ttdef"><b>Definition</b> <a href="_album_service_8java_source.html#l00087">AlbumService.java:87</a></div></div>
+<div class="ttc" id="aclasscom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service_html_a3b1c6673b15b65177f3ad4bc6d43d62e"><div class="ttname"><a href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service.html#a3b1c6673b15b65177f3ad4bc6d43d62e">com.deusto.theComitte.Spootify.service.AlbumService.createAlbum</a></div><div class="ttdeci">void createAlbum(String name, String cover, long token)</div><div class="ttdef"><b>Definition</b> <a href="_album_service_8java_source.html#l00034">AlbumService.java:34</a></div></div>
+<div class="ttc" id="aclasscom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service_html_a624782574d062a71e66bcc249fbf99dd"><div class="ttname"><a href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service.html#a624782574d062a71e66bcc249fbf99dd">com.deusto.theComitte.Spootify.service.AlbumService.getAllAlbums</a></div><div class="ttdeci">List&lt; Album &gt; getAllAlbums()</div><div class="ttdef"><b>Definition</b> <a href="_album_service_8java_source.html#l00104">AlbumService.java:104</a></div></div>
+<div class="ttc" id="aclasscom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service_html_a7875842db7d6a120c30777e0da06e1c0"><div class="ttname"><a href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service.html#a7875842db7d6a120c30777e0da06e1c0">com.deusto.theComitte.Spootify.service.AlbumService.getAlbums</a></div><div class="ttdeci">List&lt; Album &gt; getAlbums(long artistId)</div><div class="ttdef"><b>Definition</b> <a href="_album_service_8java_source.html#l00049">AlbumService.java:49</a></div></div>
+<div class="ttc" id="aclasscom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service_html_aa4fa57c3b720cd1048c676381684fbd1"><div class="ttname"><a href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service.html#aa4fa57c3b720cd1048c676381684fbd1">com.deusto.theComitte.Spootify.service.AlbumService.AlbumService</a></div><div class="ttdeci">AlbumService(ArtistService artistService, ArtistRepository artistRepository, AlbumRepository albumRepository)</div><div class="ttdef"><b>Definition</b> <a href="_album_service_8java_source.html#l00021">AlbumService.java:21</a></div></div>
+<div class="ttc" id="aclasscom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service_html_ad054043e4b4f97a6969f3f917ccab15f"><div class="ttname"><a href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service.html#ad054043e4b4f97a6969f3f917ccab15f">com.deusto.theComitte.Spootify.service.AlbumService.searchAlbums</a></div><div class="ttdeci">List&lt; Album &gt; searchAlbums(String name)</div><div class="ttdef"><b>Definition</b> <a href="_album_service_8java_source.html#l00077">AlbumService.java:77</a></div></div>
+<div class="ttc" id="aclasscom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service_html_ad780bd8b923fd2c05d38d9777c0d92fe"><div class="ttname"><a href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service.html#ad780bd8b923fd2c05d38d9777c0d92fe">com.deusto.theComitte.Spootify.service.AlbumService.getAlbum</a></div><div class="ttdeci">Album getAlbum(long id)</div><div class="ttdef"><b>Definition</b> <a href="_album_service_8java_source.html#l00063">AlbumService.java:63</a></div></div>
+<div class="ttc" id="aclasscom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service_html_ade0821560fecf560edff3dfa17817fc8"><div class="ttname"><a href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service.html#ade0821560fecf560edff3dfa17817fc8">com.deusto.theComitte.Spootify.service.AlbumService.getArtistAlbums</a></div><div class="ttdeci">List&lt; Album &gt; getArtistAlbums(long artistId)</div><div class="ttdef"><b>Definition</b> <a href="_album_service_8java_source.html#l00091">AlbumService.java:91</a></div></div>
 <div class="ttc" id="aclasscom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_artist_service_html"><div class="ttname"><a href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_artist_service.html">com.deusto.theComitte.Spootify.service.ArtistService</a></div><div class="ttdef"><b>Definition</b> <a href="_artist_service_8java_source.html#l00014">ArtistService.java:14</a></div></div>
+<div class="ttc" id="aclasscom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_artist_service_html_a81cff6036b1d619ee35dbaadeb78f23b"><div class="ttname"><a href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_artist_service.html#a81cff6036b1d619ee35dbaadeb78f23b">com.deusto.theComitte.Spootify.service.ArtistService.getActiveArtist</a></div><div class="ttdeci">Artist getActiveArtist(long token)</div><div class="ttdef"><b>Definition</b> <a href="_artist_service_8java_source.html#l00105">ArtistService.java:105</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_5eb159725f84c66aafd839904a4acdd0.html">main</a></li><li class="navelem"><a class="el" href="dir_fd3f6763802dee1ad875f6c80eac0bda.html">java</a></li><li class="navelem"><a class="el" href="dir_d8517d8b842053dc3dd7dde525dd9163.html">com</a></li><li class="navelem"><a class="el" href="dir_c829b153888480d1cd6945dc2092d47a.html">deusto</a></li><li class="navelem"><a class="el" href="dir_9e8249ab69c7e7905edac3fc2eb21c5d.html">theComitte</a></li><li class="navelem"><a class="el" href="dir_7d4421e643568451290b798a8553386f.html">Spootify</a></li><li class="navelem"><a class="el" href="dir_8af7d75a541f5e227fb0a2fc157475e3.html">service</a></li><li class="navelem"><a class="el" href="_album_service_8java.html">AlbumService.java</a></li>
-    <li class="footer">Generated on Sun May 18 2025 10:19:36 for SpringBootLibrary by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sun May 18 2025 19:19:43 for SpringBootLibrary by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

@@ -1,5 +1,6 @@
 var classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1facade_1_1_user_controller =
 [
+    [ "UserController", "classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1facade_1_1_user_controller.html#a19cadcdf014e8f8d67396a485bfff6e9", null ],
     [ "createUser", "classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1facade_1_1_user_controller.html#a0405f8e94a9f48f4c8e5467c5e304dff", null ],
     [ "getLikedSongs", "classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1facade_1_1_user_controller.html#ad7039d6c434b95551a291dc181b4035d", null ],
     [ "getMyProfile", "classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1facade_1_1_user_controller.html#aae93e7765bd9a47e202964cdbb4a8da2", null ],

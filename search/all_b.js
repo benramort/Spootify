@@ -1,10 +1,6 @@
 var searchData=
 [
-  ['password_0',['password',['../classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1entity_1_1_generic_user.html#ac1b5f0b00f667d44c62d0119518b8b5e',1,'com::deusto::theComitte::Spootify::entity::GenericUser']]],
-  ['playlistcontroller_1',['PlayListController',['../classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1facade_1_1_play_list_controller.html',1,'com::deusto::theComitte::Spootify::facade']]],
-  ['playlistcontroller_2ejava_2',['PlayListController.java',['../_play_list_controller_8java.html',1,'']]],
-  ['playlistrepository_3',['PlayListRepository',['../interfacecom_1_1deusto_1_1the_comitte_1_1_spootify_1_1_d_a_o_1_1_play_list_repository.html',1,'com::deusto::theComitte::Spootify::DAO']]],
-  ['playlistrepository_2ejava_4',['PlayListRepository.java',['../_play_list_repository_8java.html',1,'']]],
-  ['playlistservice_5',['PlaylistService',['../classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_playlist_service.html',1,'com::deusto::theComitte::Spootify::service']]],
-  ['playlistservice_2ejava_6',['PlaylistService.java',['../_playlist_service_8java.html',1,'']]]
+  ['read_0',['read',['../classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_limited_input_stream.html#aa0ef9e2757edf5192b9eb1dec71a58ad',1,'com.deusto.theComitte.Spootify.service.LimitedInputStream.read()'],['../classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_limited_input_stream.html#a49c682b1d40e36db72b9c7cea2579d34',1,'com.deusto.theComitte.Spootify.service.LimitedInputStream.read(byte[] b, int off, int len)']]],
+  ['removesong_1',['removesong',['../classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1_d_t_o_1_1_album_d_t_o.html#a1a252076eba81a68da021e05555e126d',1,'com.deusto.theComitte.Spootify.DTO.AlbumDTO.removeSong()'],['../classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1entity_1_1_album.html#a18d74e9657a448d1f34458f7a644450e',1,'com.deusto.theComitte.Spootify.entity.Album.removeSong()']]],
+  ['removesonglist_2',['removeSongList',['../classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1entity_1_1_user.html#abf40700266cd0fe210eca2bf68cfd13c',1,'com::deusto::theComitte::Spootify::entity::User']]]
 ];

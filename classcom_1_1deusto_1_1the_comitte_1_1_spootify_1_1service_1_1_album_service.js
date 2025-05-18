@@ -1,5 +1,6 @@
 var classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service =
 [
+    [ "AlbumService", "classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service.html#aa4fa57c3b720cd1048c676381684fbd1", null ],
     [ "createAlbum", "classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service.html#a3b1c6673b15b65177f3ad4bc6d43d62e", null ],
     [ "getAlbum", "classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service.html#ad780bd8b923fd2c05d38d9777c0d92fe", null ],
     [ "getAlbums", "classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_album_service.html#a7875842db7d6a120c30777e0da06e1c0", null ],

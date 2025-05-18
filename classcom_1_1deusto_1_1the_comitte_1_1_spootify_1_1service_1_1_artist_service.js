@@ -1,5 +1,6 @@
 var classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_artist_service =
 [
+    [ "ArtistService", "classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_artist_service.html#a7916a16d33b40a9dbe56cb7e1695a787", null ],
     [ "createArtist", "classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_artist_service.html#a18398e13429a8307f026c21678c02553", null ],
     [ "getActiveArtist", "classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_artist_service.html#a81cff6036b1d619ee35dbaadeb78f23b", null ],
     [ "getActiveArtistMap", "classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_artist_service.html#afcc09bb698aa7d6f355a1e3b6d661694", null ],

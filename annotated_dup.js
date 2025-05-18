@@ -29,7 +29,6 @@ var annotated_dup =
             [ "facade", "namespacecom_1_1deusto_1_1the_comitte_1_1_spootify_1_1facade.html", [
               [ "AlbumController", "classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1facade_1_1_album_controller.html", "classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1facade_1_1_album_controller" ],
               [ "ArtistController", "classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1facade_1_1_artist_controller.html", "classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1facade_1_1_artist_controller" ],
-              [ "HelloWorld", "classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1facade_1_1_hello_world.html", "classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1facade_1_1_hello_world" ],
               [ "MusicStreamingController", "classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1facade_1_1_music_streaming_controller.html", "classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1facade_1_1_music_streaming_controller" ],
               [ "PlayListController", "classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1facade_1_1_play_list_controller.html", "classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1facade_1_1_play_list_controller" ],
               [ "SongController", "classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1facade_1_1_song_controller.html", "classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1facade_1_1_song_controller" ],

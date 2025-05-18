@@ -120,89 +120,96 @@ $(document).ready(function(){initNavTree('_music_streaming_controller_8java_sour
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keywordtype">long</span> MAX_CHUNK_SIZE = 1024 * 1024; <span class="comment">// 2MB Cambiar por property</span></div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    </div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    @Autowired</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    <span class="keyword">private</span> MusicStreamingService musicStreamingService;</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    @GetMapping()</div>
-<div class="foldopen" id="foldopen00039" data-start="{" data-end="}">
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1facade_1_1_music_streaming_controller.html#a7db038f378c5a7b4dafab31ab6f26f7f">   39</a></span>    public ResponseEntity&lt;Resource&gt; streamMusic(</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>        @RequestHeader(value = &quot;Range&quot;, required = false) String rangeHeader,</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>        @RequestParam(name = &quot;song&quot;) String songId</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    ) {</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>        <span class="keywordtype">long</span> start = 0;</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        <span class="keywordtype">long</span> end = MAX_CHUNK_SIZE - 1;</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>        <span class="keywordtype">long</span> contentLength = 0;</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        String path = <span class="stringliteral">&quot;&quot;</span>;</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>        <span class="keywordflow">try</span> {</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>            <span class="keywordtype">long</span> songIdlong = Long.parseLong(songId);</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>            path = musicStreamingService.getSongPath(songIdlong);</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>            System.out.println(path);</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>        } <span class="keywordflow">catch</span> (NumberFormatException ex) {</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>            ex.printStackTrace();</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>            <span class="keywordflow">return</span> <span class="keyword">new</span> ResponseEntity&lt;&gt;(HttpStatus.BAD_REQUEST);</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>        } <span class="keywordflow">catch</span> (RuntimeException ex) {</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>            ex.printStackTrace();</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>            <span class="keywordflow">return</span> <span class="keyword">new</span> ResponseEntity&lt;&gt;(HttpStatus.NOT_FOUND);</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>        }</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>        </div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>        Resource fullResource;</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>        <span class="keywordflow">try</span> {</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>            fullResource = musicStreamingService.getFullResource(path);</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>            contentLength = fullResource.contentLength();</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        } <span class="keywordflow">catch</span> (IOException e) {</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>            e.printStackTrace();</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>            <span class="keywordflow">return</span> <span class="keyword">new</span> ResponseEntity&lt;&gt;(HttpStatus.INTERNAL_SERVER_ERROR);</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>        }</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>        </div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>        System.out.println(<span class="stringliteral">&quot;Header value: &quot;</span>+rangeHeader);</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>        <span class="keywordflow">if</span> (rangeHeader != <span class="keyword">null</span> &amp;&amp; rangeHeader.startsWith(<span class="stringliteral">&quot;bytes=&quot;</span>)) {</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>            rangeHeader = rangeHeader.replace(<span class="stringliteral">&quot;bytes=&quot;</span>, <span class="stringliteral">&quot;&quot;</span>);</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>            String[] ranges = rangeHeader.split(<span class="stringliteral">&quot;-&quot;</span>);</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>            <span class="keywordflow">try</span> {</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>                start = Long.parseLong(ranges[0]);</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>                <span class="keywordflow">if</span> (ranges.length &gt; 1 &amp;&amp; !ranges[1].isEmpty()) {</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>                    end = Long.parseLong(ranges[1]);</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>                } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>                    <span class="comment">// If no end is specified, use the maximum allowed chunk size</span></div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>                    end = Math.min(start + MAX_CHUNK_SIZE - 1, contentLength - 1);</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>                }</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>                end = Math.min(end, start + MAX_CHUNK_SIZE - 1);</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>            } <span class="keywordflow">catch</span>(NumberFormatException e) {</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>                e.printStackTrace();</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>                <span class="keywordflow">return</span> <span class="keyword">new</span> ResponseEntity&lt;&gt;(HttpStatus.BAD_REQUEST);</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>            }   </div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>        }</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>        Resource chunk = musicStreamingService.getChunk(path, start, end);</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>        <span class="keywordflow">try</span> {</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>            HttpHeaders headers = <span class="keyword">new</span> HttpHeaders();</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>            headers.set(HttpHeaders.CONTENT_TYPE, <span class="stringliteral">&quot;audio/mpeg&quot;</span>);</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>            headers.set(HttpHeaders.ACCEPT_RANGES, <span class="stringliteral">&quot;bytes&quot;</span>);</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>            headers.set(HttpHeaders.CONTENT_LENGTH, String.valueOf(end - start + 1));</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>            headers.set(HttpHeaders.CONTENT_RANGE, String.format(<span class="stringliteral">&quot;bytes %d-%d/%d&quot;</span>, start, end, contentLength));</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>            System.out.println(<span class="stringliteral">&quot;Returning &quot;</span> + String.format(<span class="stringliteral">&quot;bytes %d-%d/%d&quot;</span>, start, end, contentLength));</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>            <span class="keywordflow">return</span> <span class="keyword">new</span> ResponseEntity&lt;&gt;(chunk, headers, HttpStatus.PARTIAL_CONTENT);</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>        } <span class="keywordflow">catch</span> (Exception e) {</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>            e.printStackTrace();</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>            <span class="keywordflow">return</span> <span class="keyword">new</span> ResponseEntity&lt;&gt;(HttpStatus.BAD_REQUEST);</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>        }</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    }</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <span class="keyword">private</span> MusicStreamingService musicStreamingService;</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    @Autowired</div>
+<div class="foldopen" id="foldopen00030" data-start="{" data-end="}">
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1facade_1_1_music_streaming_controller.html#a54121260d06c356f24d8e763bf8eb26f">   30</a></span>    <span class="keyword">public</span> <a class="code hl_function" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1facade_1_1_music_streaming_controller.html#a54121260d06c356f24d8e763bf8eb26f">MusicStreamingController</a>(MusicStreamingService musicStreamingService) {</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>        this.musicStreamingService = musicStreamingService;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    }</div>
 </div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>}</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    @GetMapping()</div>
+<div class="foldopen" id="foldopen00043" data-start="{" data-end="}">
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1facade_1_1_music_streaming_controller.html#a7db038f378c5a7b4dafab31ab6f26f7f">   43</a></span>    public ResponseEntity&lt;Resource&gt; streamMusic(</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        @RequestHeader(value = &quot;Range&quot;, required = false) String rangeHeader,</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>        @RequestParam(name = &quot;song&quot;) String songId</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    ) {</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        <span class="keywordtype">long</span> start = 0;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>        <span class="keywordtype">long</span> end = MAX_CHUNK_SIZE - 1;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        <span class="keywordtype">long</span> contentLength = 0;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>        String path = <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>        <span class="keywordflow">try</span> {</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>            <span class="keywordtype">long</span> songIdlong = Long.parseLong(songId);</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>            path = musicStreamingService.getSongPath(songIdlong);</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>            System.out.println(path);</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        } <span class="keywordflow">catch</span> (NumberFormatException ex) {</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>            ex.printStackTrace();</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>            <span class="keywordflow">return</span> <span class="keyword">new</span> ResponseEntity&lt;&gt;(HttpStatus.BAD_REQUEST);</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>        } <span class="keywordflow">catch</span> (RuntimeException ex) {</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>            ex.printStackTrace();</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>            <span class="keywordflow">return</span> <span class="keyword">new</span> ResponseEntity&lt;&gt;(HttpStatus.NOT_FOUND);</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>        }</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>        </div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        Resource fullResource;</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>        <span class="keywordflow">try</span> {</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>            fullResource = musicStreamingService.getFullResource(path);</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>            contentLength = fullResource.contentLength();</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>        } <span class="keywordflow">catch</span> (IOException e) {</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>            e.printStackTrace();</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>            <span class="keywordflow">return</span> <span class="keyword">new</span> ResponseEntity&lt;&gt;(HttpStatus.INTERNAL_SERVER_ERROR);</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>        }</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        </div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>        System.out.println(<span class="stringliteral">&quot;Header value: &quot;</span>+rangeHeader);</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>        <span class="keywordflow">if</span> (rangeHeader != <span class="keyword">null</span> &amp;&amp; rangeHeader.startsWith(<span class="stringliteral">&quot;bytes=&quot;</span>)) {</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>            rangeHeader = rangeHeader.replace(<span class="stringliteral">&quot;bytes=&quot;</span>, <span class="stringliteral">&quot;&quot;</span>);</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>            String[] ranges = rangeHeader.split(<span class="stringliteral">&quot;-&quot;</span>);</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>            <span class="keywordflow">try</span> {</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>                start = Long.parseLong(ranges[0]);</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>                <span class="keywordflow">if</span> (ranges.length &gt; 1 &amp;&amp; !ranges[1].isEmpty()) {</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>                    end = Long.parseLong(ranges[1]);</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>                } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>                    <span class="comment">// If no end is specified, use the maximum allowed chunk size</span></div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>                    end = Math.min(start + MAX_CHUNK_SIZE - 1, contentLength - 1);</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>                }</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>                end = Math.min(end, start + MAX_CHUNK_SIZE - 1);</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>            } <span class="keywordflow">catch</span>(NumberFormatException e) {</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>                e.printStackTrace();</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>                <span class="keywordflow">return</span> <span class="keyword">new</span> ResponseEntity&lt;&gt;(HttpStatus.BAD_REQUEST);</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>            }   </div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>        }</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>        Resource chunk = musicStreamingService.getChunk(path, start, end);</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>        <span class="keywordflow">try</span> {</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>            HttpHeaders headers = <span class="keyword">new</span> HttpHeaders();</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>            headers.set(HttpHeaders.CONTENT_TYPE, <span class="stringliteral">&quot;audio/mpeg&quot;</span>);</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>            headers.set(HttpHeaders.ACCEPT_RANGES, <span class="stringliteral">&quot;bytes&quot;</span>);</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>            headers.set(HttpHeaders.CONTENT_LENGTH, String.valueOf(end - start + 1));</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>            headers.set(HttpHeaders.CONTENT_RANGE, String.format(<span class="stringliteral">&quot;bytes %d-%d/%d&quot;</span>, start, end, contentLength));</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>            System.out.println(<span class="stringliteral">&quot;Returning &quot;</span> + String.format(<span class="stringliteral">&quot;bytes %d-%d/%d&quot;</span>, start, end, contentLength));</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>            <span class="keywordflow">return</span> <span class="keyword">new</span> ResponseEntity&lt;&gt;(chunk, headers, HttpStatus.PARTIAL_CONTENT);</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>        } <span class="keywordflow">catch</span> (Exception e) {</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>            e.printStackTrace();</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>            <span class="keywordflow">return</span> <span class="keyword">new</span> ResponseEntity&lt;&gt;(HttpStatus.BAD_REQUEST);</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>        }</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    }</div>
+</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>}</div>
 </div>
 <div class="ttc" id="aclasscom_1_1deusto_1_1the_comitte_1_1_spootify_1_1facade_1_1_music_streaming_controller_html"><div class="ttname"><a href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1facade_1_1_music_streaming_controller.html">com.deusto.theComitte.Spootify.facade.MusicStreamingController</a></div><div class="ttdef"><b>Definition</b> <a href="_music_streaming_controller_8java_source.html#l00022">MusicStreamingController.java:22</a></div></div>
+<div class="ttc" id="aclasscom_1_1deusto_1_1the_comitte_1_1_spootify_1_1facade_1_1_music_streaming_controller_html_a54121260d06c356f24d8e763bf8eb26f"><div class="ttname"><a href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1facade_1_1_music_streaming_controller.html#a54121260d06c356f24d8e763bf8eb26f">com.deusto.theComitte.Spootify.facade.MusicStreamingController.MusicStreamingController</a></div><div class="ttdeci">MusicStreamingController(MusicStreamingService musicStreamingService)</div><div class="ttdef"><b>Definition</b> <a href="_music_streaming_controller_8java_source.html#l00030">MusicStreamingController.java:30</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_5eb159725f84c66aafd839904a4acdd0.html">main</a></li><li class="navelem"><a class="el" href="dir_fd3f6763802dee1ad875f6c80eac0bda.html">java</a></li><li class="navelem"><a class="el" href="dir_d8517d8b842053dc3dd7dde525dd9163.html">com</a></li><li class="navelem"><a class="el" href="dir_c829b153888480d1cd6945dc2092d47a.html">deusto</a></li><li class="navelem"><a class="el" href="dir_9e8249ab69c7e7905edac3fc2eb21c5d.html">theComitte</a></li><li class="navelem"><a class="el" href="dir_7d4421e643568451290b798a8553386f.html">Spootify</a></li><li class="navelem"><a class="el" href="dir_199eca5b0928bae2d562c9c922e53a3a.html">facade</a></li><li class="navelem"><a class="el" href="_music_streaming_controller_8java.html">MusicStreamingController.java</a></li>
-    <li class="footer">Generated on Sun May 18 2025 10:19:36 for SpringBootLibrary by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sun May 18 2025 19:19:43 for SpringBootLibrary by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

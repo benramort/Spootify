@@ -7,7 +7,6 @@ var hierarchy =
     [ "com.deusto.theComitte.Spootify.facade.ArtistController", "classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1facade_1_1_artist_controller.html", null ],
     [ "com.deusto.theComitte.Spootify.DTO.ArtistDTO", "classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1_d_t_o_1_1_artist_d_t_o.html", null ],
     [ "com.deusto.theComitte.Spootify.service.ArtistService", "classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_artist_service.html", null ],
-    [ "com.deusto.theComitte.Spootify.facade.HelloWorld", "classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1facade_1_1_hello_world.html", null ],
     [ "InputStream", null, [
       [ "com.deusto.theComitte.Spootify.service.LimitedInputStream", "classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_limited_input_stream.html", null ]
     ] ],

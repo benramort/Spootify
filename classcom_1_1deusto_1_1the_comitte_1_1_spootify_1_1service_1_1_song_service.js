@@ -1,5 +1,6 @@
 var classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_song_service =
 [
+    [ "SongService", "classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_song_service.html#a1aa3498087f77872b86c2fcd2e0ef0ae", null ],
     [ "createSong", "classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_song_service.html#a9047257e0bc23823415d40c02e7d97c6", null ],
     [ "darLike", "classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_song_service.html#aed7b59d2c135d16c9a09ed9285f1f21b", null ],
     [ "getArtistSongs", "classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_song_service.html#a53abcb0a51aef1e155352149f71ca7b4", null ],
