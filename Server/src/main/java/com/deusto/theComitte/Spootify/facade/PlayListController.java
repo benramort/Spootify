@@ -27,6 +27,14 @@ public class PlayListController {
     @Autowired
     private PlaylistService playlistService;
 
+    /**
+     * Crea una nueva playlist para el usuario autenticado.
+     * 
+     * @param songListDTO Objeto SongListDTO con los datos de la playlist a crear (nombre y visibilidad)
+     * @param token Token del usuario autenticado
+     * @return 200 OK si se crea correctamente, 400 BAD REQUEST si hay error de validación o de negocio,
+     *         401 UNAUTHORIZED si el usuario no está autenticado
+     */
     @PostMapping("")
     public ResponseEntity<Void> createPlayList(@RequestBody SongListDTO songListDTO, @RequestParam long token) {
         try {
@@ -44,6 +52,13 @@ public class PlayListController {
         }   
     }
 
+    /**
+     * Obtiene todas las playlists del usuario autenticado.
+     * 
+     * @param token Token del usuario autenticado
+     * @return Lista de SongListDTO con las playlists del usuario, 401 UNAUTHORIZED si no está autenticado,
+     *         400 BAD REQUEST si hay error de negocio
+     */
     @GetMapping("")
     public ResponseEntity<List<SongListDTO>> getPlayLists(@RequestParam long token) {
         try {
@@ -61,6 +76,15 @@ public class PlayListController {
         }
     }
 
+    /**
+     * Añade una canción a una playlist del usuario autenticado.
+     * 
+     * @param token Token del usuario autenticado
+     * @param songListId ID de la playlist a la que se añade la canción
+     * @param song Objeto SongDTO con la canción a añadir
+     * @return 200 OK si se añade correctamente, 401 UNAUTHORIZED si no está autenticado,
+     *         404 NOT FOUND si la playlist no existe, 400 BAD REQUEST si hay error de negocio
+     */
     @PostMapping("/{songListId}/songs")
     public ResponseEntity<Void> addSongToPlayList(@RequestParam long token, @PathVariable long songListId, @RequestBody SongDTO song) {
         try {
@@ -78,6 +102,15 @@ public class PlayListController {
         }
     }
 
+    /**
+     * Obtiene una playlist por su ID, comprobando permisos de acceso.
+     * 
+     * @param token Token del usuario autenticado
+     * @param id ID de la playlist a obtener
+     * @return SongListDTO de la playlist, 401 UNAUTHORIZED si no está autenticado,
+     *         404 NOT FOUND si la playlist no existe, 403 FORBIDDEN si no tiene permisos,
+     *         400 BAD REQUEST si hay error de negocio
+     */
     @GetMapping("/{id}")
     public ResponseEntity<SongListDTO> getPlaylistById(@RequestParam long token, @PathVariable Long id) {
         try {
@@ -100,6 +133,14 @@ public class PlayListController {
         }
     }
 
+    /**
+     * Comparte una playlist haciéndola pública.
+     * 
+     * @param token Token del usuario autenticado
+     * @param id ID de la playlist a compartir
+     * @return 200 OK si se comparte correctamente, 401 UNAUTHORIZED si no está autenticado,
+     *         404 NOT FOUND si la playlist no existe, 400 BAD REQUEST si hay error de negocio
+     */
     @PostMapping("/{id}/share")
     public ResponseEntity<Void> sharePlaylist(@RequestParam long token, @PathVariable long id) {
         try {

@@ -33,6 +33,10 @@ import com.deusto.theComitte.Spootify.service.UserService;
 @RequestMapping("/artists")
 @CrossOrigin(origins = "http://localhost:8080")
 public class ArtistController {
+/**
+ * Esta clase se encarga de gestionar los artistas.
+ * Permite crear artistas, iniciar sesión, cerrar sesión y obtener la lista de artistas.
+ */
 
     @Autowired
     private ArtistService artistService;
@@ -43,6 +47,12 @@ public class ArtistController {
     @Autowired
     private SongService songService;
     
+
+    /**
+     * Crea un nuevo artista en la base de datos.
+     * @param artistDTO Artista a crear.
+     * @return Respuesta HTTP con el estado de la operación.
+     */
     @PostMapping("")
     public ResponseEntity<Void> createArtist(@RequestBody CreateUserDTO artistDTO) {
         try {
@@ -58,6 +68,11 @@ public class ArtistController {
         }
     }
 
+    /**
+     * Inicia sesión como artista.
+     * @param loginDTO Datos de inicio de sesión.
+     * @return Respuesta HTTP con el token de sesión.
+     */
     @PostMapping("/login")
     public ResponseEntity<TokenDTO> login(@RequestBody LoginDTO loginDTO) {
         try {
@@ -75,6 +90,11 @@ public class ArtistController {
         }
     }
 
+    /**
+     * Cierra sesión como artista.
+     * @param token Token de sesión.
+     * @return Respuesta HTTP con el estado de la operación.
+     */
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(@RequestParam long token) {
         try {
@@ -88,6 +108,11 @@ public class ArtistController {
         }
     }
 
+    /**
+     * Devuelve la lista de canciones del artista activo.
+     * @param token Token de sesión.
+     * @return Respuesta HTTP con la lista de canciones.
+     */
     @GetMapping("/mySongs")
     public ResponseEntity<List<SongDTO>> getMySongs(@RequestParam long token) {
         try {
@@ -106,6 +131,11 @@ public class ArtistController {
         }
     }
 
+    /**
+     * Devuelve el perfil del artista activo.
+     * @param token Token de sesión.
+     * @return Respuesta HTTP con el perfil del artista.
+     */
     @GetMapping("/myProfile")
     public ResponseEntity<ArtistDTO> getMyProfile(@RequestParam long token) {
         try {
@@ -119,6 +149,10 @@ public class ArtistController {
         }
     }
 
+    /**
+     * Devuelve una lista ocn todos los artistas.
+     * @return Respuesta HTTP con la lista de artistas.
+     */
     @GetMapping("")
     public ResponseEntity<List<ArtistDTO>> getArtists() {
         try {
@@ -133,6 +167,11 @@ public class ArtistController {
         }
     }
 
+    /**
+     * Método que permite seguir a un artista.
+     * @param token Token de sesión.
+     * @return Respuesta HTTP con el resultado de la operación.
+     */
     @PostMapping("/{artistID}/followers")
     public ResponseEntity<Void> followArtist(@RequestParam long token, @PathVariable long artistID) {
         try {
@@ -150,7 +189,11 @@ public class ArtistController {
         }
     }
     
-    
+    /**
+     * Devuelve un artista por su ID.
+     * @param id ID del artista.
+     * @return Respuesta HTTP con el artista.
+     */
     @GetMapping("/{id}")
     public ResponseEntity<ArtistDTO> getArtist(@PathVariable long id) {
         try {
@@ -165,6 +208,11 @@ public class ArtistController {
         
     }
 
+    /**
+     * Busca artistas por su nombre.
+     * @param name Nombre del artista.
+     * @return Respuesta HTTP con la lista de artistas.
+     */
     @GetMapping("/search")
         public ResponseEntity<List<ArtistDTO>> searchArtists(@RequestParam String name) {
             try {

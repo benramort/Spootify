@@ -18,7 +18,6 @@ import com.deusto.theComitte.Spootify.DTO.LoginDTO;
 import com.deusto.theComitte.Spootify.DTO.SongListDTO;
 import com.deusto.theComitte.Spootify.DTO.TokenDTO;
 import com.deusto.theComitte.Spootify.DTO.UserDTO;
-import com.deusto.theComitte.Spootify.entity.SongList;
 import com.deusto.theComitte.Spootify.entity.User;
 import com.deusto.theComitte.Spootify.service.UserService;
 
@@ -29,6 +28,12 @@ public class UserController {
     @Autowired
     private UserService userService;
     
+    /**
+     * Crea un nuevo usuario en el sistema.
+     *
+     * @param userDTO DTO con los datos del usuario a crear
+     * @return OK si se crea correctamente, CONFLICT si el usuario ya existe, BAD_REQUEST en otros errores
+     */
     @PostMapping("/users")
     public ResponseEntity<Void> createUser(@RequestBody CreateUserDTO userDTO) {
         try {
@@ -43,6 +48,12 @@ public class UserController {
         }   
     }
 
+    /**
+     * Hace el inicio de sesión de un usuario y devuelve un token de sesión.
+     *
+     * @param loginDTO DTO con email y contraseña
+     * @return TokenDTO con el id del usuario y el token de sesión, NOT_FOUND si el usuario no existe, FORBIDDEN si la contraseña es incorrecta, BAD_REQUEST en otros errores
+     */
     @PostMapping("/login")
     public ResponseEntity<TokenDTO> login(@RequestBody LoginDTO loginDTO) {
         try {
@@ -60,6 +71,12 @@ public class UserController {
         }
     }
 
+    /**
+     * Cierra la sesión del usuario asociado al token.
+     *
+     * @param token Token de sesión del usuario
+     * @return NO_CONTENT si se cierra correctamente, UNAUTHORIZED si el usuario no está logueado, BAD_REQUEST en otros errores
+     */
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(@RequestParam long token) {
         try {
@@ -74,6 +91,11 @@ public class UserController {
         
     }
 
+    /**
+     * Obtiene la lista de todos los usuarios registrados.
+     *
+     * @return Lista de UserDTO o BAD_REQUEST si ocurre un error
+     */
     @GetMapping("")
     public ResponseEntity<List<UserDTO>> getUsers() {
         try {
@@ -88,6 +110,12 @@ public class UserController {
         }
     }
 
+    /**
+     * Obtiene el perfil del usuario autenticado.
+     *
+     * @param token Token de sesión del usuario
+     * @return UserDTO con los datos del usuario, UNAUTHORIZED si no está logueado, BAD_REQUEST en otros errores
+     */
     @GetMapping("/users/myProfile")
     public ResponseEntity<UserDTO> getMyProfile(@RequestParam long token) {
         try {

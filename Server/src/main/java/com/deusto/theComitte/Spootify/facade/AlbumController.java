@@ -29,12 +29,23 @@ import com.deusto.theComitte.Spootify.service.ArtistService;
 @RequestMapping("/albums")
 @CrossOrigin(origins = "http://localhost:8080")
 public class AlbumController {
+/**
+ * Esta clase se encarga de gestionar los álbumes de los artistas.
+ * Permite crear álbumes, obtener álbumes de un artista y buscar álbumes por nombre.
+ */
 
     @Autowired
     AlbumService albumService;
     @Autowired
     ArtistService artistService;
 
+    /**
+     * Crea un nuevo álbum en el artista activo
+     * @param name Nombre del álbum
+     * @param cover Portada del álbum. El nombre del archivo de imagen no puede tener espacios. Se acepta cualquier tipo de archivo de imagen.
+     * @param token Token del artista, generado al iniciar sesión
+     * @return Este método no devuelve nada
+     */
     @PostMapping(value = "", consumes = {"multipart/form-data"})
     public ResponseEntity<Void> createAlbum(
         @RequestParam("name") String name, 
@@ -70,6 +81,11 @@ public class AlbumController {
         }
     }
 
+    /**
+     * Devuelve la lista de álbumes de un artista
+     * @param artist ID del artista
+     * @return Lista de álbumes del artista
+     */    
     @GetMapping("")
     public ResponseEntity<List<AlbumDTO>> getAlbums(@RequestParam(required = false, defaultValue = "0") long artist){
         try {
@@ -89,6 +105,11 @@ public class AlbumController {
         }
     }
 
+    /**
+     * Devuelve un álbum por su ID
+     * @param id ID del álbum
+     * @return Álbum correspondiente al ID dado
+     */
     @GetMapping("/{id}")
     public ResponseEntity<AlbumDTO> getAlbum(@PathVariable long id){
         try {
@@ -108,6 +129,11 @@ public class AlbumController {
         }
     }
 
+    /**
+     * Busca álbumes por su nombre
+     * @param name Nombre del álbum
+     * @return Lista de álbumes que coinciden con el nombre dado
+     */
     @GetMapping("/search")
     public ResponseEntity<List<AlbumDTO>> searchAlbums(@RequestParam String name) {
         try {
@@ -125,25 +151,5 @@ public class AlbumController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
-    // @GetMapping("/covers")
-    // public ResponseEntity<List<AlbumDTO>> getAlbumCovers(@RequestParam(required = false, defaultValue = "0") long artist){
-    //     try {
-    //         List<Album> albums = albumService.getAlbums(artist);
-
-    //         List<AlbumDTO> albumDTOs = new ArrayList<>();
-    //         for(Album album : albums) {
-    //             AlbumDTO albumDTO = album.toDTO();
-    //             if(album.getCover() != null) {
-    //                 String coverUrl = "http://localhost:8081/" + album.getCover();
-    //                 albumDTO.setCover(coverUrl);
-    //             }
-    //             albumDTOs.add(albumDTO); 
-    //         }
-
-    //         return ResponseEntity.ok(albumDTOs);
-    //     } catch(Exception e) {
-    //         e.printStackTrace();
-    //         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    //     }
-    // }
+    
 }

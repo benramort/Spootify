@@ -28,6 +28,14 @@ public class UserService {
 
     private Map<Long, User> activeUsers = new HashMap<>();
 
+    /**
+     * Crea un nuevo usuario y su lista de canciones que le gustan.
+     *
+     * @param name Nombre del usuario
+     * @param email Email del usuario
+     * @param password Contraseña del usuario
+     * @throws RuntimeException Si el usuario ya existe
+     */
     public void createUser(String name, String email, String password) {
         User existingUser = userRepository.findByEmail(email);
         if (existingUser != null) {
@@ -49,6 +57,14 @@ public class UserService {
         userRepository.save(user);
     }
 
+    /**
+     * Hace el inicio de sesión de un usuario y devuelve un token de sesión.
+     *
+     * @param email Email del usuario
+     * @param password Contraseña del usuario
+     * @return Token de sesión generado
+     * @throws RuntimeException Si el usuario no existe o la contraseña es incorrecta
+     */
     public long login(String email, String password) {
         User user = userRepository.findByEmail(email);
         if (user == null) {
@@ -62,6 +78,12 @@ public class UserService {
         return token;
     }
 
+    /**
+     * Cierra la sesión del usuario asociado al token.
+     *
+     * @param token Token de sesión del usuario
+     * @throws RuntimeException Si el usuario no está logueado
+     */
     public void logout(long token) {
         User user = activeUsers.remove(token);
         if (user == null) {
@@ -69,10 +91,22 @@ public class UserService {
         }
     }
 
+    /**
+     * Obtiene la lista de todos los usuarios registrados.
+     *
+     * @return Lista de usuarios
+     */
     public List<User> getUsers() {
         return userRepository.findAll();
     }
 
+    /**
+     * Obtiene el usuario activo asociado a un token.
+     *
+     * @param token Token de sesión del usuario
+     * @return Usuario activo
+     * @throws RuntimeException Si el usuario no está logueado
+     */
     public User getActiveUser(long token) {
         System.out.println("Token: " + token);
         // System.out.println("Active users: " + activeUsers);
@@ -84,10 +118,22 @@ public class UserService {
         return user;
     }
 
+    /**
+     * Devuelve el mapa de usuarios activos.
+     *
+     * @return Mapa de usuarios activos
+     */
     public Map<Long, User> getActiveUserMap() {
         return this.activeUsers;
     }
     
+    /**
+     * Permite a un usuario seguir a un artista.
+     *
+     * @param token Token de sesión del usuario
+     * @param artistID ID del artista a seguir
+     * @throws RuntimeException Si el usuario no está logueado o el artista no existe
+     */
     public void followArtist(long token, long artistID) {
         User user = activeUsers.get(token);
         if (user == null) {
@@ -102,6 +148,13 @@ public class UserService {
         artistRepository.save(artist);
     }
 
+    /**
+     * Obtiene la lista de canciones que le gustan del usuario.
+     *
+     * @param token Token de sesión del usuario
+     * @return SongList de canciones favoritas
+     * @throws RuntimeException Si el usuario no está logueado o la lista no existe
+     */
     public SongList getLikedSongs(long token) {
         User user = activeUsers.get(token);
         if (user == null) {
