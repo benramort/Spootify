@@ -61,7 +61,7 @@ public class AlbumController {
                     System.out.println("Created directory: " + imageDir.toAbsolutePath());
                 }
 
-                String fileName = System.currentTimeMillis() + "_" + cover.getOriginalFilename();
+                String fileName = System.currentTimeMillis() + "";
                 Path coverPath = Paths.get("imagenes").resolve(fileName);
                 Files.copy(cover.getInputStream(), coverPath, StandardCopyOption.REPLACE_EXISTING);
                 imagePath = coverPath.toString();
