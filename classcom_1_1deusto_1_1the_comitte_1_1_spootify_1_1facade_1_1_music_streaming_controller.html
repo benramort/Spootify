@@ -102,8 +102,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a7db038f378c5a7b4dafab31ab6f26f7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_music_streaming_controller_8java_source.html#l00020">20</a> of file <a class="el" href="_music_streaming_controller_8java_source.html">MusicStreamingController.java</a>.</p>
+<div class="textblock"><p>Esta clase se encarga de gestionar el streaming de música. </p>
+
+<p class="definition">Definition at line <a class="el" href="_music_streaming_controller_8java_source.html#l00022">22</a> of file <a class="el" href="_music_streaming_controller_8java_source.html">MusicStreamingController.java</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a7db038f378c5a7b4dafab31ab6f26f7f" name="a7db038f378c5a7b4dafab31ab6f26f7f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7db038f378c5a7b4dafab31ab6f26f7f">&#9670;&#160;</a></span>streamMusic()</h2>
@@ -130,8 +131,16 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>A la función se le puede pedir un rango de bytes de una canción especifiacado en el header Range. Devuelve el fragmento establecido. Si el rango es mayor al permitido, se devuelve el máximo permitido. Si no se especifica el rango, se devuelve desde el principio hasta el máximo permitido. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rangeHeader</td><td>Rango de bytes a devolver. </td></tr>
+    <tr><td class="paramname">songId</td><td>ID de la canción a devolver. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Respuesta de HTML con código de "Partial Content" y un Resource con el fragmento de la canción. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_music_streaming_controller_8java_source.html#l00029">29</a> of file <a class="el" href="_music_streaming_controller_8java_source.html">MusicStreamingController.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_music_streaming_controller_8java_source.html#l00039">39</a> of file <a class="el" href="_music_streaming_controller_8java_source.html">MusicStreamingController.java</a>.</p>
 
 </div>
 </div>
@@ -144,7 +153,7 @@ Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>com</b></li><li class="navelem"><b>deusto</b></li><li class="navelem"><b>theComitte</b></li><li class="navelem"><a class="el" href="namespacecom_1_1deusto_1_1the_comitte_1_1_spootify.html">Spootify</a></li><li class="navelem"><a class="el" href="namespacecom_1_1deusto_1_1the_comitte_1_1_spootify_1_1facade.html">facade</a></li><li class="navelem"><a class="el" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1facade_1_1_music_streaming_controller.html">MusicStreamingController</a></li>
-    <li class="footer">Generated on Sat May 17 2025 16:35:42 for SpringBootLibrary by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sun May 18 2025 08:44:32 for SpringBootLibrary by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

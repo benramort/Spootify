@@ -144,8 +144,24 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Añade una canción a una playlist de un usuario autenticado.</p>
+<p>Busca el usuario activo mediante el token, la canción por su ID y la playlist por su ID. Si alguno no existe, lanza una excepción. Si todos existen, añade la canción a la playlist y guarda los cambios.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">token</td><td>Token del usuario autenticado </td></tr>
+    <tr><td class="paramname">songId</td><td>ID de la canción a añadir </td></tr>
+    <tr><td class="paramname">songListId</td><td>ID de la playlist a la que se añade la canción </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">RuntimeException</td><td>Si el usuario, la canción o la playlist no existen </td></tr>
+  </table>
+  </dd>
+</dl>
 
-<p class="definition">Definition at line <a class="el" href="_playlist_service_8java_source.html#l00055">55</a> of file <a class="el" href="_playlist_service_8java_source.html">PlaylistService.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_playlist_service_8java_source.html#l00066">66</a> of file <a class="el" href="_playlist_service_8java_source.html">PlaylistService.java</a>.</p>
 
 </div>
 </div>
@@ -180,8 +196,24 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Crea una nueva playlist para el usuario autenticado.</p>
+<p>Se crea una nueva playlist con el nombre y visibilidad indicados, se asocia al usuario y se guardan los cambios en la base de datos.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">token</td><td>Token del usuario autenticado </td></tr>
+    <tr><td class="paramname">name</td><td>Nombre de la nueva playlist </td></tr>
+    <tr><td class="paramname">isPublic</td><td>Indica si la playlist será pública o privada </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">RuntimeException</td><td>Si el usuario no está autenticado </td></tr>
+  </table>
+  </dd>
+</dl>
 
-<p class="definition">Definition at line <a class="el" href="_playlist_service_8java_source.html#l00079">79</a> of file <a class="el" href="_playlist_service_8java_source.html">PlaylistService.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_playlist_service_8java_source.html#l00100">100</a> of file <a class="el" href="_playlist_service_8java_source.html">PlaylistService.java</a>.</p>
 
 </div>
 </div>
@@ -210,8 +242,24 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Obtiene una playlist por su ID, comprobando permisos de acceso.</p>
+<p>El usuario debe estar autenticado. Si la playlist no es pública y no pertenece al usuario, se lanza una excepción. Si existe y el usuario tiene acceso, se devuelve la playlist.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">token</td><td>Token del usuario autenticado </td></tr>
+    <tr><td class="paramname">songListId</td><td>ID de la playlist a obtener </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>La playlist solicitada </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">RuntimeException</td><td>Si el usuario o la playlist no existen, o si no tiene permisos de acceso </td></tr>
+  </table>
+  </dd>
+</dl>
 
-<p class="definition">Definition at line <a class="el" href="_playlist_service_8java_source.html#l00099">99</a> of file <a class="el" href="_playlist_service_8java_source.html">PlaylistService.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_playlist_service_8java_source.html#l00140">140</a> of file <a class="el" href="_playlist_service_8java_source.html">PlaylistService.java</a>.</p>
 
 </div>
 </div>
@@ -230,8 +278,23 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Obtiene todas las playlists del usuario autenticado.</p>
+<p>Busca el usuario activo mediante el token y devuelve la lista de sus playlists.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">token</td><td>Token del usuario autenticado </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Lista de playlists del usuario </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">RuntimeException</td><td>Si el usuario no existe </td></tr>
+  </table>
+  </dd>
+</dl>
 
-<p class="definition">Definition at line <a class="el" href="_playlist_service_8java_source.html#l00090">90</a> of file <a class="el" href="_playlist_service_8java_source.html">PlaylistService.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_playlist_service_8java_source.html#l00120">120</a> of file <a class="el" href="_playlist_service_8java_source.html">PlaylistService.java</a>.</p>
 
 </div>
 </div>
@@ -260,8 +323,23 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Comparte una playlist haciéndola pública.</p>
+<p>El usuario debe estar autenticado y ser el propietario de la playlist. Si la playlist no es pública, se actualiza su estado a pública y se guarda.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">id</td><td>ID de la playlist a compartir </td></tr>
+    <tr><td class="paramname">token</td><td>Token del usuario autenticado </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">RuntimeException</td><td>Si el usuario no está autenticado o la playlist no existe </td></tr>
+  </table>
+  </dd>
+</dl>
 
-<p class="definition">Definition at line <a class="el" href="_playlist_service_8java_source.html#l00121">121</a> of file <a class="el" href="_playlist_service_8java_source.html">PlaylistService.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_playlist_service_8java_source.html#l00175">175</a> of file <a class="el" href="_playlist_service_8java_source.html">PlaylistService.java</a>.</p>
 
 </div>
 </div>
@@ -274,7 +352,7 @@ Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>com</b></li><li class="navelem"><b>deusto</b></li><li class="navelem"><b>theComitte</b></li><li class="navelem"><a class="el" href="namespacecom_1_1deusto_1_1the_comitte_1_1_spootify.html">Spootify</a></li><li class="navelem"><a class="el" href="namespacecom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service.html">service</a></li><li class="navelem"><a class="el" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_playlist_service.html">PlaylistService</a></li>
-    <li class="footer">Generated on Sat May 17 2025 16:35:42 for SpringBootLibrary by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sun May 18 2025 08:44:32 for SpringBootLibrary by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

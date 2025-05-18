@@ -113,7 +113,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="_user_controller_8java_source.html#l00027">27</a> of file <a class="el" href="_user_controller_8java_source.html">UserController.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_user_controller_8java_source.html#l00026">26</a> of file <a class="el" href="_user_controller_8java_source.html">UserController.java</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a0405f8e94a9f48f4c8e5467c5e304dff" name="a0405f8e94a9f48f4c8e5467c5e304dff"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0405f8e94a9f48f4c8e5467c5e304dff">&#9670;&#160;</a></span>createUser()</h2>
@@ -130,8 +130,16 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Crea un nuevo usuario en el sistema.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">userDTO</td><td>DTO con los datos del usuario a crear </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>OK si se crea correctamente, CONFLICT si el usuario ya existe, BAD_REQUEST en otros errores </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_user_controller_8java_source.html#l00033">33</a> of file <a class="el" href="_user_controller_8java_source.html">UserController.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_user_controller_8java_source.html#l00038">38</a> of file <a class="el" href="_user_controller_8java_source.html">UserController.java</a>.</p>
 
 </div>
 </div>
@@ -151,7 +159,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_user_controller_8java_source.html#l00106">106</a> of file <a class="el" href="_user_controller_8java_source.html">UserController.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_user_controller_8java_source.html#l00134">134</a> of file <a class="el" href="_user_controller_8java_source.html">UserController.java</a>.</p>
 
 </div>
 </div>
@@ -170,8 +178,16 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Obtiene el perfil del usuario autenticado.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">token</td><td>Token de sesión del usuario </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>UserDTO con los datos del usuario, UNAUTHORIZED si no está logueado, BAD_REQUEST en otros errores </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_user_controller_8java_source.html#l00092">92</a> of file <a class="el" href="_user_controller_8java_source.html">UserController.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_user_controller_8java_source.html#l00120">120</a> of file <a class="el" href="_user_controller_8java_source.html">UserController.java</a>.</p>
 
 </div>
 </div>
@@ -189,8 +205,10 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Obtiene la lista de todos los usuarios registrados.</p>
+<dl class="section return"><dt>Returns</dt><dd>Lista de UserDTO o BAD_REQUEST si ocurre un error </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_user_controller_8java_source.html#l00078">78</a> of file <a class="el" href="_user_controller_8java_source.html">UserController.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_user_controller_8java_source.html#l00100">100</a> of file <a class="el" href="_user_controller_8java_source.html">UserController.java</a>.</p>
 
 </div>
 </div>
@@ -209,8 +227,16 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Hace el inicio de sesión de un usuario y devuelve un token de sesión.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">loginDTO</td><td>DTO con email y contraseña </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>TokenDTO con el id del usuario y el token de sesión, NOT_FOUND si el usuario no existe, FORBIDDEN si la contraseña es incorrecta, BAD_REQUEST en otros errores </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_user_controller_8java_source.html#l00047">47</a> of file <a class="el" href="_user_controller_8java_source.html">UserController.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_user_controller_8java_source.html#l00058">58</a> of file <a class="el" href="_user_controller_8java_source.html">UserController.java</a>.</p>
 
 </div>
 </div>
@@ -229,8 +255,16 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Cierra la sesión del usuario asociado al token.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">token</td><td>Token de sesión del usuario </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>NO_CONTENT si se cierra correctamente, UNAUTHORIZED si el usuario no está logueado, BAD_REQUEST en otros errores </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_user_controller_8java_source.html#l00064">64</a> of file <a class="el" href="_user_controller_8java_source.html">UserController.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_user_controller_8java_source.html#l00081">81</a> of file <a class="el" href="_user_controller_8java_source.html">UserController.java</a>.</p>
 
 </div>
 </div>
@@ -243,7 +277,7 @@ Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>com</b></li><li class="navelem"><b>deusto</b></li><li class="navelem"><b>theComitte</b></li><li class="navelem"><a class="el" href="namespacecom_1_1deusto_1_1the_comitte_1_1_spootify.html">Spootify</a></li><li class="navelem"><a class="el" href="namespacecom_1_1deusto_1_1the_comitte_1_1_spootify_1_1facade.html">facade</a></li><li class="navelem"><a class="el" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1facade_1_1_user_controller.html">UserController</a></li>
-    <li class="footer">Generated on Sat May 17 2025 16:35:42 for SpringBootLibrary by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sun May 18 2025 08:44:32 for SpringBootLibrary by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

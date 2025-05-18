@@ -144,8 +144,18 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Añade una canción a una playlist del usuario autenticado.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">token</td><td>Token del usuario autenticado </td></tr>
+    <tr><td class="paramname">songListId</td><td>ID de la playlist a la que se añade la canción </td></tr>
+    <tr><td class="paramname">song</td><td>Objeto SongDTO con la canción a añadir </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>200 OK si se añade correctamente, 401 UNAUTHORIZED si no está autenticado, 404 NOT FOUND si la playlist no existe, 400 BAD REQUEST si hay error de negocio </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_play_list_controller_8java_source.html#l00065">65</a> of file <a class="el" href="_play_list_controller_8java_source.html">PlayListController.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_play_list_controller_8java_source.html#l00089">89</a> of file <a class="el" href="_play_list_controller_8java_source.html">PlayListController.java</a>.</p>
 
 </div>
 </div>
@@ -174,8 +184,17 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Crea una nueva playlist para el usuario autenticado.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">songListDTO</td><td>Objeto SongListDTO con los datos de la playlist a crear (nombre y visibilidad) </td></tr>
+    <tr><td class="paramname">token</td><td>Token del usuario autenticado </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>200 OK si se crea correctamente, 400 BAD REQUEST si hay error de validación o de negocio, 401 UNAUTHORIZED si el usuario no está autenticado </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_play_list_controller_8java_source.html#l00031">31</a> of file <a class="el" href="_play_list_controller_8java_source.html">PlayListController.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_play_list_controller_8java_source.html#l00039">39</a> of file <a class="el" href="_play_list_controller_8java_source.html">PlayListController.java</a>.</p>
 
 </div>
 </div>
@@ -204,8 +223,17 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Obtiene una playlist por su ID, comprobando permisos de acceso.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">token</td><td>Token del usuario autenticado </td></tr>
+    <tr><td class="paramname">id</td><td>ID de la playlist a obtener </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>SongListDTO de la playlist, 401 UNAUTHORIZED si no está autenticado, 404 NOT FOUND si la playlist no existe, 403 FORBIDDEN si no tiene permisos, 400 BAD REQUEST si hay error de negocio </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_play_list_controller_8java_source.html#l00082">82</a> of file <a class="el" href="_play_list_controller_8java_source.html">PlayListController.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_play_list_controller_8java_source.html#l00115">115</a> of file <a class="el" href="_play_list_controller_8java_source.html">PlayListController.java</a>.</p>
 
 </div>
 </div>
@@ -224,8 +252,16 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Obtiene todas las playlists del usuario autenticado.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">token</td><td>Token del usuario autenticado </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Lista de SongListDTO con las playlists del usuario, 401 UNAUTHORIZED si no está autenticado, 400 BAD REQUEST si hay error de negocio </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_play_list_controller_8java_source.html#l00048">48</a> of file <a class="el" href="_play_list_controller_8java_source.html">PlayListController.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_play_list_controller_8java_source.html#l00063">63</a> of file <a class="el" href="_play_list_controller_8java_source.html">PlayListController.java</a>.</p>
 
 </div>
 </div>
@@ -254,8 +290,17 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Comparte una playlist haciéndola pública.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">token</td><td>Token del usuario autenticado </td></tr>
+    <tr><td class="paramname">id</td><td>ID de la playlist a compartir </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>200 OK si se comparte correctamente, 401 UNAUTHORIZED si no está autenticado, 404 NOT FOUND si la playlist no existe, 400 BAD REQUEST si hay error de negocio </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_play_list_controller_8java_source.html#l00104">104</a> of file <a class="el" href="_play_list_controller_8java_source.html">PlayListController.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_play_list_controller_8java_source.html#l00145">145</a> of file <a class="el" href="_play_list_controller_8java_source.html">PlayListController.java</a>.</p>
 
 </div>
 </div>
@@ -268,7 +313,7 @@ Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>com</b></li><li class="navelem"><b>deusto</b></li><li class="navelem"><b>theComitte</b></li><li class="navelem"><a class="el" href="namespacecom_1_1deusto_1_1the_comitte_1_1_spootify.html">Spootify</a></li><li class="navelem"><a class="el" href="namespacecom_1_1deusto_1_1the_comitte_1_1_spootify_1_1facade.html">facade</a></li><li class="navelem"><a class="el" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1facade_1_1_play_list_controller.html">PlayListController</a></li>
-    <li class="footer">Generated on Sat May 17 2025 16:35:42 for SpringBootLibrary by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sun May 18 2025 08:44:32 for SpringBootLibrary by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

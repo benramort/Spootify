@@ -160,8 +160,26 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Crea una nueva canción asociada a un álbum y la guarda en la base de datos.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">title</td><td>Título de la canción </td></tr>
+    <tr><td class="paramname">duration</td><td>Duración de la canción en segundos </td></tr>
+    <tr><td class="paramname">audioFile</td><td>Archivo de audio de la canción (opcional) </td></tr>
+    <tr><td class="paramname">albumId</td><td>ID del álbum al que pertenece la canción </td></tr>
+    <tr><td class="paramname">token</td><td>Token de autenticación del artista </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">IOException</td><td>Si ocurre un error al guardar el archivo de audio </td></tr>
+    <tr><td class="paramname">RuntimeException</td><td>Si el álbum no existe o el artista no tiene acceso </td></tr>
+  </table>
+  </dd>
+</dl>
 
-<p class="definition">Definition at line <a class="el" href="_song_service_8java_source.html#l00043">43</a> of file <a class="el" href="_song_service_8java_source.html">SongService.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_song_service_8java_source.html#l00054">54</a> of file <a class="el" href="_song_service_8java_source.html">SongService.java</a>.</p>
 
 </div>
 </div>
@@ -190,8 +208,22 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Permite a un usuario dar like a una canción y la añade a su playlist de "Canciones que me gustan".</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">songId</td><td>ID de la canción a la que se da like </td></tr>
+    <tr><td class="paramname">token</td><td>Token de autenticación del usuario </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">RuntimeException</td><td>Si la canción no existe </td></tr>
+  </table>
+  </dd>
+</dl>
 
-<p class="definition">Definition at line <a class="el" href="_song_service_8java_source.html#l00111">111</a> of file <a class="el" href="_song_service_8java_source.html">SongService.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_song_service_8java_source.html#l00155">155</a> of file <a class="el" href="_song_service_8java_source.html">SongService.java</a>.</p>
 
 </div>
 </div>
@@ -210,8 +242,16 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Obtiene todas las canciones de los álbumes de un artista autenticado.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">token</td><td>Token de autenticación del artista </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Lista de canciones del artista </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_song_service_8java_source.html#l00091">91</a> of file <a class="el" href="_song_service_8java_source.html">SongService.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_song_service_8java_source.html#l00115">115</a> of file <a class="el" href="_song_service_8java_source.html">SongService.java</a>.</p>
 
 </div>
 </div>
@@ -229,8 +269,10 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Obtiene la lista de canciones con más likes, ordenadas de mayor a menor.</p>
+<dl class="section return"><dt>Returns</dt><dd>Lista de canciones más gustadas </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_song_service_8java_source.html#l00152">152</a> of file <a class="el" href="_song_service_8java_source.html">SongService.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_song_service_8java_source.html#l00174">174</a> of file <a class="el" href="_song_service_8java_source.html">SongService.java</a>.</p>
 
 </div>
 </div>
@@ -249,8 +291,22 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Obtiene una canción por su ID.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">id</td><td>ID de la canción </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>La canción encontrada </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">RuntimeException</td><td>Si la canción no existe </td></tr>
+  </table>
+  </dd>
+</dl>
 
-<p class="definition">Definition at line <a class="el" href="_song_service_8java_source.html#l00098">98</a> of file <a class="el" href="_song_service_8java_source.html">SongService.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_song_service_8java_source.html#l00129">129</a> of file <a class="el" href="_song_service_8java_source.html">SongService.java</a>.</p>
 
 </div>
 </div>
@@ -279,8 +335,17 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Obtiene una lista de canciones filtradas por artista y/o álbum.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">artistId</td><td>ID del artista (opcional, 0 para ignorar) </td></tr>
+    <tr><td class="paramname">albumId</td><td>ID del álbum (opcional, 0 para ignorar) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Lista de canciones que cumplen los criterios </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_song_service_8java_source.html#l00078">78</a> of file <a class="el" href="_song_service_8java_source.html">SongService.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_song_service_8java_source.html#l00096">96</a> of file <a class="el" href="_song_service_8java_source.html">SongService.java</a>.</p>
 
 </div>
 </div>
@@ -299,8 +364,16 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Busca canciones por nombre.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">title</td><td>Nombre o parte del nombre de la canción </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Lista de canciones que coinciden con el nombre </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_song_service_8java_source.html#l00107">107</a> of file <a class="el" href="_song_service_8java_source.html">SongService.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_song_service_8java_source.html#l00144">144</a> of file <a class="el" href="_song_service_8java_source.html">SongService.java</a>.</p>
 
 </div>
 </div>
@@ -313,7 +386,7 @@ Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>com</b></li><li class="navelem"><b>deusto</b></li><li class="navelem"><b>theComitte</b></li><li class="navelem"><a class="el" href="namespacecom_1_1deusto_1_1the_comitte_1_1_spootify.html">Spootify</a></li><li class="navelem"><a class="el" href="namespacecom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service.html">service</a></li><li class="navelem"><a class="el" href="classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_song_service.html">SongService</a></li>
-    <li class="footer">Generated on Sat May 17 2025 16:35:42 for SpringBootLibrary by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sun May 18 2025 08:44:32 for SpringBootLibrary by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

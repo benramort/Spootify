@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['integrationtests_0',['IntegrationTests',['../classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1integration_1_1_integration_tests.html',1,'com::deusto::theComitte::Spootify::integration']]]
+  ['limitedinputstream_0',['LimitedInputStream',['../classcom_1_1deusto_1_1the_comitte_1_1_spootify_1_1service_1_1_limited_input_stream.html',1,'com::deusto::theComitte::Spootify::service']]]
 ];
