@@ -82,7 +82,6 @@ onMounted(() => {
         getSongs();
     } else {
         songs.value = props.songs;
-        console.log("Songs: " + songs.value);
         getLikedPlaylist();
     }
 });
@@ -122,7 +121,9 @@ function getLikedPlaylist() {
         });
         isLikedPlaylistLoaded.value = true;
     }).catch((error) => {
-        console.error("Error al obtener la playlist de canciones que me gustan:", error);
+        console.log("Error al obtener la playlist de canciones que me gustan:");
+        console.log(songs.value);
+        isLikedPlaylistLoaded.value = true; // Asegúrate de que la variable se actualice incluso si hay un error
     });
 }
 
