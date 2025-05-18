@@ -13,8 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.deusto.theComitte.Spootify.DAO.AlbumRepository;
-import com.deusto.theComitte.Spootify.DAO.ArtistRepository;
-import com.deusto.theComitte.Spootify.DAO.PlayListRepository;
 import com.deusto.theComitte.Spootify.DAO.SongRepository;
 import com.deusto.theComitte.Spootify.entity.Album;
 import com.deusto.theComitte.Spootify.entity.Artist;
@@ -24,20 +22,21 @@ import com.deusto.theComitte.Spootify.entity.User;
 @Service
 public class SongService {
     
+    private SongRepository songRepository;
+    private AlbumRepository albumRepository;
+    private ArtistService artistService;
+    private PlaylistService playlistService;
+    private UserService userService;
+
     @Autowired
-    SongRepository songRepository;
-    @Autowired
-    AlbumRepository albumRepository;
-    @Autowired
-    ArtistRepository artistRepository;
-    @Autowired
-    ArtistService artistService;
-    @Autowired
-    PlaylistService playlistService;
-    @Autowired
-    UserService userService;
-    @Autowired
-    PlayListRepository playListRepository;
+    public SongService(SongRepository songRepository, AlbumRepository albumRepository,
+            ArtistService artistService, PlaylistService playlistService, UserService userService) {
+        this.songRepository = songRepository;
+        this.albumRepository = albumRepository;
+        this.artistService = artistService;
+        this.playlistService = playlistService;
+        this.userService = userService;
+    }
 
 
     /**
@@ -63,13 +62,6 @@ public class SongService {
         if (!album.getArtists().contains(artist)) {
             album.getArtists().forEach(a -> System.out.println(a.getId()));
             throw new RuntimeException("Artist does not have access to this album");
-        }
-
-        if (audioFile == null) {
-            Song song = new Song(title, album, duration, "");
-            album.getSongs().add(song);
-            songRepository.save(song);
-            return;
         }
 
         Path songsDirectory = Paths.get("songs");

@@ -13,8 +13,12 @@ import com.deusto.theComitte.Spootify.entity.Artist;
 @Service
 public class ArtistService {
  
-    @Autowired
     ArtistRepository artistRepository;
+
+    @Autowired
+    public ArtistService(ArtistRepository artistRepository) {
+        this.artistRepository = artistRepository;
+    }
     
     private Map<Long, Artist> activeArtists = new HashMap<Long, Artist>();
 

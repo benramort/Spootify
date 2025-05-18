@@ -13,12 +13,16 @@ import com.deusto.theComitte.Spootify.entity.Artist;
 @Service
 public class AlbumService {
     
-    @Autowired
     ArtistService artistService;
-    @Autowired
     ArtistRepository artistRepository;
-    @Autowired
     AlbumRepository albumRepository;
+
+    @Autowired
+    public AlbumService(ArtistService artistService, ArtistRepository artistRepository, AlbumRepository albumRepository) {
+        this.artistService = artistService;
+        this.artistRepository = artistRepository;
+        this.albumRepository = albumRepository;
+    }
 
     /**
      * Crea un nuevo álbum en el artista activo

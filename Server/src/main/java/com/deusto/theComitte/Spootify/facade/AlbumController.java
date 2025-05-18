@@ -34,10 +34,14 @@ public class AlbumController {
  * Permite crear álbumes, obtener álbumes de un artista y buscar álbumes por nombre.
  */
 
-    @Autowired
     AlbumService albumService;
-    @Autowired
     ArtistService artistService;
+
+    @Autowired
+    public AlbumController(AlbumService albumService, ArtistService artistService) {
+        this.albumService = albumService;
+        this.artistService = artistService;
+    }
 
     /**
      * Crea un nuevo álbum en el artista activo

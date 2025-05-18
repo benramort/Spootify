@@ -24,8 +24,12 @@ import com.deusto.theComitte.Spootify.service.PlaylistService;
 @CrossOrigin(origins = "http://localhost:8080")
 public class PlayListController {
     
-    @Autowired
     private PlaylistService playlistService;
+
+    @Autowired
+    public PlayListController(PlaylistService playlistService) {
+        this.playlistService = playlistService;
+    }
 
     /**
      * Crea una nueva playlist para el usuario autenticado.

@@ -25,8 +25,12 @@ import com.deusto.theComitte.Spootify.service.UserService;
 @CrossOrigin(origins = "http://localhost:8080")
 public class UserController {
     
-    @Autowired
     private UserService userService;
+
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
     
     /**
      * Crea un nuevo usuario en el sistema.

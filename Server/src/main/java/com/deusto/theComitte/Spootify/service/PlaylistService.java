@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.deusto.theComitte.Spootify.DAO.ArtistRepository;
 import com.deusto.theComitte.Spootify.DAO.PlayListRepository;
 import com.deusto.theComitte.Spootify.DAO.SongRepository;
 import com.deusto.theComitte.Spootify.DAO.UserRepository;
@@ -16,20 +15,18 @@ import com.deusto.theComitte.Spootify.entity.User;
 @Service
 public class PlaylistService {
 
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    ArtistRepository artistRepository;
-
-    @Autowired
-    SongRepository songRepository;
-
-    @Autowired
-    PlayListRepository songListRepository;
-
-    @Autowired
+    private UserRepository userRepository;
+    private SongRepository songRepository;
+    private PlayListRepository songListRepository;
     private UserService userService;
+
+    @Autowired
+    public PlaylistService(UserRepository userRepository,
+            SongRepository songRepository, PlayListRepository songListRepository) {
+        this.userRepository = userRepository;
+        this.songRepository = songRepository;
+        this.songListRepository = songListRepository;
+    }
 
     // public void addSongsToUser(long userId, List<Long> songIds, long songListId) {
     //     User user = userService.getActiveUser(userId);
@@ -139,9 +136,6 @@ public class PlaylistService {
      */
     public SongList getPlaylistById(long token, long songListId) {
         User user = userService.getActiveUser(token);
-        if (user == null) {
-            throw new RuntimeException("User does not exist");
-        }
         SongList songList = songListRepository.findById(songListId);
         if (songList == null) {
             throw new RuntimeException("SongList does not exist");

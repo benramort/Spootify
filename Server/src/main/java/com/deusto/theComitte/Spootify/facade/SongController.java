@@ -24,8 +24,12 @@ import org.springframework.web.multipart.MultipartFile;
 @CrossOrigin(origins = "http://localhost:8080")
 public class SongController {
 
-    @Autowired
     SongService songService;
+
+    @Autowired
+    public SongController(SongService songService) {
+        this.songService = songService;
+    }
 
     /**
      * Obtiene una lista de canciones, filtrando opcionalmente por artista o álbum.

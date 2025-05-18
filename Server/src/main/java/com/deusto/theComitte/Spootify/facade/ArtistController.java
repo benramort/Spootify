@@ -1,9 +1,7 @@
 package com.deusto.theComitte.Spootify.facade;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,15 +35,16 @@ public class ArtistController {
  * Esta clase se encarga de gestionar los artistas.
  * Permite crear artistas, iniciar sesión, cerrar sesión y obtener la lista de artistas.
  */
-
-    @Autowired
     private ArtistService artistService;
-
-    @Autowired
     private UserService userService;
+    private SongService songService;
 
     @Autowired
-    private SongService songService;
+    public ArtistController(ArtistService artistService, UserService userService, SongService songService) {
+        this.artistService = artistService;
+        this.userService = userService;
+        this.songService = songService;
+    }
     
 
     /**

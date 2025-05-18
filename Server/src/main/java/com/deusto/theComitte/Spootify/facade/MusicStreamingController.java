@@ -24,8 +24,12 @@ public class MusicStreamingController {
     /** Tamaño máximo de chuck */
     private static final long MAX_CHUNK_SIZE = 1024 * 1024; // 2MB Cambiar por property
     
-    @Autowired
     private MusicStreamingService musicStreamingService;
+
+    @Autowired
+    public MusicStreamingController(MusicStreamingService musicStreamingService) {
+        this.musicStreamingService = musicStreamingService;
+    }
 
     /**
      * A la función se le puede pedir un rango de bytes de una canción especifiacado en el header Range. 

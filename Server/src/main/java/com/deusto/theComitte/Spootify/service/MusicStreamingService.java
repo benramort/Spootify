@@ -15,8 +15,12 @@ import com.deusto.theComitte.Spootify.entity.Song;
 @Service
 public class MusicStreamingService {
 
-    @Autowired
     SongRepository songRepository;
+
+    @Autowired
+    public MusicStreamingService(SongRepository songRepository) {
+        this.songRepository = songRepository;
+    }
 
     /**
      * Devuelve un fragmento del archivo especificado en el path.

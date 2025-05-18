@@ -17,14 +17,16 @@ import com.deusto.theComitte.Spootify.entity.User;
 @Service
 public class UserService {
 
-    @Autowired
     UserRepository userRepository;
-
-    @Autowired
     ArtistRepository artistRepository;
+    PlayListRepository songListRepository;
 
     @Autowired
-    PlayListRepository songListRepository;
+    public UserService(UserRepository userRepository, ArtistRepository artistRepository, PlayListRepository songListRepository) {
+        this.userRepository = userRepository;
+        this.artistRepository = artistRepository;
+        this.songListRepository = songListRepository;
+    }
 
     private Map<Long, User> activeUsers = new HashMap<>();
 
