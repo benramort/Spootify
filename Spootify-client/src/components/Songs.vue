@@ -76,6 +76,7 @@ let likedPlaylist = ref([]); // Playlist de canciones que me gustan
 let showModal = ref(false); // Controla la visibilidad del modal
 let selectedSong = ref(null); // Canción seleccionada para añadir a una playlist
 let isLikedPlaylistLoaded = ref(false);
+let playlists = ref([]); // Lista de playlists
 
 onMounted(() => {
     if (props.songs == null) {
@@ -133,7 +134,14 @@ function play(song) {
 
 function openPlaylistModal(song) {
     selectedSong.value = song; // Guarda la canción seleccionada
-    showModal.value = true; // Muestra el modal
+    const path = "http://localhost:8081/playlists?token=" + globalState.token.value;
+    axios.get(path).then((response) => {
+        playlists.value = response.data;
+        console.log("Playlists:", playlists.value);
+        showModal.value = true; // Muestra el modal
+    }).catch((error) => {
+        console.error("Error al obtener las playlists:", error);
+    });
 }
 
 function closeModal() {
